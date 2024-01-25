@@ -1,11 +1,10 @@
-from interpreter.interpreter import InterpreterHelper
 import logging
 import argparse
 import sys
 import time
 import socket
 import re
-from socket_comm import send_to_socket
+
 
 class SchunkGripper:
     # num of commands after which clear_interpreter() command will be invoked.

@@ -1,5 +1,4 @@
-from schunk_gripper_v1 import SchunkGripper # integrate more functions
-# from schunk_gripper import SchunkGripper
+from schunk_gripper import SchunkGripper
 import time
 # robot info
 HOST = "10.42.0.162" # ip
