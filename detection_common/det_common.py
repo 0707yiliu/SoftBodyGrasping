@@ -7,9 +7,9 @@ from mmdet.registry import VISUALIZERS
 import mmcv
 import torch
 import cv2
-from realsense_func import RealSense
+from .realsense_func import RealSense
 import argparse
-from utils import calculate_center_point
+from .utils import calculate_center_point
 
 class Det_Common:
     def __init__(self, config, checkpoint, out_pth, score_thr=0.9):
