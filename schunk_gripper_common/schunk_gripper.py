@@ -82,6 +82,7 @@ class SchunkGripper:
     def schunk_rpcCallRe(self, socket_name, command):
         # open another socket name for Schunk rpc_ip and port
         try:
+            #TODO: Open socket just once
             self.execute_command(f'socket_open("{self.EGUEGK_rpc_ip}", {self.port}, "{socket_name}")')
             # time.sleep(2) # waiting the socket opened in robotic local network
         except:
@@ -97,25 +98,26 @@ class SchunkGripper:
         # print("response info from SCHUNK port:", response.decode(self.ENCODING))
         #------------------------
         self.execute_command(f'socket_read_line("{socket_name}", {self.timeout})\n')
-        response = self.schunk_socket.recv(1024)
+        # response = self.schunk_socket.recv(1024)
         self.execute_command(f'socket_close("{socket_name}")')
-        return response
+        # return response
         # send get_XXX command
 
     def scriptport_command(self, command) -> None:
         # the port 30003 for urscript to communicate with UR robot
         if not command.endswith("\n"):
             command += "\n"
-        print(command.encode(self.ENCODING))
+        # print(command.encode(self.ENCODING))
         self.enable_interpreter_socket.sendall(command.encode(self.ENCODING))
 
     def execute_command(self, command):
         # the port 30020 for interpreter mode to communicate with the binding port for Schunk
         if not command.endswith("\n"):
             command += "\n"
-        print(command.encode(self.ENCODING))
+        # print(command.encode(self.ENCODING))
         self.socket.sendall(command.encode(self.ENCODING))
-        # data = self.socket.recv(1024)
+        data = self.socket.recv(1024)
+        print("the data is:", data)
         # return data
 
     def get_reply(self):
@@ -258,5 +260,5 @@ class SchunkGripper:
         # command += "\n\tsync()\n"
         response = self.schunk_rpcCallRe(socket_name, command)
         # self.execute_command(f'socket_send_line("{command}", "{self.schunk_socket_name}")\n')
-        return response.decode()
+        # return response.decode()
 

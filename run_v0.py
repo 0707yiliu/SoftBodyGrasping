@@ -11,10 +11,11 @@ import utils
 import numpy as np
 
 # UR IK solver
-
-# det_com = Det_Common() # TODO:give config file path
+config_dir = '/home/yi/mmdet_models/configs/defobjs/mask-rcnn_r101_fpn_ms-poly-3x_defobjs_20.py'
+checkpoint_dir = '/home/yi/mmdet_models/checkpoints/mask-rcnn_r101_fpn_ms-poly-3x_defobjs_20/epoch_10.pth'
+out_dir = '/home/yi/mmdet_models/out.video'
+det_comm = Det_Common(config=config_dir, checkpoint=checkpoint_dir, out_pth=out_dir) # TODO:give config file path
 gripper = SchunkGripper()
-
 
 #
 # # example of ur ikfast -------------
@@ -57,3 +58,5 @@ def joint_space_test():
 
 joint_space_test()
 ik_fast_test()
+while True:
+    det_comm.det_info()

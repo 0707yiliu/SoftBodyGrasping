@@ -1,7 +1,7 @@
 # University Gent
 # Auther: Yi Liu
 # Description: support the detection result for grapsing
-
+import numpy as np
 from mmdet.apis import init_detector, inference_detector
 from mmdet.registry import VISUALIZERS
 import mmcv
@@ -12,7 +12,7 @@ import argparse
 from .utils import calculate_center_point
 
 class Det_Common:
-    def __init__(self, config, checkpoint, out_pth, score_thr=0.9):
+    def __init__(self, config, checkpoint, out_pth, score_thr=0.85):
         self.config = config # configuration file path
         self.checkpoint = checkpoint # checkpoint file path
         self.out_pth = out_pth # output recording video path
@@ -29,6 +29,7 @@ class Det_Common:
                       'orange', 'kiwis', 'egg', 'bakso', 'cashew'] # TODO: set the list to be easy changeable
         target = 'cans' # for testing
         self.target_id = self.all_lables.index(target)  # for testing in real world
+        self.bbox_depth_coordinate = np.zeros(3)
 
     def record_config(self):
         # Record Video Function
@@ -78,10 +79,10 @@ class Det_Common:
                 target_bbox = _bboxes[_index[0][i]]
                 target_mask = _bboxes[_index[0][i]]
                 bbox_center, mask_center = calculate_center_point(target_bbox, target_mask)
-                bbox_depth_coordinate = self.cam.get_point_coodinate(aligned_depth_frame, bbox_center)
+                self.bbox_depth_coordinate = self.cam.get_point_coodinate(aligned_depth_frame, bbox_center)
                 # mask_depth_coordinate = cam.get_point_coodinate(aligned_depth_frame, mask_center)
-                print(bbox_depth_coordinate)
-            else:
-                pass
-        return bbox_depth_coordinate # TODO: init the value at the first line of this function
+                print(self.bbox_depth_coordinate)
+            # else:
+            #     pass
+        return self.bbox_depth_coordinate # TODO: init the value at the first line of this function
 
