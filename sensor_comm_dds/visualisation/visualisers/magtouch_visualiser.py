@@ -13,14 +13,16 @@ class MagTouchVisualiser(Visualiser):
         self.view = BubbleView(name=self.topic_name, grid_size=(2, 2))
         self.viewmodel = MagTouchViewModel(view=self.view)
 
+        self.data = np.zeros((2, 2, 3))
+
     def run(self):
         for sample in self.reader.take_iter(timeout=duration(seconds=10)):
-            data = np.zeros((2, 2, 3))
+            self.data = np.zeros((2, 2, 3))
             for i, taxel in enumerate(sample.taxels):
-                data[i//2, i%2] = np.array([taxel.x, taxel.y, taxel.z])
+                self.data[i//2, i%2] = np.array([taxel.x, taxel.y, taxel.z])
                 # print(data)
                 # print('----------')
-            self.viewmodel.update_view(data)
+            # self.viewmodel.update_view(self.data)
 
 
 if __name__ == "__main__":

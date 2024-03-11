@@ -7,7 +7,8 @@
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run_v0.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_v0.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v2.py" beforeDir="false" afterPath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schunk_gripper_common/schunkgripper_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/schunk_gripper_common/schunkgripper_example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sensor_comm_dds/visualisation/visualisers/magtouch_visualiser.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensor_comm_dds/visualisation/visualisers/magtouch_visualiser.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,12 +48,13 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping",
+    "last_opened_file_path": "C:/Users/0707y/PycharmProjects/SoftBodyGrasping/sensor_comm_dds/visualisation/visualisers",
     "two.files.diff.last.used.file": "/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\sensor_comm_dds\visualisation\visualisers" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -154,8 +156,9 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="deformableobjectDet" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_v0.py" />
@@ -180,7 +183,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-50da183f06c8-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13135.95" />
+        <option value="bundled-python-sdk-67fca87a943a-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.11799.259" />
       </set>
     </attachedChunks>
   </component>

@@ -19,17 +19,17 @@ gripper.acknowledge(gripper_index) # active SchunkGripper
 gripper.moveAbsolute(gripper_index, position, speed) # set position
 time.sleep(2)
 
-# gripper.moveAbsolute(gripper_index, position1, speed)
-# time.sleep(2)
-# # gripper.moveAbsolute(gripper_index, position2, speed)
-# # time.sleep(0.5)
-# if directorOuter is True:
-#     dir_pos = -position * 0.7 # open finger
-# else:
-#     dir_pos = position * 0.7 # close finger
-# gripper.moveRelative(gripper_index, dir_pos, speed) # move based on current position, increment value
-# # gripper.waitForComplete(gripper_index)
-# time.sleep(2)
+gripper.moveAbsolute(gripper_index, position1, speed)
+time.sleep(2)
+# gripper.moveAbsolute(gripper_index, position2, speed)
+# time.sleep(0.5)
+if directorOuter is True:
+    dir_pos = -position * 0.7 # open finger
+else:
+    dir_pos = position * 0.7 # close finger
+gripper.moveRelative(gripper_index, dir_pos, speed) # move based on current position, increment value
+# gripper.waitForComplete(gripper_index)
+time.sleep(2)
 print("get position command...")
 print(gripper.getPosition()) # TODO: the get_XXX statu-functions are wrong, fix it with egk_contribution.script
 time.sleep(2)
