@@ -1,11 +1,12 @@
-from interpreter.interpreter import InterpreterHelper
+'''
+Send the command one by one to UR controlbox
+'''
 import logging
 import argparse
 import sys
 import time
 import socket
 import re
-from socket_comm import send_to_socket
 import socketserver
 import threading
 

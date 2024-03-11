@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/grasp/autoencoder_demo_classifier.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_v0.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_v0.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v2.py" beforeDir="false" afterPath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +47,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/yi/robotic_manipulation/SchunkTests",
+    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping",
     "two.files.diff.last.used.file": "/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py"
   }
 }]]></component>
@@ -55,7 +56,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.autoencoder_demo_classifier">
+  <component name="RunManager" selected="Python.run_v0">
     <configuration name="autoencoder_demo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -168,11 +169,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.autoencoder_demo_classifier" />
         <item itemvalue="Python.run_v0" />
+        <item itemvalue="Python.depth_info" />
+        <item itemvalue="Python.autoencoder_demo_classifier" />
         <item itemvalue="Python.lstm_autoencoder_demo" />
         <item itemvalue="Python.autoencoder_demo" />
-        <item itemvalue="Python.depth_info" />
       </list>
     </recent_temporary>
   </component>

@@ -4,18 +4,32 @@
 
 from detection_common.det_common import Det_Common
 # object detection function
-from schunk_gripper_common.schunk_gripper import SchunkGripper
+from schunk_gripper_common.schunk_gripper_v2 import SchunkGripper
 # schunk gripper function
 from ur_ikfast import ur_kinematics
 import utils
 import numpy as np
+# !tactile sensor
+from sensor_comm_dds.visualisation.visualisers.magtouch_visualiser import MagTouchVisualiser
+
+import subprocess
+
+# !run tactile sensor publisher
+sensor_pub_command = ['python', 'sensor_comm_dds/communication/readers/magtouch_ble_reader.py']
+subprocess.run(sensor_pub_command)
 
 # UR IK solver
 config_dir = '/home/yi/mmdet_models/configs/defobjs/mask-rcnn_r101_fpn_ms-poly-3x_defobjs_20.py'
 checkpoint_dir = '/home/yi/mmdet_models/checkpoints/mask-rcnn_r101_fpn_ms-poly-3x_defobjs_20/epoch_10.pth'
 out_dir = '/home/yi/mmdet_models/out.video'
-det_comm = Det_Common(config=config_dir, checkpoint=checkpoint_dir, out_pth=out_dir) # TODO:give config file path
-gripper = SchunkGripper()
+# # !create mmdetection model with realsense
+# det_comm = Det_Common(config=config_dir, checkpoint=checkpoint_dir, out_pth=out_dir) # TODO:give config file path
+# # !create schunk gripper
+# gripper = SchunkGripper(local_port=44875)
+# gripper.connect()
+# gripper_index = 0
+# gripper.acknowledge(gripper_index)
+# gripper.connect_server_socket()
 
 #
 # # example of ur ikfast -------------
@@ -58,5 +72,5 @@ def joint_space_test():
 
 joint_space_test()
 ik_fast_test()
-while True:
-    det_comm.det_info()
+# while True:
+#     det_comm.det_info()
