@@ -1,6 +1,7 @@
 # University Gent - imec 25/01/2024
 # Auther: Yi Liu
 # Description: Basic grasping
+import time
 
 from detection_common.det_common import Det_Common
 # object detection function
@@ -14,6 +15,9 @@ import rtde_receive
 
 # !tactile sensor
 from sensor_comm_dds.visualisation.visualisers.magtouch_visualiser import MagTouchVisualiser
+from sensor_comm_dds.visualisation.visualisers.visualiser import Visualiser
+from sensor_comm_dds.communication.data_classes.magtouch4 import MagTouch4
+from cyclonedds.util import duration
 
 import subprocess
 import threading
@@ -59,43 +63,63 @@ def joint_space_test():
     print(q, '\n', v, '\n', a)
 
 def _get_sensor_data():
-    sensor_data4x3 = MagTouchVisualiser()
-    sensor_data4x3.run()
-    sensor_data = sensor_data4x3.data # TODO:get the data in this loop
+    sensor_vis = Visualiser(topic_data_type=MagTouch4, description="Visualise data from a MagTouch sensor.")
+    data = np.zeros((2, 2, 3))
+    for sample in sensor_vis.reader.take_iter(timeout=duration(seconds=10)):
+        data = np.zeros((2, 2, 3))
+        for i, taxel in enumerate(sample.taxels):
+            data[i // 2, i % 2] = np.array([taxel.x, taxel.y, taxel.z])
+            print(data)
+            # print(i)
+            # print(sample.taxels)
+            print('----------')
+
+def _build_sensor_pub():
+    # !this function is built for sensor publisher (Useless)
+    # !run tactile sensor publisher
+    sensor_pub_command = ['python', '-m', 'sensor_comm_dds.communication.readers.magtouch_ble_reader']
+    # subprocess.run(sensor_pub_command)
+    subprocess.Popen(sensor_pub_command, stdout=subprocess.PIPE)  # TODO:Test it all
+    # print('build sensor publisher')
 
 # --------------------------------------------------------
 if __name__ == "__main__":
-    # !run tactile sensor publisher
-    sensor_pub_command = ['python', 'sensor_comm_dds/communication/readers/magtouch_ble_reader.py']
-    # subprocess.run(sensor_pub_command)
-    sensor_process = subprocess.Popen(sensor_pub_command, stdout=subprocess.PIPE)  # TODO:Test it all
+    # # !run tactile sensor publisher
+    # sensor_pub = threading.Thread(target=_build_sensor_pub) # useless function
+    # sensor_pub.setDaemon(True)
+    # sensor_pub.start()
     # !get sensor data
-    sensor_data = np.zeros((2, 2, 3))
+    # sensor_data = np.zeros((2, 2, 3))
+    # time.sleep(10)
     sensor_thread = threading.Thread(target=_get_sensor_data)
     sensor_thread.setDaemon(True)
     sensor_thread.start()
     # sensor_data4x3 = MagTouchVisualiser()
     # sensor_data4x3.run()
 
-    robot_ip = "10.42.0.162"
-    rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
-    rtde_c = rtde_control.RTDEControlInterface(robot_ip)
+    # robot_ip = "10.42.0.162"
+    # rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
+    # rtde_c = rtde_control.RTDEControlInterface(robot_ip)
 
     # # !create mmdetection model with realsense
     # det_comm = Det_Common(config=config_dir, checkpoint=checkpoint_dir, out_pth=out_dir) # TODO:give config file path
     # # !create schunk gripper
-    gripper = SchunkGripper(local_port=44875)
-    gripper.connect()
-    gripper_index = 0
-    gripper.acknowledge(gripper_index)
-    gripper.connect_server_socket()
-    gripper_current_pos = gripper.getPosition()
-    speed = 30.0
-    dir_pos = 0.1
-    while True:
-        gripper.moveRelative(gripper_index, dir_pos, speed)
-
-    joint_space_test()
-    ik_fast_test()
+    # gripper = SchunkGripper(local_port=44875)
+    # gripper.connect()
+    # gripper_index = 0
+    # gripper.acknowledge(gripper_index)
+    # gripper.connect_server_socket()
+    # gripper_current_pos = gripper.getPosition()
+    # speed = 30.0
+    # dir_pos = 0.1
     # while True:
-    #     det_comm.det_info()
+    #     gripper.moveRelative(gripper_index, dir_pos, speed)
+
+    # joint_space_test()
+    # ik_fast_test()
+    while True:
+        time.sleep(0.01)
+        pass
+
+        # print('main loop')
+        # det_comm.det_info()

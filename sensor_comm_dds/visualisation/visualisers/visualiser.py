@@ -8,10 +8,11 @@ from sensor_comm_dds.utils.liveliness_listener import LivelinessListener
 class Visualiser:
     def __init__(self, topic_data_type, description):
         self.parser = argparse.ArgumentParser(description=description)
-        self.parser.add_argument('topic_name', type=str, help='Name of the topic where the sensor data is published')
+        self.parser.add_argument('--topic_name', type=str, default='MagTouch0', help='Name of the topic where the sensor data is published')
         args = self.parser.parse_args()
         self.topic_name = args.topic_name
-
+        # self.topic_name = 'MagTouch0'
+        # print(self.topic_name)
         listener = LivelinessListener(topic_name=self.topic_name)
         domain_participant = DomainParticipant()
         topic = Topic(domain_participant, self.topic_name, topic_data_type)
