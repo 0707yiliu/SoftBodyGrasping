@@ -21,6 +21,8 @@ from cyclonedds.util import duration
 
 import subprocess
 import threading
+import pickle
+import socket
 
 # UR IK solver
 config_dir = '/home/yi/mmdet_models/configs/defobjs/mask-rcnn_r101_fpn_ms-poly-3x_defobjs_20.py'
@@ -64,15 +66,23 @@ def joint_space_test():
 
 def _get_sensor_data():
     sensor_vis = Visualiser(topic_data_type=MagTouch4, description="Visualise data from a MagTouch sensor.")
-    data = np.zeros((2, 2, 3))
+    server_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    server_ip = '127.0.0.1'
+    server_port = 8110
+    addr = (server_ip, server_port)
     for sample in sensor_vis.reader.take_iter(timeout=duration(seconds=10)):
         data = np.zeros((2, 2, 3))
         for i, taxel in enumerate(sample.taxels):
             data[i // 2, i % 2] = np.array([taxel.x, taxel.y, taxel.z])
-            print(data)
-            # print(i)
-            # print(sample.taxels)
-            print('----------')
+        print(data, '\n', '---------')
+        p_data = pickle.dumps(data)
+        server_udp.sendto(p_data, addr)
+        # # mdata = data.copy()
+        # time.sleep(0.01)
+        # print(data)
+        # # print(i)
+        # # print(sample.taxels)
+        # print('----------')
 
 def _build_sensor_pub():
     # !this function is built for sensor publisher (Useless)
@@ -84,6 +94,8 @@ def _build_sensor_pub():
 
 # --------------------------------------------------------
 if __name__ == "__main__":
+    current_time = time.strftime('%Y%m%d%H%M%S', time.localtime()) # for npy data recording
+    obj = 'banana' # recorded object
     # # !run tactile sensor publisher
     # sensor_pub = threading.Thread(target=_build_sensor_pub) # useless function
     # sensor_pub.setDaemon(True)
@@ -100,26 +112,101 @@ if __name__ == "__main__":
     # robot_ip = "10.42.0.162"
     # rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
     # rtde_c = rtde_control.RTDEControlInterface(robot_ip)
-
-    # # !create mmdetection model with realsense
-    # det_comm = Det_Common(config=config_dir, checkpoint=checkpoint_dir, out_pth=out_dir) # TODO:give config file path
+    #
+    # # # !create mmdetection model with realsense
+    # # det_comm = Det_Common(config=config_dir, checkpoint=checkpoint_dir, out_pth=out_dir) # TODO:give config file path
     # # !create schunk gripper
-    # gripper = SchunkGripper(local_port=44875)
-    # gripper.connect()
-    # gripper_index = 0
-    # gripper.acknowledge(gripper_index)
-    # gripper.connect_server_socket()
-    # gripper_current_pos = gripper.getPosition()
-    # speed = 30.0
-    # dir_pos = 0.1
+    local_ip = '10.42.0.111'
+    gripper = SchunkGripper(local_ip=local_ip, local_port=44877)
+    gripper.connect()
+    gripper_index = 0
+    gripper.acknowledge(gripper_index)
+    gripper.connect_server_socket()
+    gripper_current_pos = gripper.getPosition()
+    speed = 100.0
+    dir_pos = 0.3
+    gripper.moveAbsolute(gripper_index, 0, speed) # init the position
+    time.sleep(4)
     # while True:
     #     gripper.moveRelative(gripper_index, dir_pos, speed)
 
     # joint_space_test()
     # ik_fast_test()
+
+    # !create upd client to receive the tactile sensor date
+    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    local_addr = ("127.0.0.1", 8110)
+    udp_socket.bind(local_addr)
+
+    tac_data = np.zeros(12)
+    iter = 0
     while True:
-        time.sleep(0.01)
-        pass
+        # time.sleep(1)
+        # print(mdata)
+        # print('---------------')
 
         # print('main loop')
         # det_comm.det_info()
+
+        # !gripper grasping with tactile sensing
+        try:
+            iter += 1
+            # !control and get gripper's info
+            gripper.moveRelative(gripper_index, dir_pos, speed) # close gripper
+            # gripper.moveAbsolute(gripper_index, 20, speed)
+            time.sleep(0.1)
+            response = gripper.getPosition()
+            print(response)
+            print('loop iter:', iter)
+            # !get tactile sensor's info
+            recv_data = udp_socket.recvfrom(1024) # get tactile sensor's data
+            info_data = pickle.loads(recv_data[0])
+            # print(info_data.reshape(-1))
+            tac_data = np.vstack([tac_data, info_data.reshape(-1)])
+            time.sleep(0.1)
+            # print(tac_data.shape)
+            # print('----')
+        except KeyboardInterrupt:
+            gripper.fastStop(gripper_index)
+            tac_data = np.delete(tac_data, 0, 0)
+            np.save('./grasp/data/' + current_time + '_grasp_' + obj, tac_data)
+            udp_socket.close()
+            time.sleep(1)
+            # gripper.stop(gripper_index)
+            # time.sleep(1)
+            gripper.disconnect()
+            print('keyboard interrupt')
+
+
+            # def EGUEGK_rpcGetResult(response):
+            #     tokenIndex = str_find(response, ",")
+            #     if (tokenIndex < 0):
+            #         tokenIndex = str_len(response)
+            #     end
+            #     typeStr = str_sub(response, 0, tokenIndex)
+            #     resultStr = str_sub(response, tokenIndex + 1)
+            #
+            #     if (typeStr == "boolean"):
+            #         return resultStr == "true"
+            #     elif (typeStr == "short"):
+            #         return to_num(resultStr)
+            #     elif (typeStr == "int"):
+            #         return to_num(resultStr)
+            #     elif (typeStr == "long"):
+            #         return to_num(resultStr)
+            #     elif (typeStr == "float"):
+            #         return to_num(resultStr)
+            #     elif (typeStr == "double"):
+            #         return to_num(resultStr)
+            #     elif (typeStr == "exception"):
+            #         return resultStr
+            #     end
+            #
+            #     # if debug:
+            #     #     textmsg("After Get Result= ", response)
+            #     # end
+            #
+            #
+            # end
+
+

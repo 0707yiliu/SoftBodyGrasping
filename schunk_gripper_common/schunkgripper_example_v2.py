@@ -4,9 +4,10 @@ import time
 import rtde_control
 import rtde_receive
 robot_ip = "10.42.0.162"
-rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
-rtde_c = rtde_control.RTDEControlInterface(robot_ip)
-gripper = SchunkGripper(local_port=44875)
+local_ip = '10.42.0.111'
+# rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
+# rtde_c = rtde_control.RTDEControlInterface(robot_ip)
+gripper = SchunkGripper(local_ip=local_ip, local_port=44875)
 gripper.connect()
 # rtde_c.servoJ(actual_q, 0.1, 0.1, 1, 0.2, 100) # for test rtdf with interpreter mode
 gripper_index = 0
@@ -25,12 +26,18 @@ gripper.connect_server_socket()
 # gripper.moveAbsolute(gripper_index, position, speed)
 # time.sleep(1)
 while True:
-    response = gripper.getPosition()
-    time.sleep(1)
-    actual_q = rtde_r.getActualQ()
-    print(actual_q)
-# print(response)
-gripper.disconnect()
+    try:
+        # gripper.moveAbsolute(gripper_index, 20, speed)
+        time.sleep(0.1)
+        response = gripper.getPosition()
+        time.sleep(0.1)
+        # actual_q = rtde_r.getActualQ()
+        # print(actual_q)
+        print(response)
+    except KeyboardInterrupt:
+        gripper.fastStop(gripper_index)
+        time.sleep(1)
+        gripper.disconnect()
 
 '''
 b'interpreter_mode()\n'

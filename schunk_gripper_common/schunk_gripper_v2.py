@@ -28,7 +28,7 @@ class SchunkGripper:
     CLEARBUFFER_LIMIT = 20  # DONOT USE IT NOW --- clear the buffer for interpreter mode (the number of command you want to perform)
     # EGUEGK_rpc_ip = "127.0.0.1"
     EGUEGK_rpc_ip = "10.42.0.162"
-    local_ip = '10.42.0.1'
+    local_ip = '10.42.0.111'
     local_port = 47000
     rpc_port = 55050
     UR_INTERPRETER_SOCKET = 30020
@@ -52,6 +52,8 @@ class SchunkGripper:
         # self.t_schunk = threading.Thread(target=self.recv_schunk)
         # self.t_schunk.setDaemon(True)
         # self.t_schunk.start()
+
+        self.data = 0
 
     def recv_schunk(self):
         rcv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -166,7 +168,29 @@ class SchunkGripper:
             sys.exit(0)
         while True:
             self.data = schunk_listener.recv(1024)
-            print('recv data:', self.data)
+            self.data = self.rpcGetResult(self.data.decode(self.ENCODING))
+            # print('recv data:', self.data.decode('utf-8')) # like float,3.0
+            # print(type(self.data.decode('utf-8'))) # str
+    def rpcGetResult(self, response):
+        tokenIndex = str.find(response, ',')
+        if tokenIndex < 0:
+            tokenIndex = len(response)
+        typeStr = response[:tokenIndex]
+        resultStr = response[tokenIndex + 1:]
+        if typeStr == 'boolean':
+            resultStr = 'true'
+            return resultStr
+        elif typeStr == 'short' or typeStr == 'int' or typeStr == 'long':
+            resultStr = int(resultStr)
+            return resultStr
+        elif typeStr == 'float' or typeStr == 'double':
+            resultStr = float(resultStr)
+            return resultStr
+
+
+
+
+
 
     def schunk_rpcCall(self, socket_name, command):
         # open another socket name for Schunk rpc_ip and port
@@ -217,7 +241,7 @@ class SchunkGripper:
         self.execute_command(f'socket_close("{socket_name}")')
         # print(self.schunk_listener)
         # self.data = self.schunk_listener.recv(1024)
-        return None
+        return self.data
 
     def scriptport_command(self, command) -> None:
         # the port 30003 for urscript to communicate with UR robot
@@ -230,7 +254,7 @@ class SchunkGripper:
         # the port 30020 for interpreter mode to communicate with the binding port for Schunk
         if not command.endswith("\n"):
             command += "\n"
-        print('sending command:', command.encode(self.ENCODING))
+        # print('sending command:', command.encode(self.ENCODING))
         self.socket.sendall(command.encode(self.ENCODING))
         # data = self.socket.recv(1024)
         # return data

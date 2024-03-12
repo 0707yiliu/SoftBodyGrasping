@@ -21,11 +21,11 @@ class MagTouchVisualiser(Visualiser):
             self.data = np.zeros((2, 2, 3))
             for i, taxel in enumerate(sample.taxels):
                 self.data[i//2, i%2] = np.array([taxel.x, taxel.y, taxel.z])
-                print(self.data)
-                # print(i)
-                # print(sample.taxels)
-                print('----------')
-            # self.viewmodel.update_view(self.data)
+            print(self.data)
+            # print(i)
+            # print(sample.taxels)
+            print('----------')
+            self.viewmodel.update_view(self.data)
 
 
 if __name__ == "__main__":
