@@ -187,11 +187,6 @@ class SchunkGripper:
             resultStr = float(resultStr)
             return resultStr
 
-
-
-
-
-
     def schunk_rpcCall(self, socket_name, command):
         # open another socket name for Schunk rpc_ip and port
         try:

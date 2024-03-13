@@ -23,19 +23,20 @@ gripper.execute_command(f'EGUEGK_setBrakingEnabled("{gripper.rpc_socket_name}", 
 gripper.execute_command(f'EGUEGK_brakeTest("{gripper.rpc_socket_name}", 0)')
 # gripper.execute_command(f'EGUEGK_fastStop("{gripper.rpc_socket_name}", 0)')
 gripper.getPosition(1)
-for i in range(3):
+for i in range(1):
     isDirectionOuter = "false"
     print('inside')
     gripper.execute_command(f'EGUEGK_simpleGrip("{gripper.rpc_socket_name}", 0, "{isDirectionOuter}", 1, 10)')
-    time.sleep(1)
-    gripper.execute_command(f'EGUEGK_getPosition()')
-    gripper.execute_command(f'EGUEGK_stop("{gripper.rpc_socket_name}", 0)')
-    isDirectionOuter = "true"
-    print('outside')
-    gripper.execute_command(f'EGUEGK_simpleGrip("{gripper.rpc_socket_name}", 0, "{isDirectionOuter}", 1, 10)')
-    time.sleep(1)
-    gripper.execute_command(f'EGUEGK_stop("{gripper.rpc_socket_name}", 0)')
-    print('loop:', i)
+    # time.sleep(5)
+    # gripper.execute_command(f'EGUEGK_getPosition()') # TODO: useless, fix it
+    # gripper.execute_command(f'EGUEGK_stop("{gripper.rpc_socket_name}", 0)')
+    gripper.stop(gripper_index)
+    # isDirectionOuter = "true"
+    # print('outside')
+    # gripper.execute_command(f'EGUEGK_simpleGrip("{gripper.rpc_socket_name}", 0, "{isDirectionOuter}", 1, 10)')
+    # time.sleep(1)
+    # gripper.execute_command(f'EGUEGK_stop("{gripper.rpc_socket_name}", 0)')
+    # print('loop:', i)
 
 gripper.disconnect()
 

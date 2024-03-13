@@ -1,11 +1,9 @@
-from interpreter.interpreter import InterpreterHelper
 import logging
 import argparse
 import sys
 import time
 import socket
 import re
-from socket_comm import send_to_socket
 import socketserver
 import threading
 
@@ -29,6 +27,7 @@ class SchunkGripper:
     uid_th = 500
     timeout = 1000
     rpc_socket_name = "rpc_socket"
+    remote_func = False
 
     def __init__(self, local_ip="10.42.0.1", local_port=46995):
         self.enable_interpreter_socket = None  # the script port socket, for enabling interpreter mode
@@ -76,6 +75,7 @@ class SchunkGripper:
 
         # send funtion to remote interpreter port
         if remote_function is True:
+            self.remote_func = True
             self._send_funtions()
             print("send function to interpreter port")
         else:
@@ -163,9 +163,26 @@ class SchunkGripper:
             print('accept the listener failed')
             sys.exit(0)
         while True:
-            self.data = schunk_listener.recv(1024)
-            print(self.data.decode(self.ENCODING))
+            self.data = schunk_listener.recv(1024).decode(self.ENCODING)
+            # print(self.data.decode(self.ENCODING))
             # print('recv data:', self.data)
+            self.data = self.rpcGetResult(response=self.data)
+
+    def rpcGetResult(self, response):
+        tokenIndex = str.find(response, ',')
+        if tokenIndex < 0:
+            tokenIndex = len(response)
+        typeStr = response[:tokenIndex]
+        resultStr = response[tokenIndex + 1:]
+        if typeStr == 'boolean':
+            resultStr = 'true'
+            return resultStr
+        elif typeStr == 'short' or typeStr == 'int' or typeStr == 'long':
+            resultStr = int(resultStr)
+            return resultStr
+        elif typeStr == 'float' or typeStr == 'double':
+            resultStr = float(resultStr)
+            return resultStr
 
     def schunk_rpcCall(self, socket_name, command):
         # open another socket name for Schunk rpc_ip and port
@@ -228,51 +245,84 @@ class SchunkGripper:
 
     # Control API Commands ----------------------------------------
     def moveAbsolute(self, gripperIndex, position, speed):
-        command = "absolute(" + str(gripperIndex) + ", " + str(position) + ", " + str(speed) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_moveAbsolute("{self.rpc_socket_name}", {gripperIndex}, {position}, {speed})')
+        else:
+            command = "absolute(" + str(gripperIndex) + ", " + str(position) + ", " + str(speed) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
 
     def moveRelative(self, gripperIndex, position, speed):
-        command = "relative(" + str(gripperIndex) + ", " + str(position) + ", " + str(speed) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_moveRelative("{self.rpc_socket_name}", {gripperIndex}, {position}, {speed})')
+        else:
+            command = "relative(" + str(gripperIndex) + ", " + str(position) + ", " + str(speed) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
 
     def grip(self, gripperIndex, isDirectionOuter, position, force, speed):
-        command = "grip(" + str(gripperIndex) + ", " + str(isDirectionOuter) + ", " + str(
-            position) + ", " + str(force) + ", " + str(speed) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_grip("{self.rpc_socket_name}", {gripperIndex}, "{isDirectionOuter}", {position}, {force}, {speed})')
+        else:
+            command = "grip(" + str(gripperIndex) + ", " + str(isDirectionOuter) + ", " + str(
+                position) + ", " + str(force) + ", " + str(speed) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
 
     def simpleGrip(self, gripperIndex, isDirectionOuter, force, speed):
-        command = "simpleGrip(" + str(gripperIndex) + ", " + str(isDirectionOuter) + ", " + str(
-            force) + ", " + str(speed) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_simpleGrip("{self.rpc_socket_name}", {gripperIndex}, "{isDirectionOuter}", {force}, {speed})')
+        else:
+            command = "simpleGrip(" + str(gripperIndex) + ", " + str(isDirectionOuter) + ", " + str(
+                force) + ", " + str(speed) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
 
     def release(self, gripperIndex):
-        command = "release(" + str(gripperIndex) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_release("{self.rpc_socket_name}", {gripperIndex})')
+        else:
+            command = "release(" + str(gripperIndex) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
 
     def fastStop(self, gripperIndex):
-        command = "fastStop(" + str(gripperIndex) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_fastStop("{self.rpc_socket_name}", {gripperIndex})')
+        else:
+            command = "fastStop(" + str(gripperIndex) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
 
     def stop(self, gripperIndex):
-        command = "stop(" + str(gripperIndex) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_stop("{self.rpc_socket_name}", {gripperIndex})')
+        else:
+            command = "stop(" + str(gripperIndex) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
 
     def acknowledge(self, gripperIndex):
-        command = "acknowledge(" + str(gripperIndex) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
-        time.sleep(0.5)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_acknowledge("{self.rpc_socket_name}", {gripperIndex})')
+        else:
+            command = "acknowledge(" + str(gripperIndex) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
+            time.sleep(0.5)
 
     def waitForComplete(self, gripperIndex, timeout=10000):
-        command = "waitForComplete(" + str(gripperIndex) + ", " + str(timeout) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_waitForComplete("{self.rpc_socket_name}", {gripperIndex}, {timeout})')
+        else:
+            command = "waitForComplete(" + str(gripperIndex) + ", " + str(timeout) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
 
     def setBrakingEnabled(self, gripperIndex, braking):
-        command = "setBrakingEnabled(" + str(gripperIndex) + ", " + str(braking) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_setBrakingEnabled("{self.rpc_socket_name}", {gripperIndex}, "{braking}")')
+        else:
+            command = "setBrakingEnabled(" + str(gripperIndex) + ", " + str(braking) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
 
     def brakeTest(self, gripperIndex):
-        command = "brakeTest(" + str(gripperIndex) + ")"
-        self.schunkHelperFunc(self.schunk_socket_name, command)
+        if self.remote_func is True:
+            self.execute_command(f'EGUEGK_brakeTest("{self.rpc_socket_name}", {gripperIndex})')
+        else:
+            command = "brakeTest(" + str(gripperIndex) + ")"
+            self.schunkHelperFunc(self.schunk_socket_name, command)
 
     # Status Commands ----------------------------------------
     def getPosition(self, gripperNunber=1):  # TODO: use other socket name, see egk_contribution.script

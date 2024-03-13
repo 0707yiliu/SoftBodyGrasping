@@ -2,8 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-data = np.load('20240312175723_grasp_banana.npy')
-print(data.shape)
+dataall = np.load('20240313154408_banana.npz')
+print(dataall['loop_tac_data'].shape)
+data = dataall['loop_tac_data']
 data_xlen = data.shape[0]
 data_xlen = np.linspace(0, data_xlen-1, data_xlen)
 print(data_xlen, data_xlen.shape)
