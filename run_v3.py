@@ -172,56 +172,61 @@ if __name__ == "__main__":
     gripperDirIn = 'false'
     graspforce = 0.6
     graspspeed = 8.7
-    gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
+    # gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
     gripper_pos = np.zeros(0)
+    close = True
+    gripper_curr = gripper.getPosition()
+    time.sleep(0.01)
     while True:
         # det_comm.det_info() # the test mmdetection model
 
         # !gripper grasping with tactile sensing
         try:
-            iter += 1
-            # !control and get gripper's info
-            # gripper.moveRelative(gripper_index, dir_pos, speed)  # close gripper
-            # # gripper.moveAbsolute(gripper_index, 20, speed)
-            # time.sleep(0.1)
-            # response = gripper.getPosition()
-            # print(response)
-            # print('loop iter:', iter)
-            # !get tactile sensor's info
-            # recv_data = udp_socket.recvfrom(1024)  # get tactile sensor's data
-            # info_data = pickle.loads(recv_data[0])
-            # print(info_data.reshape(-1))
-            tac_data = np.vstack([tac_data, filted_data])
-            # gripper_curr = gripper.getPosition()
-            gripper_curr = gripper.execute_command(f'EGUEGK_getPosition(1)')
-            # print("gripper pos:", gripper_curr)
-            time.sleep(0.01)
-            # gripper_pos = np.append(gripper_pos, [gripper_curr])
-            print('min:', np.min(filted_data))
-            if np.min(filted_data) < -1:
-                gripper.stop(gripper_index)
-                # gripper.simpleGrip(gripper_index, gripperDirOut, graspforce, graspspeed)
-                # gripper.stop(gripper_index)
-                # tac_data = np.delete(tac_data, 0, 0)
-                # saved_data = np.delete(saved_data, 0, 0)
-                # np.savez('./grasp/data/' + current_time + '_' + obj + '.npz',
-                #          loop_tac_data=tac_data,
-                #          all_tac_data=saved_data,
-                #          gripper_pos=gripper_pos)
-                # # time.sleep(1)
-                # # print('go to init pos')
-                # # gripper.moveAbsolute(gripper_index, 0.1, speed)
-                # # time.sleep(2)
-                # # gripper.stop(gripper_index)
-                # print('fast stop')
-                # gripper.fastStop(gripper_index)
-                # udp_socket.close()
-                # time.sleep(1)
-                # # gripper.stop(gripper_index)
-                # # time.sleep(1)
-                gripper.disconnect()
-                print('force stop exit')
-                sys.exit(0)
+            if type(gripper_curr) == type(0.1) and close is True:
+                gripper.moveAbsolute(gripper_index, 80, graspspeed)
+                time.sleep(0.01)
+                iter += 1
+                tac_data = np.vstack([tac_data, filted_data])
+                gripper_curr = gripper.getPosition()
+                gripper_pos = np.append(gripper_pos, [gripper_curr])
+                # gripper_curr = gripper.execute_command(f'EGUEGK_getPosition(1)')
+                # print("gripper pos:", gripper_curr)
+                time.sleep(0.01)
+                print('min:', np.min(filted_data))
+                if gripper_curr > 78.0:
+                    close = False
+            if close is False:
+                gripper.moveAbsolute(gripper_index, 1, graspspeed)
+                time.sleep(0.01)
+                iter += 1
+                tac_data = np.vstack([tac_data, filted_data])
+                gripper_curr = gripper.getPosition()
+                gripper_pos = np.append(gripper_pos, [gripper_curr])
+                # gripper_curr = gripper.execute_command(f'EGUEGK_getPosition(1)')
+                # print("gripper pos:", gripper_curr)
+                time.sleep(0.01)
+                print('min:', np.min(filted_data))
+                if gripper_curr < 2:
+                    gripper.stop(gripper_index)
+                    gripper.fastStop(gripper_index)
+                    tac_data = np.delete(tac_data, 0, 0)
+                    saved_data = np.delete(saved_data, 0, 0)
+                    np.savez('./grasp/data/' + current_time + '_' + obj + '.npz',
+                             loop_tac_data=tac_data,
+                             all_tac_data=saved_data,
+                             gripper_pos=gripper_pos)
+                    udp_socket.close()
+                    time.sleep(1)
+                    # gripper.stop(gripper_index)
+                    # time.sleep(1)
+                    gripper.disconnect()
+                    print('force stop exit')
+                    sys.exit(0)
+            # if np.min(filted_data) < -1:
+            #     gripper.stop(gripper_index)
+            #     gripper.disconnect()
+            #     print('force stop exit')
+            #     sys.exit(0)
             # time.sleep(0.1)
             # print(tac_data.shape)
             # print('----')

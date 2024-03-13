@@ -34,28 +34,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.autoencoder_demo.executor": "Run",
-    "Python.autoencoder_demo_classifier.executor": "Run",
-    "Python.depth_info.executor": "Run",
-    "Python.lstm_autoencoder_demo.executor": "Run",
-    "Python.read_npy.executor": "Run",
-    "Python.readplot_npy.executor": "Run",
-    "Python.run_v0.executor": "Run",
-    "Python.run_v3.executor": "Run",
-    "Python.schunk_gripper.executor": "Run",
-    "Python.schunkgripper_example.executor": "Run",
-    "Python.schunkgripper_example_v2.executor": "Run",
-    "Python.schunkgripper_example_v3.executor": "Run",
-    "Python.udp_recv.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping",
-    "two.files.diff.last.used.file": "/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.autoencoder_demo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.autoencoder_demo_classifier.executor&quot;: &quot;Run&quot;,
+    &quot;Python.depth_info.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_autoencoder_demo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.read_npy.executor&quot;: &quot;Run&quot;,
+    &quot;Python.readplot_npy.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_v0.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_v3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunk_gripper.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunkgripper_example.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunkgripper_example_v2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunkgripper_example_v3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.udp_recv.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/yi/robotic_manipulation/SoftBodyGrasping&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -189,7 +189,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-50da183f06c8-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13135.95" />
+        <option value="bundled-python-sdk-67fca87a943a-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.11799.259" />
       </set>
     </attachedChunks>
   </component>
