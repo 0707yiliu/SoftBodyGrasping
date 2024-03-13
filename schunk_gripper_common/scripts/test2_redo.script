@@ -1,0 +1,35 @@
+def SomeProgramName():
+    def EGUEGK_rpcIsException(response):
+        tokenIndex = str_find(response, ",")
+        if (tokenIndex < 0):
+            tokenIndex = str_len(response)
+        end
+        typeStr = str_sub(response, 0, tokenIndex)
+        popup(response)
+        return typeStr == "exception"
+    end
+    def EGUEGK_executeCommand(socket_name, command, timeout = 1000):
+        #response = EGUEGK_rpcCall(socket_name, EGUEGK_rpc_ip, EGUEGK_rpc_port, command, timeout)
+        response = "yes"
+        if (EGUEGK_rpcIsException(response)):
+            #popup("RPC Error: " + EGUEGK_rpcGetResult(response))
+            return None
+        end
+        return response
+    end
+    def EGUEGK_moveAbsolute(socket_name, gripperIndex, position, speed):
+        command = "absolute(" + to_str(gripperIndex) + ", " + to_str(position) + ", " + to_str(speed) + ")"
+        EGUEGK_executeCommand(socket_name, command)
+    end
+    def EGUEGK_moveToPos(gripperNumber, position, isWaitComplete):
+        gripperIndex = gripperNumber - 1
+        socket_name = "socket_grasp_sensor"
+        speed = 50
+        EGUEGK_moveAbsolute(socket_name, gripperIndex, position, speed)
+        #if isWaitComplete:
+        #    EGUEGK_waitForComplete(socket_name, gripperIndex, 10000)
+        #end
+    end
+    EGUEGK_moveToPos(1, 40, 0)
+end
+SomeProgramName()

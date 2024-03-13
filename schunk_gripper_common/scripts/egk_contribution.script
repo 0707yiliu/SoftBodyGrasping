@@ -1,0 +1,324 @@
+debug = "{debug}" == "true"
+
+EGUEGK_rpc_ip = "{ip}"
+EGUEGK_rpc_port = {port}
+
+# Grasp Sensor Commands *********************************************************************
+
+def EGUEGK_moveToPos(gripperNumber, position, isWaitComplete):
+
+    gripperIndex = gripperNumber - 1
+
+    socket_name = "socket_grasp_sensor"
+    speed = 50
+
+    EGUEGK_moveAbsolute(socket_name, gripperIndex, position, speed)
+
+    if isWaitComplete:
+        EGUEGK_waitForComplete(socket_name, gripperIndex, 10000)
+    end
+
+end
+
+
+# Control API Commands *********************************************************************
+def EGUEGK_moveAbsolute(socket_name, gripperIndex, position, speed):
+    command = "absolute(" + to_str(gripperIndex) + ", " + to_str(position) + ", " + to_str(speed) + ")"
+    EGUEGK_executeCommand(socket_name, command)
+end
+
+def EGUEGK_moveRelative(socket_name, gripperIndex, position, speed):
+    command = "relative(" + to_str(gripperIndex) + ", " + to_str(position) + ", " + to_str(speed) + ")"
+    EGUEGK_executeCommand(socket_name, command)
+end
+
+def EGUEGK_grip(socket_name, gripperIndex, isDirectionOuter, position, force, speed):
+    command = "grip(" + to_str(gripperIndex) + ", " + to_str(isDirectionOuter) + ", " + to_str(position) + ", " + to_str(force) + ", " + to_str(speed) + ")"
+    EGUEGK_executeCommand(socket_name, command)
+end
+
+def EGUEGK_simpleGrip(socket_name, gripperIndex, isDirectionOuter, force, speed):
+    command = "simpleGrip(" + to_str(gripperIndex) + ", " + to_str(isDirectionOuter) + ", " + to_str(force) + ", " + to_str(speed) + ")"
+    EGUEGK_executeCommand(socket_name, command)
+end
+
+def EGUEGK_release(socket_name, gripperIndex):
+    command = "release(" + to_str(gripperIndex) + ")"
+    EGUEGK_executeCommand(socket_name, command)
+end
+
+def EGUEGK_fastStop(socket_name, gripperIndex):
+    command = "fastStop(" + to_str(gripperIndex) + ")"
+    EGUEGK_executeCommand(socket_name, command)
+end
+
+def EGUEGK_stop(socket_name, gripperIndex):
+    command = "stop(" + to_str(gripperIndex) + ")"
+    EGUEGK_executeCommand(socket_name, command)
+end
+
+def EGUEGK_acknowledge(socket_name, gripperIndex):
+    command = "acknowledge(" + to_str(gripperIndex) + ")"
+    EGUEGK_executeCommand(socket_name, command)
+end
+
+def EGUEGK_waitForComplete(socket_name, gripperIndex, timeout = 10000):
+    command = "waitForComplete(" + to_str(gripperIndex) + ", " + to_str(timeout) + ")"
+    EGUEGK_executeCommand(socket_name + "waitForComplete", command, timeout + 1000)
+end
+
+def EGUEGK_setBrakingEnabled(socket_name, gripperIndex, braking):
+    command = "setBrakingEnabled(" + to_str(gripperIndex) + ", " + to_str(braking) + ")"
+    EGUEGK_executeCommand(socket_name + "braking", command)
+end
+def EGUEGK_brakeTest(socket_name, gripperIndex):
+    command = "brakeTest(" + to_str(gripperIndex) + ")"
+    EGUEGK_executeCommand(socket_name, command)
+end
+
+
+
+def EGUEGK_abs(value):
+    if (value < 0):
+        return -value
+    end
+    return value    
+end
+
+# Status commands *************************************************************************
+
+def EGUEGK_checkPosition(gripperNumber, targetPosition, posTolerance):
+    position = EGUEGK_getPosition(gripperNumber)
+    return (EGUEGK_abs(position - targetPosition) < posTolerance)
+end
+
+def EGUEGK_isCommandProcessed(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isCommandProcessed(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_cmd_processed_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_isCommandReceived(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isCommandReceived(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_cmd_received_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_notFeasible(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isNotFeasible(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_not_feasible_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+
+def EGUEGK_isReadyForOp(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isReadyForOperation(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_ready_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_isPositionReached(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isPositionReached(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_position_reached_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_isSWLimitReached(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isSoftwareLimitReached(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_software_limit_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_isWorkpieceGripped(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isWorkpieceGripped(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_workpiece_gripped_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_isWrongWPGripped(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isWrongWorkpieceGripped(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_wrong_workpiece_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_isNoWPDetected(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isNoWorkpieceDetected(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_no_workpiece_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def isWorkpieceLost(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isWorkpieceLost(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_workpiece_lost_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_isBrakeSet(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "isBrakeSet(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_brake_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_isError(gripperNumber = 1):
+    return EGUEGK_getError(gripperNumber) != 0
+end
+
+def EGUEGK_isWarning(gripperNumber = 1):
+    return EGUEGK_getWarning(gripperNumber) != 0
+end
+
+def EGUEGK_getPosition(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "getPosition(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_position_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_getError(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "getError(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_error_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+def EGUEGK_getWarning(gripperNumber = 1):
+    gripperIndex = gripperNumber - 1 
+    command = "getWarning(" + to_str(gripperIndex) + ")"
+    response = EGUEGK_executeCommand(to_str("socket_status_warning_" + to_str(EGUEGK_getNextId())), command)
+    return EGUEGK_rpcGetResult(response)
+end
+
+
+# TODO: chnage the % 10 to a 1000000
+# Used for generating a unique id for threads
+global EGUEGK_socket_uid = 0
+def EGUEGK_getNextId():
+    enter_critical
+    EGUEGK_socket_uid = (EGUEGK_socket_uid + 1) % 100
+    uid = EGUEGK_socket_uid
+    exit_critical
+    return uid
+end
+
+# Help Functions *************************************************************************
+def EGUEGK_executeCommand(socket_name, command, timeout = 1000):
+    # if debug:
+    #     textmsg("Begin Program Node= ", to_str(command))
+    # end
+
+    response = EGUEGK_rpcCall(socket_name, EGUEGK_rpc_ip, EGUEGK_rpc_port, command, timeout)
+
+    # if debug:
+    #     textmsg("Program Node Response= ", response)
+    # end
+
+    if (EGUEGK_rpcIsException(response) and debug):
+        popup("RPC Error: " + EGUEGK_rpcGetResult(response))
+        return None
+    end
+
+    # if debug:
+    #     textmsg("Finish Program Node= ", to_str(command))
+    # end
+
+    return response
+end
+
+
+# RPC Functions *************************************************************************
+def EGUEGK_rpcCall(socket_name, socket_address, socket_port, command, timeout = 2):
+
+    #log
+    # if debug:
+    #     textmsg("Before Socket Open Command= ", command)
+    # end
+
+    isSocketOpen = socket_open(socket_address, socket_port, socket_name)
+    #log
+    # if debug:
+    #     textmsg("After Socket Open Command= ", command)
+    # end
+
+    if not isSocketOpen:
+        return "exception,RPC socket failed to open"
+    end
+
+    if not socket_send_line(command, socket_name):
+      return "exception,RPC socket failed to send command"
+    end
+
+    sync()
+
+    response = socket_read_line(socket_name, timeout)
+
+    if str_empty(response):
+        return "exception,Invalid RPC response"
+    end
+
+    # if debug:
+    #     textmsg("Before Socket Close Command= ", command)
+    # end
+
+    socket_close(socket_name)
+
+    # if debug:
+    #     textmsg("After Socket Close Command= ", command)
+    # end
+
+    return response
+end
+
+def EGUEGK_rpcIsException(response):
+    tokenIndex = str_find(response, ",")
+    if (tokenIndex < 0):
+        tokenIndex = str_len(response)
+    end
+    typeStr = str_sub(response, 0, tokenIndex)
+
+    if debug:
+        textmsg("After is Exception= ", (typeStr == "exception"))
+    end
+
+    return typeStr == "exception"
+end
+
+def EGUEGK_rpcGetResult(response):
+    tokenIndex = str_find(response, ",")
+    if (tokenIndex < 0):
+        tokenIndex = str_len(response)
+    end
+    typeStr = str_sub(response, 0, tokenIndex)
+    resultStr = str_sub(response, tokenIndex + 1)
+
+    if (typeStr == "boolean"):
+        return resultStr == "true"
+    elif (typeStr == "short"):
+        return to_num(resultStr)
+    elif (typeStr == "int"):
+        return to_num(resultStr)
+    elif (typeStr == "long"):
+        return to_num(resultStr)
+    elif (typeStr == "float"):
+        return to_num(resultStr)
+    elif (typeStr == "double"):
+        return to_num(resultStr)
+    elif (typeStr == "exception"):
+        return resultStr
+    end
+
+    # if debug:
+    #     textmsg("After Get Result= ", response)
+    # end
+
+end

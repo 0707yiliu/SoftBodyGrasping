@@ -1,0 +1,6 @@
+def PopUpper():
+    def popup_text(text):
+        popup(text)
+    end
+   popup_text("I'm here")
+end

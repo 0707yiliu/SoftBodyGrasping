@@ -1,0 +1,21 @@
+EGUEGK_socket_name = "socket_{uid}"
+EGUEGK_gripperIndex = {gripperIndex}
+EGUEGK_isWaitForComplete = "{isWaitForComplete}" == "true"
+EGUEGK_isBrakeing =  "{isBrake}" == "true"
+EGUEGK_isFastStop = "{isFastStop}" == "true"
+EGUEGK_isBrakeTest = "{isBrakeTest}" == "true"
+
+
+EGUEGK_setBrakingEnabled(EGUEGK_socket_name, EGUEGK_gripperIndex, EGUEGK_isBrakeing)
+
+if EGUEGK_isFastStop:
+    EGUEGK_fastStop(EGUEGK_socket_name, EGUEGK_gripperIndex)
+elif EGUEGK_isBrakeTest:
+	EGUEGK_brakeTest(EGUEGK_socket_name, EGUEGK_gripperIndex)
+else:
+    EGUEGK_stop(EGUEGK_socket_name, EGUEGK_gripperIndex)
+end
+
+if EGUEGK_isWaitForComplete:
+    EGUEGK_waitForComplete(EGUEGK_socket_name, EGUEGK_gripperIndex, 10000)
+end

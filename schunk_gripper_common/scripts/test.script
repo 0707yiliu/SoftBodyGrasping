@@ -1,0 +1,7 @@
+def SomeProgramName2():
+    def move_custom():
+        movej([3.1, -0.95, 1.95, -2.14, 1.69, 6.00], a=1.4, v=1.05, t=0, r =0)
+    end
+    move_custom()
+end
+SomeProgramName()

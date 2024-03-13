@@ -1,0 +1,18 @@
+EGUEGK_rpc_name = "socket_{uid}"
+EGUEGK_ip = "{ip}"
+EGUEGK_port = {port}
+EGUEGK_rpc_method = "{CallMethod}"
+EGUEGK_timeout = "{Timeout}"
+
+textmsg("Begin Program Node= ", rpc_method)
+
+EGUEGK_response = EGUEGK_rpcCall(EGUEGK_rpc_name, EGUEGK_ip, EGUEGK_port, EGUEGK_rpc_method, EGUEGK_timeout)
+
+textmsg("Program Node Response= ", response)
+
+if (EGUEGK_rpcIsException(EGUEGK_response)):
+    # popup("RPC Error: " + EGUEGK_rpcGetResult(EGUEGK_response))
+    EGUEGK_gripper_ex = EGUEGK_gripper_ex + 1
+end
+
+textmsg("Finish Program Node= ", EGUEGK_rpc_method)

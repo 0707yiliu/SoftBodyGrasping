@@ -82,25 +82,43 @@ class SchunkGripper:
             print("NO function be sent to interpreter port")
 
     def _send_funtions(self):
+        # !HelperFunction API
         EGUEGK_abs = f'def EGUEGK_abs(value): if (value < 0): return -value end return value end'
         EGUEGK_socket_uid = f'global EGUEGK_socket_uid = 0'
         EGUEGK_getNextId = f'def EGUEGK_getNextId(): enter_critical EGUEGK_socket_uid = (EGUEGK_socket_uid + 1) % 100 uid = EGUEGK_socket_uid exit_critical return uid end'
         EGUEGK_rpcCall = f'def EGUEGK_rpcCall(socket_name, socket_address, socket_port, command, timeout = 2): socket_open(socket_address, socket_port, socket_name) socket_send_line(command, socket_name) sync() response = socket_read_line(socket_name, timeout) socket_close(socket_name) return response end'
         EGUEGK_executeCommand = f'def EGUEGK_executeCommand(socket_name, command, timeout = 1000): response = EGUEGK_rpcCall(socket_name, "{self.EGUEGK_rpc_ip}", {self.rpc_port}, command, timeout) return response end'
+        # !Control Command API
         EGUEGK_moveAbsolute = f'def EGUEGK_moveAbsolute(socket_name, gripperIndex, position, speed): command = "absolute(" + to_str(gripperIndex) + ", " + to_str(position) + ", " + to_str(speed) + ")" EGUEGK_executeCommand(socket_name, command) end'
         EGUEGK_moveRelative = f'def EGUEGK_moveRelative(socket_name, gripperIndex, position, speed): command = "relative(" + to_str(gripperIndex) + ", " + to_str(position) + ", " + to_str(speed) + ")" EGUEGK_executeCommand(socket_name, command) end'
         EGUEGK_grip = f'def EGUEGK_grip(socket_name, gripperIndex, isDirectionOuter, position, force, speed): command = "grip(" + to_str(gripperIndex) + ", " + to_str(isDirectionOuter) + ", " + to_str(position) + ", " + to_str(force) + ", " + to_str(speed) + ")" EGUEGK_executeCommand(socket_name, command) end'
         EGUEGK_release = f'def EGUEGK_release(socket_name, gripperIndex): command = "release(" + to_str(gripperIndex) + ")" EGUEGK_executeCommand(socket_name, command) end'
         EGUEGK_simpleGrip = f'def EGUEGK_simpleGrip(socket_name, gripperIndex, isDirectionOuter, force, speed): command = "simpleGrip(" + to_str(gripperIndex) + ", " + to_str(isDirectionOuter) + ", " + to_str(force) + ", " + to_str(speed) + ")" EGUEGK_executeCommand(socket_name, command) end'
-        EGUEGK_fastStop = f'def EGUEGK_fastStop(socket_name, gripperIndex): command = "fastStop(" + to_str(gripperIndex) EGUEGK_executeCommand(socket_name, command) end'
+        EGUEGK_fastStop = f'def EGUEGK_fastStop(socket_name, gripperIndex): command = "fastStop(" + to_str(gripperIndex) + ")" EGUEGK_executeCommand(socket_name, command) end'
         EGUEGK_stop = f'def EGUEGK_stop(socket_name, gripperIndex): command = "stop(" + to_str(gripperIndex) + ")" EGUEGK_executeCommand(socket_name, command) end'
         EGUEGK_waitForComplete = f'def EGUEGK_waitForComplete(socket_name, gripperIndex, timeout = 10000): command = "waitForComplete(" + to_str(gripperIndex) + ", " + to_str(timeout) + ")" EGUEGK_executeCommand(socket_name + "waitForComplete", command, timeout + 1000) end'
         EGUEGK_setBrakingEnabled = f'def EGUEGK_setBrakingEnabled(socket_name, gripperIndex, braking): command = "setBrakingEnabled(" + to_str(gripperIndex) + ", " + to_str(braking) + ")" EGUEGK_executeCommand(socket_name + "braking", command) end'
         EGUEGK_brakeTest = f'def EGUEGK_brakeTest(socket_name, gripperIndex): command = "brakeTest(" + to_str(gripperIndex) + ")" EGUEGK_executeCommand(socket_name, command) end'
         EGUEGK_acknowledge = f'def EGUEGK_acknowledge(socket_name, gripperIndex): command = "acknowledge(" + to_str(gripperIndex) + ")" EGUEGK_executeCommand(socket_name, command) end'
-        EGUEGK_getPosition = f'def EGUEGK_getPosition(gripperNumber = 1): gripperIndex = gripperNumber - 1  command = "getPosition(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_position_")), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        # !Status Command API
+        EGUEGK_getPosition = f'def EGUEGK_getPosition(gripperNumber): gripperIndex = gripperNumber - 1  command = "getPosition(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_position_")), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_isCommandProcessed = f'def EGUEGK_isCommandProcessed(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "isCommandProcessed(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_cmd_processed_" + to_str(EGUEGK_getNextId())), command) response = EGUEGK_executeCommand(to_str("socket_status_cmd_processed_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_isCommandReceived = f'def EGUEGK_isCommandReceived(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "isCommandReceived(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_cmd_received_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_notFeasible = f'def EGUEGK_notFeasible(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "isNotFeasible(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_not_feasible_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_isReadyForOp = f'def EGUEGK_isReadyForOp(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "isReadyForOperation(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_ready_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_isPositionReached = f'EGUEGK_isPositionReached(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "isPositionReached(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_position_reached_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_isSWLimitReached = f'def EGUEGK_isSWLimitReached(gripperNumber = 1): gripperIndex = gripperNumber - 1  command = "isSoftwareLimitReached(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_software_limit_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_isWorkpieceGripped = f'def EGUEGK_isWorkpieceGripped(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "isWorkpieceGripped(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_workpiece_gripped_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_isWrongWPGripped = f'def EGUEGK_isWrongWPGripped(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "isWrongWorkpieceGripped(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_wrong_workpiece_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_isNoWPDetected = f'def EGUEGK_isNoWPDetected(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "isNoWorkpieceDetected(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_no_workpiece_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_isBrakeSet = f'def EGUEGK_isBrakeSet(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "isBrakeSet(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_brake_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_getError = f'def EGUEGK_getError(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "getError(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_error_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+        EGUEGK_getWarning = f'def EGUEGK_getWarning(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "getWarning(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_warning_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
+
+
         all_list = [EGUEGK_abs, EGUEGK_socket_uid, EGUEGK_getNextId, EGUEGK_rpcCall, EGUEGK_executeCommand,
                     EGUEGK_moveAbsolute, EGUEGK_moveRelative, EGUEGK_grip, EGUEGK_simpleGrip, EGUEGK_fastStop, EGUEGK_stop, EGUEGK_acknowledge,
+                    EGUEGK_waitForComplete, EGUEGK_setBrakingEnabled, EGUEGK_brakeTest, EGUEGK_release,
                     EGUEGK_getPosition,]
         # EGUEGK_fastStop, EGUEGK_stop, EGUEGK_waitForComplete, EGUEGK_setBrakingEnabled, EGUEGK_brakeTest,
         # EGUEGK_getPosition
@@ -132,6 +150,7 @@ class SchunkGripper:
         self.t_schunk.setDaemon(True)
         self.t_schunk.start()
     def _socket_server(self):
+        print("socket server buildup")
         rcv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         rcv_socket.bind((self.localhost, self.localport))
         rcv_socket.listen()
@@ -145,6 +164,7 @@ class SchunkGripper:
             sys.exit(0)
         while True:
             self.data = schunk_listener.recv(1024)
+            print(self.data.decode(self.ENCODING))
             # print('recv data:', self.data)
 
     def schunk_rpcCall(self, socket_name, command):

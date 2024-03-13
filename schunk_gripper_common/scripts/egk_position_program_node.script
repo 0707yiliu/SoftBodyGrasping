@@ -1,0 +1,25 @@
+EGUEGK_socket_name = "socket_{uid}"
+EGUEGK_gripperIndex = {gripperIndex}
+EGUEGK_isAbsolute = "{isAbsolute}" == "true"
+EGUEGK_isDirectionOuter = "{isDirectionOuter}" == "true"
+EGUEGK_isWaitForComplete = "{isWaitForComplete}" == "true"
+EGUEGK_isBrakeing =  "{isBrake}" == "true"
+EGUEGK_position = {position}
+EGUEGK_speed = {speed}
+
+EGUEGK_setBrakingEnabled(EGUEGK_socket_name, EGUEGK_gripperIndex, EGUEGK_isBrakeing)
+
+if EGUEGK_isAbsolute:
+    EGUEGK_moveAbsolute(EGUEGK_socket_name, EGUEGK_gripperIndex, EGUEGK_position, EGUEGK_speed)
+else:
+    if EGUEGK_isDirectionOuter:
+        EGUEGK_moveRelative(EGUEGK_socket_name, EGUEGK_gripperIndex, EGUEGK_position, EGUEGK_speed)
+    else:
+        EGUEGK_moveRelative(EGUEGK_socket_name, EGUEGK_gripperIndex, -1 * EGUEGK_position, EGUEGK_speed)
+    end
+end
+
+
+if EGUEGK_isWaitForComplete:
+    EGUEGK_waitForComplete(EGUEGK_socket_name, EGUEGK_gripperIndex, 10000)
+end

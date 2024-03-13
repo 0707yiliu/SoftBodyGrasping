@@ -1,0 +1,4 @@
+EGUEGK_socket_name = "socket_{uid}"
+EGUEGK_gripperIndex = {gripperIndex}
+
+EGUEGK_acknowledge(EGUEGK_socket_name, EGUEGK_gripperIndex)

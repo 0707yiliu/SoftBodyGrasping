@@ -1,0 +1,13 @@
+EGUEGK_socket_name = "socket_{uid}"
+EGUEGK_gripperIndex = {gripperIndex}
+EGUEGK_isWaitForComplete = "{isWaitForComplete}" == "true"
+EGUEGK_isBrakeing =  "{isBrake}" == "true"
+
+
+EGUEGK_setBrakingEnabled(EGUEGK_socket_name, EGUEGK_gripperIndex, EGUEGK_isBrakeing)
+
+EGUEGK_release(EGUEGK_socket_name, EGUEGK_gripperIndex)
+
+if EGUEGK_isWaitForComplete:
+    EGUEGK_waitForComplete(EGUEGK_socket_name, EGUEGK_gripperIndex, 10000)
+end

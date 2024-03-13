@@ -1,0 +1,24 @@
+EGUEGK_socket_name = "socket_{uid}"
+EGUEGK_gripperIndex = {gripperIndex}
+EGUEGK_isDirectionOuter = "{isDirectionOuter}" == "true"
+EGUEGK_isWaitForComplete = "{isWaitForComplete}" == "true"
+EGUEGK_isSimpleGrip = "{isSimpleGrip}" == "true"
+EGUEGK_isBraking =  "{isBrake}" == "true"
+EGUEGK_position = {position}
+EGUEGK_force = {force}
+EGUEGK_speed = {speed}
+
+
+EGUEGK_setBrakingEnabled(EGUEGK_socket_name, EGUEGK_gripperIndex, EGUEGK_isBraking)
+
+if EGUEGK_isSimpleGrip:
+    EGUEGK_simpleGrip(EGUEGK_socket_name, EGUEGK_gripperIndex, EGUEGK_isDirectionOuter, EGUEGK_force, EGUEGK_speed)
+else:
+    EGUEGK_grip(EGUEGK_socket_name, EGUEGK_gripperIndex, EGUEGK_isDirectionOuter, EGUEGK_position, EGUEGK_force, EGUEGK_speed)
+end
+
+if EGUEGK_isWaitForComplete:
+    EGUEGK_waitForComplete(EGUEGK_socket_name, EGUEGK_gripperIndex, 15000)
+end
+
+
