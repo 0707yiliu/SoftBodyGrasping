@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/run_v3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/readplot_npy.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/readplot_npy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_v0.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_v2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v2.py" beforeDir="false" afterPath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schunk_gripper_common/schunkgripper_example_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/schunk_gripper_common/schunkgripper_example_v3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_v3.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

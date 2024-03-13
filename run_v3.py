@@ -170,8 +170,8 @@ if __name__ == "__main__":
     iter = 0
     gripperDirOut = 'true'
     gripperDirIn = 'false'
-    graspforce = 0.1
-    graspspeed = 6
+    graspforce = 0.6
+    graspspeed = 8.7
     gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
     gripper_pos = np.zeros(0)
     while True:
@@ -192,11 +192,13 @@ if __name__ == "__main__":
             # info_data = pickle.loads(recv_data[0])
             # print(info_data.reshape(-1))
             tac_data = np.vstack([tac_data, filted_data])
-            gripper_curr = gripper.getPosition()
+            # gripper_curr = gripper.getPosition()
+            gripper_curr = gripper.execute_command(f'EGUEGK_getPosition(1)')
+            # print("gripper pos:", gripper_curr)
             time.sleep(0.01)
             # gripper_pos = np.append(gripper_pos, [gripper_curr])
             print('min:', np.min(filted_data))
-            if np.min(filted_data) < -2:
+            if np.min(filted_data) < -1:
                 gripper.stop(gripper_index)
                 # gripper.simpleGrip(gripper_index, gripperDirOut, graspforce, graspspeed)
                 # gripper.stop(gripper_index)
