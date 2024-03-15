@@ -5,6 +5,7 @@ import sys
 import time
 
 from detection_common.det_common import Det_Common
+from detection_common.recording import Camera
 # object detection function
 from schunk_gripper_common.schunk_gripper_v3 import SchunkGripper
 # schunk gripper function
@@ -116,6 +117,17 @@ def _get_gripper_pos():
 # --------------------------------------------------------
 if __name__ == "__main__":
     obj = 'banana'  # recorded object
+    obj = '_' + obj
+    # !Camera recording part
+    record = False
+    if record is True:
+        fps, w, h = 30, 1280, 720
+        import cv2
+        mp4 = cv2.VideoWriter_fourcc(*'mp4v')
+        video_path = './grasp/data/' + current_time + obj + '.mp4'
+        wr = cv2.VideoWriter(video_path, mp4, fps, (w, h), isColor=True)  #
+        cam = Camera(w, h, fps)
+
     # # !run tactile sensor publisher
     # sensor_pub = threading.Thread(target=_build_sensor_pub) # useless function
     # sensor_pub.setDaemon(True)
@@ -126,6 +138,7 @@ if __name__ == "__main__":
     sensor_thread = threading.Thread(target=_get_sensor_data)
     sensor_thread.setDaemon(True)
     sensor_thread.start()
+    tac_th_z = -5
     # sensor_data4x3 = MagTouchVisualiser()
     # sensor_data4x3.run()
 
@@ -137,7 +150,7 @@ if __name__ == "__main__":
     # # det_comm = Det_Common(config=config_dir, checkpoint=checkpoint_dir, out_pth=out_dir) # TODO:give config file path
     # # !create schunk gripper
     local_ip = '10.42.0.111'
-    gripper = SchunkGripper(local_ip=local_ip, local_port=44762)
+    gripper = SchunkGripper(local_ip=local_ip, local_port=44607)
     gripper.connect(remote_function=True)
     gripper_index = 0
     braking = 'true'
@@ -147,7 +160,7 @@ if __name__ == "__main__":
     speed = 100.0
     dir_pos = 0.3
     print('open finger for initialization.')
-    gripper.moveAbsolute(gripper_index, 0, speed)  # init the position
+    gripper.moveAbsolute(gripper_index, 0.1, speed)  # init the position
     time.sleep(4)
 
     # # !make subproccess for getting gripper position
@@ -161,67 +174,143 @@ if __name__ == "__main__":
     # ik_fast_test()
 
     # !create upd client to receive the tactile sensor date
-    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    local_addr = ("127.0.0.1", 8110)
-    udp_socket.bind(local_addr)
+    # udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    # local_addr = ("127.0.0.1", 8110)
+    # udp_socket.bind(local_addr)
 
     tac_data = np.zeros(12)
     global filted_data
     iter = 0
     gripperDirOut = 'true'
     gripperDirIn = 'false'
-    graspforce = 0.6
+    graspforce = 0.9
     graspspeed = 8.7
-    # gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
-    gripper_pos = np.zeros(0)
+    gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
+    # gripper.moveAbsolute(gripper_index, 50, graspspeed)
+    gripper_pos = np.zeros(1)
     close = True
-    gripper_curr = gripper.getPosition()
-    time.sleep(0.01)
+    # gripper_curr = gripper.getPosition()
+    # # gripper_curr = gripper.execute_command(f'EGUEGK_getPosition(1)')
+    # time.sleep(0.01)
+    # gripper.waitForComplete(gripper_index, timeout=100)
+    # time.sleep(0.01)
     while True:
         # det_comm.det_info() # the test mmdetection model
 
         # !gripper grasping with tactile sensing
         try:
+            # gripper_curr = gripper.getPosition()
+            # print(gripper_curr)
+            # time.sleep(0.1)
+            # iter += 1
+            gripper_curr = gripper.getPosition()
+            # gripper.execute_command(f'EGUEGK_getPosition(0)')
+            print('gripper pos:', gripper_curr)
+            time.sleep(0.01) # 100hz is ok, 200hz a little bit fast
+            # !for camera recording
+            if record is True:
+                color_image, depth_image, colorizer_depth = cam.get_frame()
+                wr.write(color_image)
+
+
+            # print('iter:', iter)
+            # end = False
+            # th = 50
+            # if iter < th:
+            #     yes = False
+            #     gripper.moveRelative(gripper_index, 1, 100)
+            #     # gripper.moveAbsolute(gripper_index, 50, graspspeed)
+            #     # gripper.waitForComplete(gripper_index, timeout=1)
+            # if iter > th and end is False:
+            #     gripper.moveRelative(gripper_index, -1, 100)
+            #     # gripper.moveAbsolute(gripper_index, 0, graspspeed)
+            #     # gripper.waitForComplete(gripper_index, timeout=1)
+            #     yes = True
+            # if yes is True and gripper_curr < 10:
+            #     end = True
+            #     gripper.stop(gripper_index)
+            # gripper.moveRelative(gripper_index, -2, graspspeed)
+            # # time.sleep(0.01)
+            # gripper.moveAbsolute(gripper_index, -1, graspspeed)
+            # time.sleep(0.01)
+            # gripper.moveAbsolute(gripper_index, 50, graspspeed)
+            # time.sleep(0.01)
+            # gripper.moveAbsolute(gripper_index, 0, graspspeed)
+            # time.sleep(0.01)
+            # gripper_curr = gripper.getPosition()
+            # print('global gripper pos:', gripper_curr)
+            # time.sleep(0.01)
+
+            gripper_pos = np.append(gripper_pos, [gripper_curr])
+            tac_data = np.vstack([tac_data, filted_data])
             if type(gripper_curr) == type(0.1) and close is True:
-                gripper.moveAbsolute(gripper_index, 80, graspspeed)
-                time.sleep(0.01)
-                iter += 1
-                tac_data = np.vstack([tac_data, filted_data])
-                gripper_curr = gripper.getPosition()
-                gripper_pos = np.append(gripper_pos, [gripper_curr])
+                # print('close')
+                # gripper.stop(gripper_index)
+                # gripper.moveAbsolute(gripper_index, 50, graspspeed)
+                # gripper.moveRelative(gripper_index, 1, graspspeed)
+                # # time.sleep(0.01)
+                # iter += 1
+                # tac_data = np.vstack([tac_data, filted_data])
+                # gripper_curr = gripper.getPosition()
+                # gripper_pos = np.append(gripper_pos, [gripper_curr])
                 # gripper_curr = gripper.execute_command(f'EGUEGK_getPosition(1)')
-                # print("gripper pos:", gripper_curr)
-                time.sleep(0.01)
-                print('min:', np.min(filted_data))
-                if gripper_curr > 78.0:
+                # print("gripper pos:", gripper_curr, type(gripper_curr))
+                # time.sleep(0.01)
+                # print('min:', np.min(filted_data))
+                tmp_tac_data = np.array([filted_data[2], filted_data[5], filted_data[8], filted_data[11]])
+                # print(tmp_tac_data)
+                # print('filted data:', filted_data)
+                if gripper_curr > 50.0 or tmp_tac_data.min() < tac_th_z:
+                    print('stop')
                     close = False
+                    print('close:', gripper_curr, close is False, type(gripper_curr) == type(0.1) and close is True)
+                    gripper.stop(gripper_index)
+                    time.sleep(0.01)
+                    gripper.simpleGrip(gripper_index, gripperDirOut, graspforce, graspspeed)
             if close is False:
-                gripper.moveAbsolute(gripper_index, 1, graspspeed)
-                time.sleep(0.01)
-                iter += 1
-                tac_data = np.vstack([tac_data, filted_data])
-                gripper_curr = gripper.getPosition()
-                gripper_pos = np.append(gripper_pos, [gripper_curr])
-                # gripper_curr = gripper.execute_command(f'EGUEGK_getPosition(1)')
+                # print("here!!!!!!!!!!!!!")
+                # gripper.stop(gripper_index)
+                # gripper.moveAbsolute(gripper_index, 10, graspspeed)
+                # gripper.moveRelative(gripper_index, -1, graspspeed)
+                # time.sleep(1)
+                # iter += 1
+                # # tac_data = np.vstack([tac_data, filted_data])
+                # gripper_curr = gripper.getPosition()
+                # gripper_pos = np.append(gripper_pos, [gripper_curr])
+                # # gripper_curr = gripper.execute_command(f'EGUEGK_getPosition(1)')
                 # print("gripper pos:", gripper_curr)
-                time.sleep(0.01)
-                print('min:', np.min(filted_data))
+                # time.sleep(0.01)
+                # # print('min:', np.min(filted_data)
+                # !return part
+                if gripper_curr < 20:
+                    close = True
+                    gripper.stop(gripper_index)
+                    time.sleep(0.01)
+                    gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
+
+                # !stop part
                 if gripper_curr < 2:
+                    if record is True:
+                        wr.release()
+                        cam.release()
+                        tac_data = np.delete(tac_data, 0, 0)
+                        saved_data = np.delete(saved_data, 0, 0)
+                        gripper_pos = np.delete(gripper_pos, 0, 0)
+                        np.savez('./grasp/data/' + current_time + obj + '.npz',
+                                 loop_tac_data=tac_data,
+                                 all_tac_data=saved_data,
+                                 gripper_pos=gripper_pos)
                     gripper.stop(gripper_index)
                     gripper.fastStop(gripper_index)
-                    tac_data = np.delete(tac_data, 0, 0)
-                    saved_data = np.delete(saved_data, 0, 0)
-                    np.savez('./grasp/data/' + current_time + '_' + obj + '.npz',
-                             loop_tac_data=tac_data,
-                             all_tac_data=saved_data,
-                             gripper_pos=gripper_pos)
-                    udp_socket.close()
+
+                    # udp_socket.close()
                     time.sleep(1)
                     # gripper.stop(gripper_index)
                     # time.sleep(1)
                     gripper.disconnect()
                     print('force stop exit')
                     sys.exit(0)
+
             # if np.min(filted_data) < -1:
             #     gripper.stop(gripper_index)
             #     gripper.disconnect()
@@ -231,17 +320,23 @@ if __name__ == "__main__":
             # print(tac_data.shape)
             # print('----')
         except KeyboardInterrupt:
+            # time.sleep(1)
+            if record is True:
+                wr.release()
+                cam.release()
+                tac_data = np.delete(tac_data, 0, 0)
+                saved_data = np.delete(saved_data, 0, 0)
+                np.savez('./grasp/data/' + current_time + obj + '.npz',
+                         loop_tac_data=tac_data,
+                         all_tac_data=saved_data,
+                         gripper_pos=gripper_pos)
             gripper.stop(gripper_index)
             gripper.fastStop(gripper_index)
-            tac_data = np.delete(tac_data, 0, 0)
-            saved_data = np.delete(saved_data, 0, 0)
-            np.savez('./grasp/data/' + current_time + '_' + obj + '.npz',
-                     loop_tac_data=tac_data,
-                     all_tac_data=saved_data,
-                     gripper_pos=gripper_pos)
-            udp_socket.close()
+
+            # udp_socket.close()
             time.sleep(1)
             # gripper.stop(gripper_index)
             # time.sleep(1)
             gripper.disconnect()
+            gripper.close_socket()
             print('keyboard interrupt')

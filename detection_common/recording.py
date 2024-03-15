@@ -78,11 +78,12 @@ if __name__=='__main__':
             if key & 0xFF == ord('q') or key == 27:
                 cv2.destroyAllWindows()
                 print('Exit...')
+                wr_depthcolor.release()
+                wr_depth.release()
+                wr.release()
+                wr_camera_colordepth.release()
+                cam.release()
                 break
-    wr_depthcolor.release()
-    wr_depth.release()
-    wr.release()
-    wr_camera_colordepth.release()
-    cam.release()
+
  
  
