@@ -5,50 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/detection_common/recording.py" beforeDir="false" afterPath="$PROJECT_DIR$/detection_common/recording.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312153257_graspingsensing.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312155007_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312155053_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312160444_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312160651_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312161151_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312161233_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312161544_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312161612_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312164032_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312165058_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312165137_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312165204_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312165353_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312165928_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312170123_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312170617_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312170710_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312170943_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312171006_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312171049_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312171127_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312173634_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312173823_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312174018_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312174134_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312175723_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240312180649_grasp_banana.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313152729_banana.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313153527_banana.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313153853_banana.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313154021_banana.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313154408_banana.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313155414_banana.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313155551_banana.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313155701_banana.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313160125_banana.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313171458_banana.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240313171858_banana.npz" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/grasp/data/readplot_npy.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/readplot_npy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_v3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v3.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,31 +35,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.autoencoder_demo.executor": "Run",
-    "Python.autoencoder_demo_classifier.executor": "Run",
-    "Python.define_function_test.executor": "Run",
-    "Python.depth_info.executor": "Run",
-    "Python.lstm_autoencoder_demo.executor": "Run",
-    "Python.read_npy.executor": "Run",
-    "Python.readplot_npy.executor": "Run",
-    "Python.run_v0.executor": "Run",
-    "Python.run_v3.executor": "Run",
-    "Python.schunk_gripper.executor": "Run",
-    "Python.schunkgripper_example.executor": "Run",
-    "Python.schunkgripper_example_v2.executor": "Run",
-    "Python.schunkgripper_example_v3.executor": "Run",
-    "Python.udp_recv.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping",
-    "two.files.diff.last.used.file": "/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.autoencoder_demo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.autoencoder_demo_classifier.executor&quot;: &quot;Run&quot;,
+    &quot;Python.define_function_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.depth_info.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_autoencoder_demo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.read_npy.executor&quot;: &quot;Run&quot;,
+    &quot;Python.readplot_npy.executor&quot;: &quot;Run&quot;,
+    &quot;Python.readplot_npz_multiobjs.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_v0.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_v3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunk_gripper.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunkgripper_example.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunkgripper_example_v2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunkgripper_example_v3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.udp_recv.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/yi/robotic_manipulation/SoftBodyInsertion&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/grasp/data" />
       <recent name="$PROJECT_DIR$" />
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\sensor_comm_dds\visualisation\visualisers" />
     </key>
@@ -109,7 +70,7 @@
       <recent name="$PROJECT_DIR$/sensor_comm_dds" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.run_v3">
+  <component name="RunManager" selected="Python.readplot_npz_multiobjs">
     <configuration name="define_function_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -176,6 +137,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="readplot_npz_multiobjs" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SoftBodyGrasping" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/grasp/data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="run_v3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -198,35 +181,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="schunkgripper_example_v3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SoftBodyGrasping" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/schunk_gripper_common" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/schunk_gripper_common/schunkgripper_example_v3.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.run_v3" />
+        <item itemvalue="Python.readplot_npz_multiobjs" />
         <item itemvalue="Python.readplot_npy" />
+        <item itemvalue="Python.run_v3" />
         <item itemvalue="Python.depth_info" />
         <item itemvalue="Python.define_function_test" />
-        <item itemvalue="Python.schunkgripper_example_v3" />
       </list>
     </recent_temporary>
   </component>
