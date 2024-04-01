@@ -8,7 +8,7 @@ from torchvision import datasets, transforms
 from models.LSTMAE import LSTMAE
 from models.LSTMAE_CLF import LSTMAECLF
 from train_utils import train_model, eval_model
-
+import time
 
 parser = argparse.ArgumentParser(description='LSTM_AE MNIST TASK')
 parser.add_argument('--batch-size', type=int, default=128, metavar='N', help='input batch size for training (default: 128)')
@@ -47,7 +47,7 @@ else:
 # setup data loaders
 train_set = datasets.MNIST('data', train=True, download=True, transform=transforms_lst)
 train_set, val_set = torch.utils.data.random_split(train_set, [50000, 10000])
-
+time.sleep(10)
 train_iter = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=False, **kwargs)
 val_iter = torch.utils.data.DataLoader(val_set, batch_size=args.batch_size, shuffle=False, **kwargs)
 
