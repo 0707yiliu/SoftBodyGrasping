@@ -27,7 +27,7 @@ def train_model(criterion, epoch, model, model_type, optimizer, train_iter, batc
 
     num_samples_iter = 0
     for batch_idx, data in enumerate(train_iter, 1):
-        print(batch_idx, data.shape)
+        print(batch_idx, data[0].shape, data[1].shape)
         time.sleep(10)
         if len(data) == 2:
             data, labels = data[0].to(device), data[1].to(device)

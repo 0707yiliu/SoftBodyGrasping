@@ -57,13 +57,15 @@ def get_train_data():
             tac_data = np.vstack((tac_data, _tac_data))
         file_item += 1
     # input and output for reconstruct
-    _Mm = 20 # for normalization
-    _CMm = 3 # for class normalization
-    tac_data[:, :12] = tac_data[:, :12] / _Mm
-    tac_data[:, 12] =  (tac_data[:, 12] + 1) / _CMm
+    norm = False
+    if norm is True:
+        _Mm = 20 # for normalization
+        _CMm = 3 # for class normalization
+        tac_data[:, :12] = tac_data[:, :12] / _Mm
+        tac_data[:, 12] = (tac_data[:, 12] + 1) / _CMm
     in_data = tac_data[:, :13].copy()
     out_data = tac_data[:, :13].copy()
-    rate = 0.5
+    rate = 0.2
     for i in range(in_data.shape[0]):
         if random.random() < rate:
             in_data[i, -1] = -1
@@ -144,7 +146,7 @@ if __name__ == '__main__':
     # model = LstmFcAutoEncoder()  # lstm+fc模型
     loss_function = nn.MSELoss()  # loss
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)  # 优化器
-    epochs = 10000
+    epochs = 1000000
     # 开始训练
     model.train()
     for i in range(epochs):

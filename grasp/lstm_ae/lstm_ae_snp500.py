@@ -16,7 +16,7 @@ from train_utils import train_model, eval_model
 parser = argparse.ArgumentParser(description='S&P code')
 parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                     help='input batch size for training (default: 128)')
-parser.add_argument('--epochs', type=int, default=2500, metavar='N', help='number of epochs to train')
+parser.add_argument('--epochs', type=int, default=10, metavar='N', help='number of epochs to train')
 parser.add_argument('--optim', default='Adam', type=str, help='Optimizer to use')
 parser.add_argument('--hidden-size', type=int, default=256, metavar='N', help='LSTM hidden state size')
 parser.add_argument('--lr', type=float, default=1e-3, metavar='LR', help='learning rate')
@@ -30,7 +30,7 @@ parser.add_argument('--model-type', default='LSTMAE_PRED', help='type of model t
                                                            'prediction')
 parser.add_argument('--seq-len', default=1007, help='sequence full length')
 parser.add_argument('--price-type', default='close', help='price type to use - high or close')
-parser.add_argument('--cross-val', type=int, default=4, help='number of cross validation experiments to run')
+parser.add_argument('--cross-val', type=int, default=2, help='number of cross validation experiments to run')
 parser.add_argument('--data-path', type=str, default='data/stock/SP 500 Stock Prices 2014-2017.csv',
                     help='Path to the S&P csv data')
 
@@ -151,7 +151,7 @@ def run_experiment():
             best_model = model
 
         # Plot training losses and prediction loss graphs
-        plot_train_pred_losses(train_loss_lst, pred_loss_lst, description='snp500')
+        # plot_train_pred_losses(train_loss_lst, pred_loss_lst, description='snp500')
 
     # Get test dataset for final evaluation
     test_df = df[df.symbol.isin(test_tickers)]
