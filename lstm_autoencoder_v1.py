@@ -63,24 +63,10 @@ def get_train_data():
     # y = pd.Series(np.random.randint(0, 2, 2000))
     # return get_tensor_from_pd(df).float(), get_tensor_from_pd(y).float()
 
-    data_path_dir = './grasp/data/labeled_data/'
-    dirs = os.listdir(data_path_dir)
-    file_item = 0
-    # loading data
-    # for file in dirs:
-    #     tac_data = np.load(data_path_dir+file)['labeled_data']
-    #     print(tac_data.shape)
-    #     tac_data = create_inout_sequences(tac_data, 10)
-    #     print(tac_data[0][0].shape)
-    #     time.sleep(10)
-    for file in dirs:
-        if file_item == 0:
-            tac_data = np.load(data_path_dir+file)['labeled_data']
-        else:
-            _tac_data = np.load(data_path_dir+file)['labeled_data']
-            tac_data = np.hstack((tac_data, _tac_data))
-        file_item += 1
-
+    # data_path_dir = './grasp/data/labeled_data/'
+    data_path_dir = './grasp/data/clip_data/'
+    file_name = '20240402223150_clipped_data.npz'
+    tac_data = np.load(data_path_dir + file_name)['labeled_data'].transpose()
     in_data = tac_data[:13, :].copy()
     out_data = tac_data[:13, :].copy()
     rate = 0.2

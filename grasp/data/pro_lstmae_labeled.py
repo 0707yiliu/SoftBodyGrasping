@@ -26,10 +26,10 @@ record = False
 if record is False:
     tac_range_min = 1
     tac_range_max = -1
-obj_class = 2
+obj_class = 1
 # collect data as list
 datasets = [
-    '20240315140451_kiwis.npz',
+    '20240402161412_lego1.npz',
     # '20240315121000_chips.npz',
     # '20240315120803_orange_small.npz',
     # '20240315121331_tomato.npz',
