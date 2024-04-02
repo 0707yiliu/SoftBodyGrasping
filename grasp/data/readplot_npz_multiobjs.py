@@ -25,7 +25,7 @@ datasets = [
     # '20240315120107_cookedegg.npz',
     # '20240315121000_chips.npz',
     # '20240315120803_orange_small.npz',
-    '20240315121331_tomato.npz',
+    '20240402173557_eggsilicone1.npz',
     # '20240315123237_bread.npz', # useless
     # '20240315113504_eggshell.npz',
     # '20240315145611_bananawhole.npz',

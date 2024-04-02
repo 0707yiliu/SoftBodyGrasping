@@ -5,13 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/lstm_ae_mnist.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/autoencoder_demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/autoencoder_demo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grasp/lstm_ae/lstm_ae_mnist.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/lstm_ae/lstm_ae_mnist.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/lstm_ae/lstm_ae_snp500.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/lstm_ae/lstm_ae_snp500.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/lstm_ae/lstm_ae_toy.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/lstm_ae/lstm_ae_toy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/lstm_ae/models/LSTMAE_CLF.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/lstm_ae/models/LSTMAE_CLF.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grasp/lstm_ae/train_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/lstm_ae/train_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lstm_autoencoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/lstm_autoencoder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trained_models/model_hs=256_bs=128_epochs=1000_clip=None.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_v3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,38 +42,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.autoencoder_demo.executor&quot;: &quot;Run&quot;,
-    &quot;Python.autoencoder_demo_classifier.executor&quot;: &quot;Run&quot;,
-    &quot;Python.define_function_test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.depth_info.executor&quot;: &quot;Run&quot;,
-    &quot;Python.lstm_ae_mnist.executor&quot;: &quot;Run&quot;,
-    &quot;Python.lstm_ae_reproduce.executor&quot;: &quot;Run&quot;,
-    &quot;Python.lstm_ae_snp500.executor&quot;: &quot;Run&quot;,
-    &quot;Python.lstm_ae_toy.executor&quot;: &quot;Run&quot;,
-    &quot;Python.lstm_autoencoder.executor&quot;: &quot;Run&quot;,
-    &quot;Python.lstm_autoencoder_demo.executor&quot;: &quot;Run&quot;,
-    &quot;Python.pro_lstmae_labeled.executor&quot;: &quot;Run&quot;,
-    &quot;Python.read_npy.executor&quot;: &quot;Run&quot;,
-    &quot;Python.readplot_npy.executor&quot;: &quot;Run&quot;,
-    &quot;Python.readplot_npz_multiobjs.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run_v0.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run_v3.executor&quot;: &quot;Run&quot;,
-    &quot;Python.schunk_gripper.executor&quot;: &quot;Run&quot;,
-    &quot;Python.schunkgripper_example.executor&quot;: &quot;Run&quot;,
-    &quot;Python.schunkgripper_example_v2.executor&quot;: &quot;Run&quot;,
-    &quot;Python.schunkgripper_example_v3.executor&quot;: &quot;Run&quot;,
-    &quot;Python.train_utils.executor&quot;: &quot;Run&quot;,
-    &quot;Python.udp_recv.executor&quot;: &quot;Run&quot;,
-    &quot;Python.utils.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/yi/robotic_manipulation/SoftBodyGrasping&quot;,
-    &quot;two.files.diff.last.used.file&quot;: &quot;/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.autoencoder_demo.executor": "Run",
+    "Python.autoencoder_demo_classifier.executor": "Run",
+    "Python.define_function_test.executor": "Run",
+    "Python.depth_info.executor": "Run",
+    "Python.lstm_ae_mnist (1).executor": "Run",
+    "Python.lstm_ae_mnist.executor": "Run",
+    "Python.lstm_ae_reproduce.executor": "Run",
+    "Python.lstm_ae_snp500.executor": "Run",
+    "Python.lstm_ae_toy.executor": "Run",
+    "Python.lstm_autoencoder.executor": "Run",
+    "Python.lstm_autoencoder_demo.executor": "Run",
+    "Python.pro_lstmae_labeled.executor": "Run",
+    "Python.read_npy.executor": "Run",
+    "Python.readplot_npy.executor": "Run",
+    "Python.readplot_npz_multiobjs.executor": "Run",
+    "Python.run_v0.executor": "Run",
+    "Python.run_v3.executor": "Run",
+    "Python.schunk_gripper.executor": "Run",
+    "Python.schunkgripper_example.executor": "Run",
+    "Python.schunkgripper_example_v2.executor": "Run",
+    "Python.schunkgripper_example_v3.executor": "Run",
+    "Python.train_utils.executor": "Run",
+    "Python.udp_recv.executor": "Run",
+    "Python.utils.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping",
+    "two.files.diff.last.used.file": "/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -82,29 +86,7 @@
       <recent name="$PROJECT_DIR$/sensor_comm_dds" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.lstm_ae_mnist">
-    <configuration name="lstm_ae_mnist" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SoftBodyGrasping" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/grasp/lstm_ae" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/lstm_ae/lstm_ae_mnist.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.run_v3">
     <configuration name="lstm_ae_reproduce" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -127,7 +109,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="lstm_ae_snp500" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="lstm_ae_toy" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -140,7 +122,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/lstm_ae/lstm_ae_snp500.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/lstm_ae/lstm_ae_toy.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -171,7 +153,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="train_utils" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="readplot_npz_multiobjs" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -180,11 +162,33 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/grasp/lstm_ae" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/grasp/data" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/lstm_ae/train_utils.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run_v3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SoftBodyGrasping" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_v3.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -195,11 +199,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.lstm_ae_mnist" />
-        <item itemvalue="Python.train_utils" />
-        <item itemvalue="Python.lstm_ae_snp500" />
+        <item itemvalue="Python.run_v3" />
+        <item itemvalue="Python.readplot_npz_multiobjs" />
         <item itemvalue="Python.lstm_autoencoder" />
         <item itemvalue="Python.lstm_ae_reproduce" />
+        <item itemvalue="Python.lstm_ae_toy" />
       </list>
     </recent_temporary>
   </component>

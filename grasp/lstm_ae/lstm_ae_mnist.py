@@ -11,7 +11,7 @@ from train_utils import train_model, eval_model
 import time
 
 parser = argparse.ArgumentParser(description='LSTM_AE MNIST TASK')
-parser.add_argument('--batch-size', type=int, default=50, metavar='N', help='input batch size for training (default: 128)')
+parser.add_argument('--batch-size', type=int, default=128, metavar='N', help='input batch size for training (default: 128)')
 parser.add_argument('--epochs', type=int, default=300, metavar='N', help='number of epochs to train')
 parser.add_argument('--optim', default='Adam', type=str, help='Optimizer to use')
 parser.add_argument('--hidden-size', type=int, default=128, metavar='N', help='LSTM hidden state size')
@@ -22,7 +22,7 @@ parser.add_argument('--wd', type=float, default=1e-4, metavar='WD', help='weight
 parser.add_argument('--grad-clipping', default=None, metavar='GC', help='gradient clipping value; if None no clipping')
 parser.add_argument('--log-interval', type=int, default=100, metavar='N', help='how many batch iteration to log status')
 parser.add_argument('--model-dir', default='trained_models', help='directory of model for saving checkpoint')
-parser.add_argument('--model-type', default='LSTMAE_CLF', help='type of model to use: LSTMAE or LSTMAE_CLF')
+parser.add_argument('--model-type', default='LSTMAE', help='type of model to use: LSTMAE or LSTMAE_CLF')
 parser.add_argument('--seq-len', default=28, help='sequence full length')
 parser.add_argument('--kernel-size', default=(1, 1), help='Kernel size for LSTM Conv AE')
 parser.add_argument('--n-classes', default=10, help='number of classes in case of a lstm ae with clf')

@@ -225,16 +225,16 @@ def AmplitudeLimitingShakeOff(inputs, Amplitude, N):
     return inputs
 
 
-T = np.arange(0, 0.5, 1 / 4410.0)
-num = signal.chirp(T, f0=10, t1=0.5, f1=1000.0)
-pl.subplot(2, 1, 1)
-pl.plot(num)
-result = FirstOrderLag(num.copy(), 0.9)
-
-# print(num - result)
-pl.subplot(2, 1, 2)
-pl.plot(result)
-pl.show()
+# T = np.arange(0, 0.5, 1 / 4410.0)
+# num = signal.chirp(T, f0=10, t1=0.5, f1=1000.0)
+# pl.subplot(2, 1, 1)
+# pl.plot(num)
+# result = FirstOrderLag(num.copy(), 0.9)
+#
+# # print(num - result)
+# pl.subplot(2, 1, 2)
+# pl.plot(result)
+# pl.show()
 
 
 

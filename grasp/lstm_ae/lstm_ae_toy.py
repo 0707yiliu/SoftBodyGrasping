@@ -1,5 +1,7 @@
 import argparse
 import os
+import time
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -98,7 +100,8 @@ def create_dataloaders(batch_size, train_ratio=0.6, val_ratio=0.2):
     """
     toy_data = create_toy_data()
     len = toy_data.shape[0]
-
+    # print(len)
+    # time.sleep(10)
     train_data = toy_data[:int(len * train_ratio), :]
     val_data = toy_data[int(train_ratio * len):int(len * (train_ratio + val_ratio)), :]
     test_data = toy_data[int((train_ratio + val_ratio) * len):, :]

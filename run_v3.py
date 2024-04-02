@@ -116,11 +116,12 @@ def _get_gripper_pos():
 
 # --------------------------------------------------------
 if __name__ == "__main__":
-    obj = 'banana'  # recorded object
+    obj = 'eggsilicone1'  # recorded object
     obj = '_' + obj
     # !Camera recording part
-    record = False
-    if record is True:
+    record_data = True
+    record_video = False
+    if record_video is True:
         fps, w, h = 30, 1280, 720
         import cv2
         mp4 = cv2.VideoWriter_fourcc(*'mp4v')
@@ -139,6 +140,7 @@ if __name__ == "__main__":
     sensor_thread.setDaemon(True)
     sensor_thread.start()
     tac_th_z = -5
+    max_pos = 63
     # sensor_data4x3 = MagTouchVisualiser()
     # sensor_data4x3.run()
 
@@ -205,10 +207,10 @@ if __name__ == "__main__":
             # iter += 1
             gripper_curr = gripper.getPosition()
             # gripper.execute_command(f'EGUEGK_getPosition(0)')
-            print('gripper pos:', gripper_curr)
+            # print('gripper pos:', gripper_curr)
             time.sleep(0.01) # 100hz is ok, 200hz a little bit fast
             # !for camera recording
-            if record is True:
+            if record_video is True:
                 color_image, depth_image, colorizer_depth = cam.get_frame()
                 wr.write(color_image)
 
@@ -260,7 +262,7 @@ if __name__ == "__main__":
                 tmp_tac_data = np.array([filted_data[2], filted_data[5], filted_data[8], filted_data[11]])
                 # print(tmp_tac_data)
                 # print('filted data:', filted_data)
-                if gripper_curr > 50.0 or tmp_tac_data.min() < tac_th_z:
+                if gripper_curr > max_pos or tmp_tac_data.min() < tac_th_z:
                     print('stop')
                     close = False
                     print('close:', gripper_curr, close is False, type(gripper_curr) == type(0.1) and close is True)
@@ -281,18 +283,20 @@ if __name__ == "__main__":
                 # print("gripper pos:", gripper_curr)
                 # time.sleep(0.01)
                 # # print('min:', np.min(filted_data)
+
                 # !return part
-                if gripper_curr < 20:
-                    close = True
-                    gripper.stop(gripper_index)
-                    time.sleep(0.01)
-                    gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
+                # if gripper_curr < 20:
+                #     close = True
+                #     gripper.stop(gripper_index)
+                #     time.sleep(0.01)
+                #     gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
 
                 # !stop part
                 if gripper_curr < 2:
-                    if record is True:
+                    if record_video is True:
                         wr.release()
                         cam.release()
+                    if record_data is True:
                         tac_data = np.delete(tac_data, 0, 0)
                         saved_data = np.delete(saved_data, 0, 0)
                         gripper_pos = np.delete(gripper_pos, 0, 0)
@@ -321,9 +325,10 @@ if __name__ == "__main__":
             # print('----')
         except KeyboardInterrupt:
             # time.sleep(1)
-            if record is True:
+            if record_video is True:
                 wr.release()
                 cam.release()
+            if record_data is True:
                 tac_data = np.delete(tac_data, 0, 0)
                 saved_data = np.delete(saved_data, 0, 0)
                 np.savez('./grasp/data/' + current_time + obj + '.npz',

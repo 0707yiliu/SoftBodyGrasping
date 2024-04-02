@@ -1,6 +1,6 @@
 import torch.nn as nn
 
-from models.LSTMAE import LSTMAE
+from .LSTMAE import LSTMAE
 
 
 class LSTMAECLF(nn.Module):
