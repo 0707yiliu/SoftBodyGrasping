@@ -200,6 +200,11 @@ if __name__ == "__main__":
     grapsing_pos_step = 0.5
     _slipping_force = 0.15
     grasping = True
+    grasp_q = np.zeros(6)
+    lifting_q = np.zeros(6)
+    control_time = 5
+    lookahead_time = 0.03
+    gain = 100
     while True:
         # det_comm.det_info() # the test mmdetection model
 
@@ -209,7 +214,7 @@ if __name__ == "__main__":
             time.sleep(0.01)
             if grasping is True:
                 # !move robot to the grasping pos
-                rtde_c.servoJ() # TODO: control the manually joint setting
+                rtde_c.servoJ(q=grasp_q, time=control_time, lookahead_time=lookahead_time, gain=gain) # TODO: control the manually joint setting
                 # !grasping with step force
                 gripper.moveRelative(gripper_index, grapsing_pos_step, 100)
                 tac_data = np.vstack([tac_data, filted_data])
@@ -219,7 +224,7 @@ if __name__ == "__main__":
                     grasping = False
             else:
             # !move robot to the lifting end pos
-                rtde_c.servoJ() # TODO: control the manually joint setting
+                rtde_c.servoJ(q=lifting_q, time=control_time, lookahead_time=lookahead_time, gain=gain) # TODO: control the manually joint setting
                 tac_data = np.vstack([tac_data, filted_data])
 
             # # print(gripper_curr)

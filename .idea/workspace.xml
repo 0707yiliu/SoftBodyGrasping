@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/pro_lstmae_labeled.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/pro_lstmae_labeled.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/slipping_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/slipping_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
