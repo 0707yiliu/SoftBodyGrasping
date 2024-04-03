@@ -29,7 +29,7 @@ if record is False:
 obj_class = 1
 # collect data as list
 datasets = [
-    '20240402161412_lego1.npz',
+    './model_data/20240402161412_lego1.npz',
     # '20240315121000_chips.npz',
     # '20240315120803_orange_small.npz',
     # '20240315121331_tomato.npz',

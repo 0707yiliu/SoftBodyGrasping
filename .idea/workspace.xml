@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lstm_autoencoder_v1_1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/slipping_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SoftBodyGrasping.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SoftBodyGrasping.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Original and Reconstruction of Single values vs. time for toy example #1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Original and Reconstruction of Single values vs. time for toy example #1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/lstm_ae/train_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/lstm_ae/train_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trained_models/model_hs=128_bs=128_epochs=1000_clip=None.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_hs=128_bs=128_epochs=1000_clip=None.pt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/data/pro_lstmae_labeled.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/pro_lstmae_labeled.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slipping_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/slipping_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +86,7 @@
       <recent name="$PROJECT_DIR$/sensor_comm_dds" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.lstm_autoencoder_v1_1">
+  <component name="RunManager" selected="Python.pro_lstmae_labeled">
     <configuration name="lstm_autoencoder_v1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -204,11 +199,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.pro_lstmae_labeled" />
         <item itemvalue="Python.lstm_autoencoder_v1_1" />
         <item itemvalue="Python.lstm_autoencoder_v1" />
         <item itemvalue="Python.pro_model_data (1)" />
         <item itemvalue="Python.pro_model_data" />
-        <item itemvalue="Python.pro_lstmae_labeled" />
       </list>
     </recent_temporary>
   </component>
