@@ -5,129 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/grasp/data/pro_model_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lstm_autoencoder_v1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lstm_autoencoder_v1_1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/slipping_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/SoftBodyGrasping.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SoftBodyGrasping.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402161412_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402161412_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402161527_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402161527_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402161628_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402161628_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402161722_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402161722_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402161853_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402161853_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402162019_lego1.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402162140_lego1.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402162233_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402162233_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402162320_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402162320_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402162419_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402162419_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402162521_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402162521_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402162632_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402162632_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402162738_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402162738_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402163147_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402163147_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402163242_lego1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402163242_lego1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402163335_lego2.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402163335_lego2.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402163427_lego2.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402163427_lego2.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402163506_lego2.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402163506_lego2.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402163556_lego2.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402163556_lego2.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402163634_lego2.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402163634_lego2.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402163726_lego2.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402163726_lego2.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402163804_lego2.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402163804_lego2.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402163840_lego2.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402163840_lego2.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164026_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164026_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164135_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164135_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164225_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164225_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164320_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164320_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164423_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164423_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164516_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164516_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164614_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164614_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164711_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164711_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164747_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164747_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164845_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164845_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402164944_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402164944_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402165024_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402165024_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402165105_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402165105_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402165228_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402165228_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402165319_lego3.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402165319_lego3.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402165825_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402165825_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402170013_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402170013_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402170222_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402170222_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402170330_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402170330_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402170620_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402170620_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402170833_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402170833_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402171408_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402171408_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402171656_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402171656_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402171757_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402171757_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402171854_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402171854_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402171949_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402171949_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402172043_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402172043_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402172154_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402172154_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402172248_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402172248_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402172342_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402172342_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402172426_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402172426_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402172516_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402172516_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402172603_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402172603_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402172705_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402172705_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402172811_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402172811_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402172905_lego4.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402172905_lego4.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402173045_lego5.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402173045_lego5.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402173124_lego5.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402173124_lego5.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402173212_lego5.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402173212_lego5.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402173301_lego5.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402173301_lego5.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402173400_lego5.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402173400_lego5.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402173557_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402173557_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402173757_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402173757_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402173843_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402173843_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402173911_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402173911_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174012_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174012_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174041_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174041_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174115_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174115_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174142_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174142_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174353_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174353_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174425_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174425_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174515_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174515_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174543_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174543_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174622_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174622_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174654_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174654_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174726_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174726_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174811_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174811_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174838_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174838_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174904_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174904_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402174932_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402174932_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175001_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175001_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175027_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175027_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175058_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175058_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175126_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175126_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175315_eggsilicone1.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175338_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175338_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175402_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175402_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175423_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175423_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175509_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175509_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175722_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175722_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175750_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175750_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175815_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175815_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175837_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175837_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175900_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175900_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175923_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175923_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402175945_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402175945_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180121_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180121_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180144_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180144_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180401_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180401_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180431_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180431_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180452_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180452_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180527_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180527_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180607_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180607_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180639_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180639_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180700_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180700_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180721_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180721_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402180742_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402180742_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402181317_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402181317_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402181415_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402181415_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402181436_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402181436_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402181458_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402181458_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402181530_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402181530_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240402181556_eggsilicone1.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/model_data/20240402181556_eggsilicone1.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/pro_lstmae_labeled.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/pro_lstmae_labeled.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lstm_autoencoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/lstm_autoencoder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Original and Reconstruction of Single values vs. time for toy example #1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Original and Reconstruction of Single values vs. time for toy example #1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/lstm_ae/train_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/lstm_ae/train_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_models/model_hs=128_bs=128_epochs=1000_clip=None.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_hs=128_bs=128_epochs=1000_clip=None.pt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -170,6 +54,7 @@
     "Python.lstm_autoencoder.executor": "Run",
     "Python.lstm_autoencoder_demo.executor": "Run",
     "Python.lstm_autoencoder_v1.executor": "Run",
+    "Python.lstm_autoencoder_v1_1.executor": "Run",
     "Python.plot_model_data.executor": "Run",
     "Python.pro_lstmae_labeled.executor": "Run",
     "Python.pro_model_data (1).executor": "Run",
@@ -188,16 +73,16 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/0707y/PycharmProjects/SoftBodyGrasping",
+    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping",
     "two.files.diff.last.used.file": "/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping" />
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\grasp\data" />
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\grasp\data\model_data" />
-      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/grasp/data" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -206,29 +91,7 @@
       <recent name="$PROJECT_DIR$/sensor_comm_dds" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.lstm_autoencoder_v1">
-    <configuration name="lstm_autoencoder" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SoftBodyGrasping" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lstm_autoencoder.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.lstm_autoencoder_v1_1">
     <configuration name="lstm_autoencoder_v1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -243,6 +106,28 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lstm_autoencoder_v1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="lstm_autoencoder_v1_1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SoftBodyGrasping" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lstm_autoencoder_v1_1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -319,11 +204,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.lstm_autoencoder_v1_1" />
         <item itemvalue="Python.lstm_autoencoder_v1" />
         <item itemvalue="Python.pro_model_data (1)" />
         <item itemvalue="Python.pro_model_data" />
         <item itemvalue="Python.pro_lstmae_labeled" />
-        <item itemvalue="Python.lstm_autoencoder" />
       </list>
     </recent_temporary>
   </component>
