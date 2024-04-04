@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/schunk_gripper_common/schunk_gripper_v3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/slipping_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/slipping_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,29 +58,31 @@
     "Python.read_npy.executor": "Run",
     "Python.readplot_npy.executor": "Run",
     "Python.readplot_npz_multiobjs.executor": "Run",
+    "Python.readplot_npz_sliding.executor": "Run",
     "Python.run_v0.executor": "Run",
     "Python.run_v3.executor": "Run",
     "Python.schunk_gripper.executor": "Run",
     "Python.schunkgripper_example.executor": "Run",
     "Python.schunkgripper_example_v2.executor": "Run",
     "Python.schunkgripper_example_v3.executor": "Run",
+    "Python.slipping_test.executor": "Run",
     "Python.train_utils.executor": "Run",
     "Python.udp_recv.executor": "Run",
     "Python.utils.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping",
+    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/data",
     "two.files.diff.last.used.file": "/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/grasp/data" />
       <recent name="$PROJECT_DIR$" />
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping" />
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\grasp\data" />
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\grasp\data\model_data" />
-      <recent name="$PROJECT_DIR$/grasp/data" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\grasp\data\model_data" />
@@ -85,8 +90,8 @@
       <recent name="$PROJECT_DIR$/sensor_comm_dds" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.pro_lstmae_labeled">
-    <configuration name="lstm_autoencoder_v1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.slipping_test">
+    <configuration name="depth_info" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -95,33 +100,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/detection_common" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lstm_autoencoder_v1.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="lstm_autoencoder_v1_1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SoftBodyGrasping" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lstm_autoencoder_v1_1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/detection_common/depth_info.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -152,7 +135,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pro_model_data (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="readplot_npz_multiobjs" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -165,7 +148,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/pro_model_data.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -174,7 +157,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pro_model_data" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="readplot_npz_sliding" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -187,7 +170,29 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\grasp\data\pro_model_data.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="slipping_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SoftBodyGrasping" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/slipping_test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -198,11 +203,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.slipping_test" />
+        <item itemvalue="Python.readplot_npz_sliding" />
+        <item itemvalue="Python.depth_info" />
+        <item itemvalue="Python.readplot_npz_multiobjs" />
         <item itemvalue="Python.pro_lstmae_labeled" />
-        <item itemvalue="Python.lstm_autoencoder_v1_1" />
-        <item itemvalue="Python.lstm_autoencoder_v1" />
-        <item itemvalue="Python.pro_model_data (1)" />
-        <item itemvalue="Python.pro_model_data" />
       </list>
     </recent_temporary>
   </component>

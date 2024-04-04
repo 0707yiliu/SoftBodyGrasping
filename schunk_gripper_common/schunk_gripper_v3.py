@@ -30,6 +30,8 @@ class SchunkGripper:
     remote_func = False
     data = 0
 
+    ur_socket_name = 'ur_call'
+
     def __init__(self, local_ip="10.42.0.1", local_port=46995):
         self.enable_interpreter_socket = None  # the script port socket, for enabling interpreter mode
         self.socket = None  # interpreter mode socket, for sending gripper command
@@ -121,13 +123,15 @@ class SchunkGripper:
         EGUEGK_getError = f'def EGUEGK_getError(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "getError(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_error_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
         EGUEGK_getWarning = f'def EGUEGK_getWarning(gripperNumber = 1): gripperIndex = gripperNumber - 1 command = "getWarning(" + to_str(gripperIndex) + ")" response = EGUEGK_executeCommand(to_str("socket_status_warning_" + to_str(EGUEGK_getNextId())), command) socket_send_line(response, "{self.schunk_socket_name}") return response end'
 
-
+        UR_call = f'def UR_call(socket_name, socket_address, socket_port, command, timeout = 2): socket_open(socket_address, socket_port, socket_name) socket_send_line(command, socket_name) socket_close(socket_name) end'
+        UR_ServoJ = f'def ServoJ(q, qd, qdd, time, lookahead_time, gain): popup(q) command = "servoj(" + to_str(q) + "," + to_str(qd) + "," + to_str(qdd) + "," + to_str(time) + "," + to_str(lookahead_time) + "," + to_str(gain))" UR_call("{self.ur_socket_name}", "{self.EGUEGK_rpc_ip}", {self.Enable_Interpreter_Socket}, command) end'
         all_list = [
                     # EGUEGK_abs, EGUEGK_socket_uid, EGUEGK_getNextId,
                     EGUEGK_rpcCall, EGUEGK_executeCommand, EGUEGK_backInfo,
                     EGUEGK_moveAbsolute, EGUEGK_moveRelative, EGUEGK_grip, EGUEGK_simpleGrip, EGUEGK_fastStop, EGUEGK_stop, EGUEGK_acknowledge,
                     EGUEGK_waitForComplete, EGUEGK_setBrakingEnabled, EGUEGK_brakeTest, EGUEGK_release,
                     EGUEGK_getPosition,
+                    # UR_call, UR_ServoJ,
                     ]
         # EGUEGK_fastStop, EGUEGK_stop, EGUEGK_waitForComplete, EGUEGK_setBrakingEnabled, EGUEGK_brakeTest,
         # EGUEGK_getPosition
@@ -158,6 +162,7 @@ class SchunkGripper:
         self.t_schunk = threading.Thread(target=self._socket_server)
         self.t_schunk.setDaemon(True)
         self.t_schunk.start()
+
     def _socket_server(self):
         print("socket server buildup")
         rcv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -185,7 +190,6 @@ class SchunkGripper:
             # except:
             #     print('accept the listener failed')
             #     sys.exit(0)
-
 
     def rpcGetResult(self, response):
         tokenIndex = str.find(response, ',')
@@ -239,6 +243,14 @@ class SchunkGripper:
             command += "\n"
         # print(command.encode(self.ENCODING))
         self.enable_interpreter_socket.sendall(command.encode(self.ENCODING))
+
+    def servoJ(self, q, qd, qdd, _time, lookahead_time, gain):
+        command = "servoj({}, {}, {}, {}, {}, {})".format(q, qd, qdd, _time, lookahead_time, gain)
+        self.execute_command(command)
+
+    def servoJ_inter(self, q, qd, qdd, _time, lookahead_time, gain):
+        if self.remote_func is True:
+            self.execute_command(f'ServoJ({q}, {qd}, {qdd}, {_time}, {lookahead_time}, {gain})')
 
     def execute_command(self, command):
         # the port 30020 for interpreter mode to communicate with the binding port for Schunk

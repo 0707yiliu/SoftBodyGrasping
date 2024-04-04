@@ -22,9 +22,10 @@ def FirstOrderLag(inputs, a):
 
 # collect data as list
 datasets = [
-    '20240315120107_cookedegg.npz',
+    # '20240315120107_cookedegg.npz',
     # '20240315121000_chips.npz',
     # '20240315120803_orange_small.npz',
+    '20240404175747_0.05force_cup.npz',
     # '20240315123237_bread.npz', # useless
     # '20240315113504_eggshell.npz',
     # '20240315145611_bananawhole.npz',
@@ -34,6 +35,8 @@ datasets = [
 ]
 tac_datalists = [np.load(datasets[i])['loop_tac_data'] for i in range(len(datasets))]
 pos_datalists = [np.load(datasets[i])['gripper_pos'] for i in range(len(datasets))]
+_tac_datalists = [np.load(datasets[i])['_tac_data'] for i in range(len(datasets))]
+
 for i in range(len(datasets)):
     if len(tac_datalists[i]) != len(pos_datalists[i]):
         pos_datalists[i] = np.delete(pos_datalists[i], 0, 0)
@@ -69,6 +72,8 @@ fig, axs = plt.subplots(row, col, figsize=(480/my_dpi,480/my_dpi),dpi=my_dpi, sh
 _legend = False
 # print(np.linspace(0, len(tac_datalists[0])-1, len(tac_datalists[0])))
 # print(tac_datalists)
+stay_item = 500
+
 for i in range(row):
     for j in range(col):
         if i == 1:
@@ -76,7 +81,29 @@ for i in range(row):
         elif i == 0:
             yl = (i + 1) * j
         for k in range(len(datasets)):
-            axs[i][j].plot(np.linspace(0, len(tac_datalists[k])-1, len(tac_datalists[k])), tac_datalists[k][:, yl], color=colors[k], label=legends[k])
+            axs[i][j].plot(np.linspace(0,
+                                       len(tac_datalists[k])-1,
+                                       len(tac_datalists[k])),
+                           tac_datalists[k][:, yl],
+                           color=colors[k], label=legends[k])
+
+            axs[i][j].plot(np.linspace(len(tac_datalists[k]),
+                                       len(tac_datalists[k]) + stay_item - 1,
+                                       stay_item),
+                           _tac_datalists[k][:stay_item, yl],
+                           color=colors[k + 1], label=legends[k + 1])
+            axs[i][j].plot(np.linspace(len(tac_datalists[k]) + stay_item,
+                                       len(tac_datalists[k]) + len(_tac_datalists[k]) - 1,
+                                       len(_tac_datalists[k]) - stay_item),
+                           _tac_datalists[k][stay_item:, yl],
+                           color=colors[k + 2], label=legends[k + 2])
+
+            # print(len(tac_datalists[k]), len(_tac_datalists[k]))
+            # axs[i][j].plot(np.linspace(len(tac_datalists[k]),
+            #                            len(tac_datalists[k]) + len(_tac_datalists[k]) - 1,
+            #                            len(_tac_datalists[k])),
+            #                _tac_datalists[k][:, yl],
+            #                color=colors[k + 3], label=legends[k + 2])
         if _legend is False:
             axs[i][j].legend()
             _legend = True

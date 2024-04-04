@@ -113,21 +113,29 @@ def _get_gripper_pos():
         # print(gripper_curr)
         time.sleep(0.01)
 
+def recalibrate_tac_sensor(sample_items):
+    global filted_data
+    offset_sensor_Data = np.zeros(12)
+    loop_items = 1000
+    # colletc data
+    for _ in range(sample_items):
+        offset_sensor_Data = np.vstack([offset_sensor_Data, filted_data])
+        # time.sleep(0.01)
+    # mean
+    offset_sensor_Data = np.delete(offset_sensor_Data, 0, 0)
+    print(offset_sensor_Data.shape)
+    offset_sensor_Data.mean(axis=0)
+    print('re-calibrate sensor data:', offset_sensor_Data.mean(axis=0))
+    return  offset_sensor_Data.mean(axis=0)
 
 # --------------------------------------------------------
 if __name__ == "__main__":
-    obj = 'eggsilicone1'  # recorded object
-    obj = '_' + obj
+    # obj = '0_1force_silicone'  # recorded object
+    # obj = '_' + obj
     # !Camera recording part
     record_data = True
-    record_video = False
-    if record_video is True:
-        fps, w, h = 30, 1280, 720
-        import cv2
-        mp4 = cv2.VideoWriter_fourcc(*'mp4v')
-        video_path = './grasp/data/' + current_time + obj + '.mp4'
-        wr = cv2.VideoWriter(video_path, mp4, fps, (w, h), isColor=True)  #
-        cam = Camera(w, h, fps)
+    record_video = True
+
 
     # # !run tactile sensor publisher
     # sensor_pub = threading.Thread(target=_build_sensor_pub) # useless function
@@ -143,10 +151,11 @@ if __name__ == "__main__":
     max_pos = 63
     # sensor_data4x3 = MagTouchVisualiser()
     # sensor_data4x3.run()
-
-    robot_ip = "10.42.0.162"
-    rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
-    rtde_c = rtde_control.RTDEControlInterface(robot_ip)
+    RTDE = True
+    if RTDE is True:
+        robot_ip = "10.42.0.162"
+        rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
+        rtde_c = rtde_control.RTDEControlInterface(robot_ip)
     #
 
     # # # !create mmdetection model with realsense
@@ -165,6 +174,7 @@ if __name__ == "__main__":
     print('open finger for initialization.')
     gripper.moveAbsolute(gripper_index, 0.1, speed)  # init the position
     time.sleep(4)
+    print("gripper initailization complete")
 
     # # !make subproccess for getting gripper position
     # gripper_pos_thread = threading.Thread(target=_get_gripper_pos)
@@ -182,13 +192,14 @@ if __name__ == "__main__":
     # udp_socket.bind(local_addr)
 
     tac_data = np.zeros(12)
+    _tac_data = np.zeros(12)
     global filted_data
     iter = 0
     gripperDirOut = 'true'
     gripperDirIn = 'false'
-    graspforce = 0.9
-    graspspeed = 8.7
-    gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
+    graspforce = 0.51
+    graspspeed = 8.1
+    # gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
     # gripper.moveAbsolute(gripper_index, 50, graspspeed)
     gripper_pos = np.zeros(1)
     close = True
@@ -197,35 +208,108 @@ if __name__ == "__main__":
     # time.sleep(0.01)
     # gripper.waitForComplete(gripper_index, timeout=100)
     # time.sleep(0.01)
-    grapsing_pos_step = 0.5
-    _slipping_force = 0.15
+    grapsing_pos_step = 0.3
+    _slipping_force = 0.1
+    obj = str(_slipping_force) + 'force_cup'  # recorded object
+    obj = '_' + obj
+    if record_video is True:
+        fps, w, h = 30, 1280, 720
+        import cv2
+        mp4 = cv2.VideoWriter_fourcc(*'mp4v')
+        video_path = './grasp/data/' + current_time + obj + '.mp4'
+        wr = cv2.VideoWriter(video_path, mp4, fps, (w, h), isColor=True)  #
+        cam = Camera(w, h, fps)
     grasping = True
-    grasp_q = np.zeros(6)
-    lifting_q = np.zeros(6)
-    control_time = 5
+    grasp_q = [0.041693784296512604, -1.1353824895671387, 1.5678980986224573, -2.0189134083189906, -1.5581014792071741, -0.2504060904132288]
+    grasp_q2 = [0.04342854768037796, -1.1026597183993836, 1.6658557097064417, -2.176030775109762, -1.5613611380206507, -0.23878795305360967]
+    grasp_q1 = list(np.array([0.04347049072384834, -1.0802181524089356, 1.684894863759176, -2.217555662194723, -1.5615642706500452, -0.23880321184267217]))
+    lifting_q1 = list(np.array([0.04331178590655327, -1.1777315002730866, 1.5720866362201136, -2.0071126423277796, -1.5606516043292444, -0.2388375441180628]))
+    lifting_q = [0.04155898839235306, -1.1985772413066407, 1.4263899962054651, -1.814186235467428, -1.557387653981344, -0.25038367906679326]
+    control_time = 5.0
     lookahead_time = 0.03
-    gain = 100
+    gain = 500.0
+
+    gripper.servoJ(grasp_q, 0.1, 0.1, control_time, lookahead_time, gain)
+    time.sleep(5)
+    print('going to the grasping pos')
+    # -------------------calibrate sensor----------------
+    sample_items = 1000
+    offset_sensor_Data = recalibrate_tac_sensor(sample_items)
+    # print('calibrate sensor complete')
+    # ---------------------------------------------------
+    gripin = True
+    stay_item = 500
     while True:
         # det_comm.det_info() # the test mmdetection model
 
         # !gripper grasping with tactile sensing
         try:
             # gripper_curr = gripper.getPosition()
+            # if RTDE is True:
+            #     # pass
+            #     print(rtde_r.getActualQ())
+                # !------------------ur script sent by interpreter mode-----------
+                # gripper.servoJ_inter(grasp_q, 0.1, 0.1, control_time, lookahead_time, gain)
+            # !---------------ur script mode------------------
+            # gripper.servoJ(grasp_q, 0.1, 0.1, control_time, lookahead_time, gain)
+            # print('moving to grasping pos')
+            # time.sleep(5)
+            # gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
+            # print('gripper in')
+            # time.sleep(5)
+            # gripper.servoJ(lifting_q, 0.1, 0.1, control_time, lookahead_time, gain)
+            # print('moving to lifting pos')
+            # time.sleep(5)
+            # gripper.simpleGrip(gripper_index, gripperDirOut, graspforce, graspspeed)
+            # print('gripper out')
+            # time.sleep(5)
+            # it works when sending the command to the interpreter mode port
+                # -------------------------------- !!!!!!!!!!!
+                # rtde_c.servoJ(grasp_q, 0.1, 0.1, control_time, lookahead_time, gain)
+                # print('moving to grasping pos')
+                # time.sleep(10)
+                # rtde_c.servoJ(lifting_q, 0.1, 0.1, control_time, lookahead_time, gain)
+                # print('moving to lifting pos')
+                # time.sleep(10)
+                # RTDE controlling functions are not work with interpreter mode for schunk gripper
+
             time.sleep(0.01)
             if grasping is True:
                 # !move robot to the grasping pos
-                rtde_c.servoJ(q=grasp_q, time=control_time, lookahead_time=lookahead_time, gain=gain) # TODO: control the manually joint setting
+                # time.sleep(5)
+                # rtde_c.servoJ(q=grasp_q, time=control_time, lookahead_time=lookahead_time, gain=gain) # TODO: control the manually joint setting
                 # !grasping with step force
-                gripper.moveRelative(gripper_index, grapsing_pos_step, 100)
-                tac_data = np.vstack([tac_data, filted_data])
-                if filted_data.abs().max() > _slipping_force:
+                # time.sleep(1)
+                # time.sleep(0.01)
+                # gripper.moveRelative(gripper_index, grapsing_pos_step, 10)
+                if gripin is True:
+                    gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
+                    gripin = False
+                tac_data = np.vstack([tac_data, filted_data-offset_sensor_Data])
+
+                print(np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max())
+                if np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max() > _slipping_force:
+                # print(np.abs(filted_data-offset_sensor_Data).max())
+                # if np.abs(filted_data-offset_sensor_Data).max() > _slipping_force:
                     gripper.stop(gripper_index)
                     time.sleep(0.01)
+                    print('tactile force reached')
                     grasping = False
             else:
-            # !move robot to the lifting end pos
-                rtde_c.servoJ(q=lifting_q, time=control_time, lookahead_time=lookahead_time, gain=gain) # TODO: control the manually joint setting
-                tac_data = np.vstack([tac_data, filted_data])
+                # ntrp.execute_command("skipbuffer")
+                # logging.info(f"Last command executing before skipbuffer: {intrp.get_last_executed_id()}")
+                #
+                # logging.info("Aborting running move command")
+                # intrp.execute_command("abort")
+                gripper.execute_command("skipbuffer")
+                gripper.execute_command("abort")
+                if stay_item > 0:
+                    stay_item -= 1
+                else:
+                    # !move robot to the lifting end pos
+                    gripper.servoJ(lifting_q, 0.1, 0.1, control_time, lookahead_time, gain)
+                # rtde_c.servoJ(q=lifting_q, time=control_time, lookahead_time=lookahead_time, gain=gain) # TODO: control the manually joint setting
+                _tac_data = np.vstack([_tac_data, filted_data-offset_sensor_Data])
 
             # # print(gripper_curr)
             # # time.sleep(0.1)
@@ -235,11 +319,11 @@ if __name__ == "__main__":
             # # print('gripper pos:', gripper_curr)
             # time.sleep(0.01) # 100hz is ok, 200hz a little bit fast
             # # !for camera recording
-            # if record_video is True:
-            #     color_image, depth_image, colorizer_depth = cam.get_frame()
-            #     wr.write(color_image)
-            #
-            #
+            if record_video is True:
+                color_image, depth_image, colorizer_depth = cam.get_frame()
+                wr.write(color_image)
+            # ------------------------------------------------------------------
+
             # # print('iter:', iter)
             # # end = False
             # # th = 50
@@ -355,11 +439,16 @@ if __name__ == "__main__":
                 cam.release()
             if record_data is True:
                 tac_data = np.delete(tac_data, 0, 0)
+                _tac_data = np.delete(_tac_data, 0, 0)
                 saved_data = np.delete(saved_data, 0, 0)
                 np.savez('./grasp/data/' + current_time + obj + '.npz',
                          loop_tac_data=tac_data,
                          all_tac_data=saved_data,
-                         gripper_pos=gripper_pos)
+                         gripper_pos=gripper_pos,
+                         _tac_data=_tac_data,
+                         )
+            gripper.execute_command("skipbuffer")
+            gripper.execute_command("abort")
             gripper.stop(gripper_index)
             gripper.fastStop(gripper_index)
 
@@ -370,3 +459,6 @@ if __name__ == "__main__":
             gripper.disconnect()
             gripper.close_socket()
             print('keyboard interrupt')
+            sys.exit(0)
+
+
