@@ -25,7 +25,7 @@ datasets = [
     # '20240315120107_cookedegg.npz',
     # '20240315121000_chips.npz',
     # '20240315120803_orange_small.npz',
-    '20240404175747_0.05force_cup.npz',
+    '20240408103157_0.5force_cup_3.5-0.005-0.npz',
     # '20240315123237_bread.npz', # useless
     # '20240315113504_eggshell.npz',
     # '20240315145611_bananawhole.npz',
@@ -72,8 +72,10 @@ fig, axs = plt.subplots(row, col, figsize=(480/my_dpi,480/my_dpi),dpi=my_dpi, sh
 _legend = False
 # print(np.linspace(0, len(tac_datalists[0])-1, len(tac_datalists[0])))
 # print(tac_datalists)
-stay_item = 500
-
+stay_item = 30
+print(tac_datalists[0].shape)
+print(_tac_datalists[0].shape)
+fig.suptitle(datasets[0], fontsize=20)
 for i in range(row):
     for j in range(col):
         if i == 1:

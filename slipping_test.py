@@ -151,7 +151,7 @@ if __name__ == "__main__":
     max_pos = 63
     # sensor_data4x3 = MagTouchVisualiser()
     # sensor_data4x3.run()
-    RTDE = True
+    RTDE = False
     if RTDE is True:
         robot_ip = "10.42.0.162"
         rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
@@ -169,10 +169,10 @@ if __name__ == "__main__":
     gripper.acknowledge(gripper_index)
     gripper.connect_server_socket()
     gripper_current_pos = gripper.getPosition()
-    speed = 100.0
+    schunk_speed = 100
     dir_pos = 0.3
     print('open finger for initialization.')
-    gripper.moveAbsolute(gripper_index, 0.1, speed)  # init the position
+    gripper.moveAbsolute(gripper_index, 0.1, schunk_speed)  # init the position
     time.sleep(4)
     print("gripper initailization complete")
 
@@ -198,7 +198,8 @@ if __name__ == "__main__":
     gripperDirOut = 'true'
     gripperDirIn = 'false'
     graspforce = 0.51
-    graspspeed = 8.1
+    graspspeed = 6
+
     # gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
     # gripper.moveAbsolute(gripper_index, 50, graspspeed)
     gripper_pos = np.zeros(1)
@@ -209,14 +210,21 @@ if __name__ == "__main__":
     # gripper.waitForComplete(gripper_index, timeout=100)
     # time.sleep(0.01)
     grapsing_pos_step = 0.3
-    _slipping_force = 0.1
-    obj = str(_slipping_force) + 'force_cup'  # recorded object
+    # grapsing_pos_step = 2
+    _slipping_force = 0.4
+    err_z_force_last = 0.0 # for pid
+    err_total = 0.0
+    _u = 0 # pid
+    _p = 3
+    _i = 0.015
+    _d = 0.005
+    obj = str(_slipping_force) + 'force_cup1_' + str(_p) + '-' + str(_i) + '-' + str(_d)  # recorded object
     obj = '_' + obj
     if record_video is True:
         fps, w, h = 30, 1280, 720
         import cv2
         mp4 = cv2.VideoWriter_fourcc(*'mp4v')
-        video_path = './grasp/data/' + current_time + obj + '.mp4'
+        video_path = '/home/yi/robotic_manipulation/_graspdata/sliding/' + current_time + obj + '.mp4'
         wr = cv2.VideoWriter(video_path, mp4, fps, (w, h), isColor=True)  #
         cam = Camera(w, h, fps)
     grasping = True
@@ -229,21 +237,29 @@ if __name__ == "__main__":
     lookahead_time = 0.03
     gain = 500.0
 
-    gripper.servoJ(grasp_q, 0.1, 0.1, control_time, lookahead_time, gain)
+    gripper.servoJ(grasp_q, 0.1, 0.1, 3.0, lookahead_time, gain)
     time.sleep(5)
     print('going to the grasping pos')
     # -------------------calibrate sensor----------------
-    sample_items = 1000
+    print('going to the zero tac-sensor')
+    sample_items = 30000
     offset_sensor_Data = recalibrate_tac_sensor(sample_items)
-    # print('calibrate sensor complete')
+    print('calibrate sensor complete')
     # ---------------------------------------------------
     gripin = True
-    stay_item = 500
+    control = False
+    stay_item = 300
+    abort = False
+    _lifting = False
+    _controller_delay = 0.35
     while True:
         # det_comm.det_info() # the test mmdetection model
 
         # !gripper grasping with tactile sensing
         try:
+            start_time = time.time()
+            time.sleep(_controller_delay)
+             # for schunk
             # gripper_curr = gripper.getPosition()
             # if RTDE is True:
             #     # pass
@@ -273,44 +289,108 @@ if __name__ == "__main__":
                 # time.sleep(10)
                 # RTDE controlling functions are not work with interpreter mode for schunk gripper
 
-            time.sleep(0.01)
+            # time.sleep(0.01)
             if grasping is True:
                 # !move robot to the grasping pos
                 # time.sleep(5)
                 # rtde_c.servoJ(q=grasp_q, time=control_time, lookahead_time=lookahead_time, gain=gain) # TODO: control the manually joint setting
                 # !grasping with step force
                 # time.sleep(1)
-                # time.sleep(0.01)
-                # gripper.moveRelative(gripper_index, grapsing_pos_step, 10)
-                if gripin is True:
-                    gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
-                    gripin = False
+                # time.sleep(0.005)
+                # gripper.execute_command("skipbuffer")
+                # gripper.stop(gripper_index)
+                # if gripin is True:
+                #     gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
+                #     gripin = False
                 tac_data = np.vstack([tac_data, filted_data-offset_sensor_Data])
+                gripper.moveRelative(gripper_index, grapsing_pos_step, schunk_speed)
 
-                print(np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max())
+                # gripper.moveRelative(gripper_index, grapsing_pos_step * _u, schunk_speed)
+                # tac_z = np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5],
+                #                 filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]])
+                # tac_big_z = tac_z.max()
+                # tac_big_z_index = tac_z.argmax()
+                # err_z_force = _slipping_force - tac_big_z
+                # d_err = err_z_force - err_z_force_last
+                # p_err = _slipping_force - tac_big_z
+                # err_total = err_total + err_z_force
+                # err_z_force_last = err_z_force
+                # _u = _p * p_err + _i * err_total + _d * d_err
+                # print(_u)
+                # time.sleep(_controller_delay)
+
+                # print(np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max())
                 if np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max() > _slipping_force:
                 # print(np.abs(filted_data-offset_sensor_Data).max())
                 # if np.abs(filted_data-offset_sensor_Data).max() > _slipping_force:
-                    gripper.stop(gripper_index)
-                    time.sleep(0.01)
+                #     gripper.stop(gripper_index)
+                    # time.sleep(0.01)
                     print('tactile force reached')
                     grasping = False
-            else:
+                    control = True
+            # elif grasping is False and control is True:
+
+            if grasping is False and control is True:
+                gripper.stop(gripper_index)
+                # gripper.execute_command("skipbuffer")
+                # gripper.execute_command("abort")
+
+                gripper.moveRelative(gripper_index, grapsing_pos_step * _u, schunk_speed)
+                tac_z = np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5],
+                                filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]])
+                tac_big_z = tac_z.max()
+                tac_big_z_index = tac_z.argmax()
+                err_z_force = _slipping_force - tac_big_z
+                d_err = err_z_force - err_z_force_last
+                p_err = _slipping_force - tac_big_z
+                err_total = err_total + err_z_force
+                err_z_force_last = err_z_force
+                _u = _p * p_err + _i * err_total + _d * d_err
+                _tac_data = np.vstack([_tac_data, filted_data - offset_sensor_Data])
+                pid_items = 20
+                pid_means_items = pid_items + 10
+                if _tac_data.shape[0] > pid_means_items:
+                    print(_u,
+                          # _tac_data[-1, :],
+                          abs(_tac_data[-pid_items:, 2].mean()) - _slipping_force,
+                          abs(_tac_data[-pid_items:, 5].mean()) - _slipping_force,
+                          abs(_tac_data[-pid_items:, 8].mean()) - _slipping_force,
+                          abs(_tac_data[-pid_items:, 11].mean()) - _slipping_force)
+                    thr = 0.01
+                    if abs(np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max() - _slipping_force) < thr:
+                        control = False
+                        _lifting = True
+            if _lifting is True:
+                # print('lifting')
+                # !move robot to the lifting end pos
+                gripper.servoJ(lifting_q, 0.1, 0.1, control_time, lookahead_time, gain)
+                _tac_data = np.vstack([_tac_data, filted_data - offset_sensor_Data])
+            # print(filted_data - offset_sensor_Data)
+            # print(_u)
+                # time.sleep(_controller_delay)
+                # gripper.execute_command("skipbuffer")
                 # ntrp.execute_command("skipbuffer")
                 # logging.info(f"Last command executing before skipbuffer: {intrp.get_last_executed_id()}")
                 #
                 # logging.info("Aborting running move command")
                 # intrp.execute_command("abort")
-                gripper.execute_command("skipbuffer")
-                gripper.execute_command("abort")
-                if stay_item > 0:
-                    stay_item -= 1
-                else:
-                    # !move robot to the lifting end pos
-                    gripper.servoJ(lifting_q, 0.1, 0.1, control_time, lookahead_time, gain)
-                # rtde_c.servoJ(q=lifting_q, time=control_time, lookahead_time=lookahead_time, gain=gain) # TODO: control the manually joint setting
-                _tac_data = np.vstack([_tac_data, filted_data-offset_sensor_Data])
 
+            #     if abort is False:
+            #         gripper.execute_command("skipbuffer")
+            #         gripper.execute_command("abort")
+            #         print('wating and lifting')
+            #         abort = True
+            #     else:
+            #         if stay_item > 0:
+            #             stay_item -= 1
+            #         else:
+            #             # print('lifting')
+            #             # !move robot to the lifting end pos
+            #             gripper.servoJ(lifting_q, 0.1, 0.1, control_time, lookahead_time, gain)
+            #         # rtde_c.servoJ(q=lifting_q, time=control_time, lookahead_time=lookahead_time, gain=gain) # TODO: control the manually joint setting
+            #         _tac_data = np.vstack([_tac_data, filted_data-offset_sensor_Data])
+            end_time = time.time()
+            # print('sample time:', end_time - start_time)
             # # print(gripper_curr)
             # # time.sleep(0.1)
             # # iter += 1
@@ -447,17 +527,19 @@ if __name__ == "__main__":
                          gripper_pos=gripper_pos,
                          _tac_data=_tac_data,
                          )
-            gripper.execute_command("skipbuffer")
-            gripper.execute_command("abort")
             gripper.stop(gripper_index)
             gripper.fastStop(gripper_index)
+
+            gripper.execute_command("skipbuffer")
+            gripper.execute_command("abort")
+            gripper.disconnect()
+            gripper.close_socket()
 
             # udp_socket.close()
             time.sleep(1)
             # gripper.stop(gripper_index)
             # time.sleep(1)
-            gripper.disconnect()
-            gripper.close_socket()
+
             print('keyboard interrupt')
             sys.exit(0)
 
