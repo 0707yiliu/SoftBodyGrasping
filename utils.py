@@ -2,6 +2,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation, Slerp
 from scipy.interpolate import CubicHermiteSpline
 import math
+from math import sin, cos, tanh
 
 def interpolate_position(start_pos, end_pos, num_points):
     # linear interpolation for position
@@ -235,6 +236,5 @@ def AmplitudeLimitingShakeOff(inputs, Amplitude, N):
 # pl.subplot(2, 1, 2)
 # pl.plot(result)
 # pl.show()
-
 
 

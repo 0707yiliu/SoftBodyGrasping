@@ -25,7 +25,8 @@ datasets = [
     # '20240315120107_cookedegg.npz',
     # '20240315121000_chips.npz',
     # '20240315120803_orange_small.npz',
-    '20240408103157_0.5force_cup_3.5-0.005-0.npz',
+    '20240410201504_1.25force_cup_1-0.005-0.005.npz',
+    # '20240410140411_2force_cup_1-0.005-0.005.npz',
     # '20240315123237_bread.npz', # useless
     # '20240315113504_eggshell.npz',
     # '20240315145611_bananawhole.npz',
@@ -36,6 +37,17 @@ datasets = [
 tac_datalists = [np.load(datasets[i])['loop_tac_data'] for i in range(len(datasets))]
 pos_datalists = [np.load(datasets[i])['gripper_pos'] for i in range(len(datasets))]
 _tac_datalists = [np.load(datasets[i])['_tac_data'] for i in range(len(datasets))]
+
+all_tac_data = np.vstack((tac_datalists[0], _tac_datalists[0]))
+d_all_tac_data = FirstOrderLag(all_tac_data, 0.7)
+all_tac_data = FirstOrderLag(all_tac_data, 0.7)
+hz_time = 0.5
+hz = 1 / hz_time
+print('---', all_tac_data.shape)
+d_all_tac_data = np.vstack((np.zeros(all_tac_data.shape[1]), d_all_tac_data))
+for i in range(d_all_tac_data.shape[0]-1):
+    d_all_tac_data[i, :] = (d_all_tac_data[i+1, :] - d_all_tac_data[i,:]) / hz_time
+d_all_tac_data = np.delete(d_all_tac_data, -1, 0)
 
 for i in range(len(datasets)):
     if len(tac_datalists[i]) != len(pos_datalists[i]):
@@ -49,11 +61,11 @@ print(dataall['loop_tac_data'].shape)
 tac_data = dataall['loop_tac_data']
 data_xlen = tac_data.shape[0]
 data_xlen = np.linspace(0, data_xlen-1, data_xlen)
-print(data_xlen, data_xlen.shape)
+# print(data_xlen, data_xlen.shape)
 pos_data = dataall['gripper_pos']
 # pos_data = np.delete(pos_data, 0, 0)
 pos_data_len = pos_data.shape[0]
-print(pos_data_len)
+# print(pos_data_len)
 
 # fig1 = plt.figure(1)
 # plt.plot(np.linspace(0, pos_data_len-1, pos_data_len), pos_data)
@@ -73,8 +85,8 @@ _legend = False
 # print(np.linspace(0, len(tac_datalists[0])-1, len(tac_datalists[0])))
 # print(tac_datalists)
 stay_item = 30
-print(tac_datalists[0].shape)
-print(_tac_datalists[0].shape)
+# print(tac_datalists[0].shape)
+# print(_tac_datalists[0].shape)
 fig.suptitle(datasets[0], fontsize=20)
 for i in range(row):
     for j in range(col):
@@ -114,23 +126,32 @@ for i in range(row):
         axs[i][j].set_ylabel(ylabel[yl])
         axs[i][j].set_xlabel('time')
 
-# fig1, axs1 = plt.subplots(row, col, figsize=(480/my_dpi,480/my_dpi),dpi=my_dpi, sharex=False, sharey=False)
-# _legend = False
-# for i in range(row):
-#     for j in range(col):
-#         if i == 1:
-#             yl = i * j + 6
-#         elif i == 0:
-#             yl = (i + 1) * j
-#         for k in range(len(datasets)):
-#             axs1[i][j].plot(pos_datalists[k], tac_datalists[k][:, yl], color=colors[k], label=legends[k])
-#         if _legend is False:
-#             axs1[i][j].legend()
-#             _legend = True
-#         # axs1[i][j].plot(pos_data, tac_data[:, i+j])
-#         axs1[i][j].set_ylabel(ylabel[yl])
-#         axs1[i][j].set_xlabel('finger pos')
-#
+fig1, axs1 = plt.subplots(row, col, figsize=(480/my_dpi,480/my_dpi),dpi=my_dpi, sharex=False, sharey=False)
+_legend = False
+for i in range(row):
+    for j in range(col):
+        if i == 1:
+            yl = i * j + 6
+        elif i == 0:
+            yl = (i + 1) * j
+        axs1[i][j].plot(np.linspace(0,
+                                    d_all_tac_data.shape[0]-1,
+                                    d_all_tac_data.shape[0]),
+                        d_all_tac_data[:, yl],
+                        color=colors[0])
+        axs1[i][j].plot(np.linspace(0,
+                                    all_tac_data.shape[0] - 1,
+                                    all_tac_data.shape[0]),
+                        all_tac_data[:, yl],
+                        color=colors[1])
+
+        if _legend is False:
+            axs1[i][j].legend()
+            _legend = True
+        # axs1[i][j].plot(pos_data, tac_data[:, i+j])
+        axs1[i][j].set_ylabel(ylabel[yl])
+        axs1[i][j].set_xlabel('finger pos')
+
 # fig1, axs1 = plt.subplots(row, col, figsize=(480/my_dpi,480/my_dpi),dpi=my_dpi, sharex=False, sharey=False)
 # _legend = False
 # for i in range(row):

@@ -23,6 +23,7 @@ import subprocess
 import threading
 import pickle
 import socket
+from scipy.spatial.transform import Rotation as R
 
 # UR IK solver
 config_dir = '/home/yi/mmdet_models/configs/defobjs/mask-rcnn_r101_fpn_ms-poly-3x_defobjs_20.py'
@@ -94,88 +95,45 @@ def _build_sensor_pub():
 
 # --------------------------------------------------------
 if __name__ == "__main__":
-    current_time = time.strftime('%Y%m%d%H%M%S', time.localtime()) # for npy data recording
-    obj = 'banana' # recorded object
-    # # !run tactile sensor publisher
-    # sensor_pub = threading.Thread(target=_build_sensor_pub) # useless function
-    # sensor_pub.setDaemon(True)
-    # sensor_pub.start()
-    # !get sensor data
-    # sensor_data = np.zeros((2, 2, 3))
-    # time.sleep(10)
-    sensor_thread = threading.Thread(target=_get_sensor_data)
-    sensor_thread.setDaemon(True)
-    sensor_thread.start()
-    # sensor_data4x3 = MagTouchVisualiser()
-    # sensor_data4x3.run()
+    robot_ip = "10.42.0.162"
+    rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
+    rtde_c = rtde_control.RTDEControlInterface(robot_ip)
+    ur_arm = ur_kinematics.URKinematics('ur3e')
+    joint_angles_curr = rtde_r.getActualQ()
+    print("joint angles:", joint_angles_curr)
+    print('real quaternion:', rtde_r.getActualTCPPose())
+    pose_quat = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]))
+    pose_matrix = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]), rotation_type='matrix')
+    print("forward() quaternion \n", pose_quat, type(pose_quat))
+    print("forward() matrix \n", pose_matrix, type(pose_matrix))
 
-    # robot_ip = "10.42.0.162"
-    # rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
-    # rtde_c = rtde_control.RTDEControlInterface(robot_ip)
-    #
-    # # # !create mmdetection model with realsense
-    # # det_comm = Det_Common(config=config_dir, checkpoint=checkpoint_dir, out_pth=out_dir) # TODO:give config file path
-    # # !create schunk gripper
-    local_ip = '10.42.0.111'
-    gripper = SchunkGripper(local_ip=local_ip, local_port=44877)
-    gripper.connect()
-    gripper_index = 0
-    gripper.acknowledge(gripper_index)
-    gripper.connect_server_socket()
-    gripper_current_pos = gripper.getPosition()
-    speed = 100.0
-    dir_pos = 0.3
-    gripper.moveAbsolute(gripper_index, 0, speed) # init the position
-    time.sleep(4)
-    # while True:
-    #     gripper.moveRelative(gripper_index, dir_pos, speed)
+    target_pos = pose_quat
+    target_pos[2] -= 0
 
-    # joint_space_test()
-    # ik_fast_test()
+    ideal_quat = np.roll(pose_quat[3:], -1) # to xyzw
+    ideal_quatR = R.from_quat(ideal_quat)
+    print(ideal_quatR.as_euler('xyz', degrees=True))
+    # current_ideal_rot = ideal_quatR.as_euler('xyz', degrees=True)
+    # [-73.01539164 - 0.89202353 - 0.74797427]
+    target_ideal_rot = [-89.5, 0.1, 0.1]
+    r_target_rot = R.from_euler('xyz', target_ideal_rot, degrees=True)
+    r_target_qua = r_target_rot.as_quat()
+    print('---------------------', r_target_qua)
+    target_pos1 = np.concatenate((target_pos[:3], np.roll(r_target_qua, 1)))
+    print(target_pos1, "\n", target_pos)
 
-    # !create upd client to receive the tactile sensor date
-    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    local_addr = ("127.0.0.1", 8110)
-    udp_socket.bind(local_addr)
 
-    tac_data = np.zeros(12)
-    iter = 0
-    while True:
-        # time.sleep(1)
-        # print(mdata)
-        # print('---------------')
+    # print("inverse() all", ur3e_arm.inverse(pose_quat, True))
+    print("inverse() one from quat", ur_arm.inverse(ee_pose=target_pos, ee_vec=np.array([0, 0, 0.1507]),
+                                                    all_solutions=False, q_guess=joint_angles_curr))
+    print("inverse() one from matrix", ur_arm.inverse(ee_pose=pose_matrix, ee_vec=np.array([0, 0, 0.1507]),
+                                                      all_solutions=False, q_guess=joint_angles_curr))
+    print("inverse() one from quat", ur_arm.inverse(ee_pose=target_pos1, ee_vec=np.array([0, 0, 0.1507]),
+                                                    all_solutions=False, q_guess=joint_angles_curr))
 
-        # print('main loop')
-        # det_comm.det_info()
-
-        # !gripper grasping with tactile sensing
-        try:
-            iter += 1
-            # !control and get gripper's info
-            gripper.moveRelative(gripper_index, dir_pos, speed) # close gripper
-            # gripper.moveAbsolute(gripper_index, 20, speed)
-            time.sleep(0.1)
-            response = gripper.getPosition()
-            print(response)
-            print('loop iter:', iter)
-            # !get tactile sensor's info
-            recv_data = udp_socket.recvfrom(1024) # get tactile sensor's data
-            info_data = pickle.loads(recv_data[0])
-            # print(info_data.reshape(-1))
-            tac_data = np.vstack([tac_data, info_data.reshape(-1)])
-            time.sleep(0.1)
-            # print(tac_data.shape)
-            # print('----')
-        except KeyboardInterrupt:
-            gripper.fastStop(gripper_index)
-            tac_data = np.delete(tac_data, 0, 0)
-            np.save('./grasp/data/' + current_time + '_grasp_' + obj, tac_data)
-            udp_socket.close()
-            time.sleep(1)
-            # gripper.stop(gripper_index)
-            # time.sleep(1)
-            gripper.disconnect()
-            print('keyboard interrupt')
-
+    target_q = ur_arm.inverse(ee_pose=target_pos1, ee_vec=np.array([0, 0, 0.1507]),
+                              all_solutions=False, q_guess=joint_angles_curr)
+    if target_q is not None:
+        rtde_c.servoJ(target_q, 0.1, 0.1, 5, 0.03, 800)
 
 
