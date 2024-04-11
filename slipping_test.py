@@ -223,7 +223,7 @@ if __name__ == "__main__":
     # time.sleep(0.01)
     grapsing_pos_step = 0.1
     # grapsing_pos_step = 2
-    _slipping_force = 1.25
+    _slipping_force = 1
     force_step = 0.04
     err_z_force_last = 0.0 # for pid
     err_total = 0.0
@@ -492,7 +492,9 @@ if __name__ == "__main__":
             # # print(gripper_curr)
             # # time.sleep(0.1)
             # # iter += 1
-            # gripper_curr = gripper.getPosition()
+            gripper_curr = gripper.getPosition()
+            print('current gripper pos:',gripper_curr)
+            gripper_pos = np.append(gripper_pos, [gripper_curr])
             # # gripper.execute_command(f'EGUEGK_getPosition(0)')
             # # print('gripper pos:', gripper_curr)
             # time.sleep(0.01) # 100hz is ok, 200hz a little bit fast
