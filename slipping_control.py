@@ -189,7 +189,7 @@ if __name__ == "__main__":
 
     grapsing_pos_step = 0.1
     # grapsing_pos_step = 2
-    _slipping_force = 1.2
+    _slipping_force = 3
     _slipping_force_ratio = 0.5 / _slipping_force * 10
     force_step = 0.04
     err_z_force_last = 0.0 # for pid
@@ -348,7 +348,7 @@ if __name__ == "__main__":
                 # ----------------------------------------------------------------------------------------
                 # -----------------------------------simple lifting----------------------------------
                 # !move robot to the lifting end pos
-                time.sleep(_controller_delay)
+                time.sleep(0.02)
                 lower_move_time = 50
                 if control_once is True:
                     gripper.servoJ(lifting_q, 0.1, 0.1, lower_move_time, lookahead_time, gain)

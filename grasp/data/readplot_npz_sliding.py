@@ -25,7 +25,7 @@ datasets = [
     # '20240315120107_cookedegg.npz',
     # '20240315121000_chips.npz',
     # '20240315120803_orange_small.npz',
-    '20240411181401_1force_cup_lift1-0.005-0.005.npz',
+    '20240412150851_3force_cup_lift1-0.005-0.005.npz',
     # '20240410140411_2force_cup_1-0.005-0.005.npz',
     # '20240315123237_bread.npz', # useless
     # '20240315113504_eggshell.npz',
@@ -41,7 +41,7 @@ print(tac_datalists[0].shape, _tac_datalists[0].shape)
 all_tac_data = np.vstack((tac_datalists[0], _tac_datalists[0]))
 d_all_tac_data = FirstOrderLag(all_tac_data, 0.5)
 all_tac_data = FirstOrderLag(all_tac_data, 0.5)
-hz_time = 0.5
+hz_time = 0.02
 hz = 1 / hz_time
 print('---', all_tac_data.shape)
 d_all_tac_data = np.vstack((np.zeros(all_tac_data.shape[1]), d_all_tac_data))
@@ -212,10 +212,11 @@ for i in range(row):
         index = (i * 2 + j) + 1
         yl = index * 3 - 1
         # print(index, yl)
+        # print(all_tac_data.shape, np.arange(0, 1, 0.1), np.linspace(0,1,11))
         ax = axs2[i][j].scatter(all_tac_data[:, yl-1],
                                 all_tac_data[:, yl],
-                                c=np.arange(0, 1, 1/all_tac_data.shape[0]),
-                                cmap='cool')
+                                c=np.linspace(0, 1, num=all_tac_data.shape[0]),
+                                cmap='spring')
         fig2.colorbar(ax, orientation='horizontal')
         # for num in range(all_tac_data.shape[0]):
         #     axs2[i][j].plot(all_tac_data[num, yl],
