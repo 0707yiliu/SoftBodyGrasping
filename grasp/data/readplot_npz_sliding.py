@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
@@ -28,25 +30,20 @@ def FirstOrderLag(inputs, a):
 
 # collect data as list
 datasets = [
-    # '20240315120107_cookedegg.npz',
-    # '20240315121000_chips.npz',
-    # '20240315120803_orange_small.npz',
-    '20240412115404_1.5force_cup_lift1-0.005-0.005.npz',
-    # '20240410140411_2force_cup_1-0.005-0.005.npz',
-    # '20240315123237_bread.npz', # useless
-    # '20240315113504_eggshell.npz',
-    # '20240315145611_bananawhole.npz',
-    # '20240315145744_banana.npz',
-    # '20240315140451_kiwis.npz',
-    # '20240315133421_bottle.npz',
+    # '20240411141416_0.08force_cup_lift1-0.005-0.005.npz',
+    '20240412112624_1.3force_cup_lift1-0.005-0.005.npz',
+    # '20240412115404_1.5force_cup_lift1-0.005-0.005.npz',
+    # '20240412120426_1.8force_cup_lift1-0.005-0.005.npz',
+    # '20240412150851_3force_cup_lift1-0.005-0.005.npz',
 ]
 tac_datalists = [np.load(datasets[i])['loop_tac_data'] for i in range(len(datasets))]
 pos_datalists = [np.load(datasets[i])['gripper_pos'] for i in range(len(datasets))]
 _tac_datalists = [np.load(datasets[i])['_tac_data'] for i in range(len(datasets))]
 print(tac_datalists[0].shape, _tac_datalists[0].shape)
 all_tac_data = np.vstack((tac_datalists[0], _tac_datalists[0]))
+all_tac_data = _tac_datalists[0]
 for i in range(all_tac_data.shape[1]):
-    all_tac_data[:, i] = moving_average(all_tac_data[:, i], 50)
+    all_tac_data[:, i] = moving_average(all_tac_data[:, i], 5)
 print('----------', all_tac_data.shape)
 d_all_tac_data = FirstOrderLag(all_tac_data, 0.5)
 all_tac_data = FirstOrderLag(all_tac_data, 0.5)
@@ -190,6 +187,10 @@ def color_map(data, cmap):
 
 row = 2
 col = 2
+xmin = -4
+xmax = 1
+ymin = -4
+ymax = 1
 y_force = ['sensro1_Y', 'sensro2_Y','sensro3_Y','sensro4_Y',]
 fig2, axs2 = plt.subplots(row, col, figsize=(480/my_dpi,480/my_dpi),dpi=my_dpi, sharex=False, sharey=False)
 fig2.suptitle('force z-y', fontsize=20)
@@ -200,22 +201,26 @@ for i in range(row):
         yl = index * 3 - 1
         # print(index, yl)
         # print(all_tac_data.shape, np.arange(0, 1, 0.1), np.linspace(0,1,11))
-        ax = axs2[i][j].scatter(all_tac_data[:, yl-0],
-                                all_tac_data[:, yl-1],
+        ax = axs2[i][j].scatter(all_tac_data[:, yl-1],
+                                all_tac_data[:, yl-0],
                                 c=np.linspace(0, 1, num=all_tac_data.shape[0]),
                                 cmap='spring', vmin=0, vmax=0.35)
         fig2.colorbar(ax, orientation='horizontal')
         # for num in range(all_tac_data.shape[0]):
         #     axs2[i][j].plot(all_tac_data[num, yl],
         #                     all_tac_data[num, yl-1], 'o', c=cm.OrRd(num/all_tac_data.shape[0]))
-        axs2[i][j].plot(all_tac_data[:, yl-0],
-                        all_tac_data[:, yl-1])
+        axs2[i][j].plot(all_tac_data[:, yl-1],
+                        all_tac_data[:, yl-0])
         if _legend is False:
             axs2[i][j].legend()
+
             _legend = True
         # axs1[i][j].plot(pos_data, tac_data[:, i+j])
-        axs2[i][j].set_ylabel(y_force[index-1])
-        axs2[i][j].set_xlabel('Z')
+        axs2[i][j].set_xlim(xmin, xmax)
+        axs2[i][j].set_ylim(ymin, ymax)
+        axs2[i][j].set_ylabel('Z')
+        axs2[i][j].set_xlabel(y_force[index-1])
+
 
 
 row = 2
@@ -279,36 +284,56 @@ for i in range(row):
         axs2[i][j].set_ylabel(y_force[index-1])
         axs2[i][j].set_xlabel(x_force[index-1])
 
-
 row = 2
 col = 2
+xmin = -0.5
+xmax = 40
+ymin = -0
+ymax = 3
 x_force = ['sensro1_X', 'sensro2_X', 'sensro3_X', 'sensro4_X', ]
-y_force = ['sensro1_Y', 'sensro2_Y','sensro3_Y','sensro4_Y',]
-d_zy = ['sensro1_ZY', 'sensro2_ZY','sensro3_ZY','sensro4_ZY',]
+y_force = ['sensro1_Y', 'sensro2_Y', 'sensro3_Y', 'sensro4_Y', ]
+d_zy = ['sensro1_ZY', 'sensro2_ZY', 'sensro3_ZY', 'sensro4_ZY', ]
 fig2, axs2 = plt.subplots(row, col, figsize=(480 / my_dpi, 480 / my_dpi), dpi=my_dpi, sharex=False,
                           sharey=False)
-fig2.suptitle('force deriv z-y', fontsize=20)
-d_all_tac_data_zy = np.zeros((all_tac_data.shape[0]-1, 4))
+fig2.suptitle('force integral z-y', fontsize=20)
+num_all_tac = all_tac_data.shape[0]
+_len = 50 # time delay is 0.02 (50hz)
+step_num = num_all_tac // _len
+left_num = num_all_tac % _len
+if left_num != 0:
+    step_num += 1
+d_all_tac_data_zy = np.zeros((step_num - 1, 4))
 z_index = [2, 5, 8, 11]
 print(all_tac_data[:, 0])
-for i in range(all_tac_data.shape[0]-1):
+for i in range(step_num-1):
     for j in range(len(z_index)):
-        d_all_tac_data_zy[i] = abs(all_tac_data[i+1, j] - all_tac_data[i, j]) / abs(all_tac_data[i+1, j - 1] - all_tac_data[i, j - 1])
+        if i > 0:
+            d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) * (abs(
+                all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1])) + d_all_tac_data_zy[i - 1, j]
+        else:
+            d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) * (abs(
+                all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1]))
+        print((abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])),
+              (abs(all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1])),
+              d_all_tac_data_zy[i], z_index[j])
+        # time.sleep(100)
 print(d_all_tac_data_zy.shape)
 _legend = False
 for i in range(row):
     for j in range(col):
         index = (i * 2 + j) + 1
         axs2[i][j].plot(np.linspace(0,
-                                       d_all_tac_data_zy.shape[0]-1,
-                                       d_all_tac_data_zy.shape[0]),
-                              d_all_tac_data_zy[:, index-1])
-        axs2[i][j].plot(all_tac_data[:, 0])
+                                    d_all_tac_data_zy.shape[0] - 1,
+                                    d_all_tac_data_zy.shape[0]),
+                        d_all_tac_data_zy[:, index - 1])
+        # axs2[i][j].plot(all_tac_data[:, 0])
         if _legend is False:
             axs2[i][j].legend()
             _legend = True
         # axs1[i][j].plot(pos_data, tac_data[:, i+j])
-        axs2[i][j].set_ylabel(d_zy[index-1])
+        axs2[i][j].set_xlim(xmin, xmax)
+        axs2[i][j].set_ylim(ymin, ymax)
+        axs2[i][j].set_ylabel(d_zy[index - 1])
         axs2[i][j].set_xlabel('time')
 
 plt.show()

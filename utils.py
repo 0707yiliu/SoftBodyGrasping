@@ -152,6 +152,15 @@ def AmplitudeLimitingAverage(inputs, per, Amplitude):
         tmpmean = tmp.mean()
     return mean
 
+'''
+一维卷积平滑
+'''
+def moving_average(interval, windowsize):
+    window = np.ones(int(windowsize)) / float(windowsize)
+    # print(window)
+    re = np.convolve(interval, window, 'same')
+    return re
+
 
 '''
 一阶滞后滤波法
@@ -224,7 +233,6 @@ def AmplitudeLimitingShakeOff(inputs, Amplitude, N):
                 inputs[index2] = usenum
     # print(inputs)
     return inputs
-
 
 # T = np.arange(0, 0.5, 1 / 4410.0)
 # num = signal.chirp(T, f0=10, t1=0.5, f1=1000.0)
