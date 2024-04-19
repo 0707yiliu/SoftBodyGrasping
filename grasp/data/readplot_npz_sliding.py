@@ -30,8 +30,9 @@ def FirstOrderLag(inputs, a):
 
 # collect data as list
 datasets = [
+    '20240419142155_0.13force_clay_lift1-0.005-0.005.npz',
     # '20240411141416_0.08force_cup_lift1-0.005-0.005.npz',
-    '20240412112624_1.3force_cup_lift1-0.005-0.005.npz',
+    # '20240412112624_1.3force_cup_lift1-0.005-0.005.npz',
     # '20240412115404_1.5force_cup_lift1-0.005-0.005.npz',
     # '20240412120426_1.8force_cup_lift1-0.005-0.005.npz',
     # '20240412150851_3force_cup_lift1-0.005-0.005.npz',
@@ -45,8 +46,8 @@ all_tac_data = _tac_datalists[0]
 for i in range(all_tac_data.shape[1]):
     all_tac_data[:, i] = moving_average(all_tac_data[:, i], 5)
 print('----------', all_tac_data.shape)
-d_all_tac_data = FirstOrderLag(all_tac_data, 0.5)
-all_tac_data = FirstOrderLag(all_tac_data, 0.5)
+d_all_tac_data = FirstOrderLag(all_tac_data, 0.7)
+all_tac_data = FirstOrderLag(all_tac_data, 0.7)
 hz_time = 0.02
 hz = 1 / hz_time
 print('---', all_tac_data.shape)
@@ -187,10 +188,10 @@ def color_map(data, cmap):
 
 row = 2
 col = 2
-xmin = -4
-xmax = 1
-ymin = -4
-ymax = 1
+xmin = -0.3
+xmax = 0.1
+ymin = -0.3
+ymax = 0
 y_force = ['sensro1_Y', 'sensro2_Y','sensro3_Y','sensro4_Y',]
 fig2, axs2 = plt.subplots(row, col, figsize=(480/my_dpi,480/my_dpi),dpi=my_dpi, sharex=False, sharey=False)
 fig2.suptitle('force z-y', fontsize=20)
@@ -289,7 +290,7 @@ col = 2
 xmin = -0.5
 xmax = 40
 ymin = -0
-ymax = 3
+ymax = 130
 x_force = ['sensro1_X', 'sensro2_X', 'sensro3_X', 'sensro4_X', ]
 y_force = ['sensro1_Y', 'sensro2_Y', 'sensro3_Y', 'sensro4_Y', ]
 d_zy = ['sensro1_ZY', 'sensro2_ZY', 'sensro3_ZY', 'sensro4_ZY', ]
@@ -308,10 +309,10 @@ print(all_tac_data[:, 0])
 for i in range(step_num-1):
     for j in range(len(z_index)):
         if i > 0:
-            d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) * (abs(
+            d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) / (abs(
                 all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1])) + d_all_tac_data_zy[i - 1, j]
         else:
-            d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) * (abs(
+            d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) / (abs(
                 all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1]))
         print((abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])),
               (abs(all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1])),

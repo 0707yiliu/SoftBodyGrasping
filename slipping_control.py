@@ -189,16 +189,17 @@ if __name__ == "__main__":
 
     grapsing_pos_step = 0.1
     # grapsing_pos_step = 2
-    _slipping_force = 3
+    _slipping_force = 0.05
     _slipping_force_ratio = 0.5 / _slipping_force * 10
     force_step = 0.04
+    thr = 0.02
     err_z_force_last = 0.0 # for pid
     err_total = 0.0
     _u = 0 # pid
     _p = 1
     _i = 0.005
     _d = 0.005
-    obj = str(_slipping_force) + 'force_cup_lift' + str(_p) + '-' + str(_i) + '-' + str(_d)  # recorded object
+    obj = str(_slipping_force) + 'force_lego_lift' + str(_p) + '-' + str(_i) + '-' + str(_d)  # recorded object
     obj = '_' + obj
     if record_video is True:
         fps, w, h = 30, 1280, 720
@@ -220,7 +221,7 @@ if __name__ == "__main__":
     gain = 800.0
 
     gripper.servoJ(grasp_q, 0.1, 0.1, 3.0, lookahead_time, gain)
-    time.sleep(5)
+    time.sleep(4)
     print('going to the grasping pos')
     joint_angles_curr = rtde_r.getActualQ()
     target_pos = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]))
@@ -269,6 +270,7 @@ if __name__ == "__main__":
                     jug_force = _slipping_force - 0.08
                 else:
                     jug_force = _slipping_force
+                print(filted_data-offset_sensor_Data)
                 if np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max() > jug_force:
                     print('tactile force reached')
                     grasping = False
@@ -297,7 +299,7 @@ if __name__ == "__main__":
                 print('current gripper pos:', gripper_curr)
                 gripper_pos = np.append(gripper_pos, [gripper_curr])
                 if _tac_data.shape[0] > pid_means_items:
-                    thr = 0.03
+
                     if pid_hoding_times > 0:
                         pid_hoding_times -= 1
                     else:

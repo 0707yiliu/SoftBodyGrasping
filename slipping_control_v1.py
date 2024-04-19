@@ -258,7 +258,7 @@ if __name__ == "__main__":
     regrasping_tac_buffer = np.zeros((det_hz, 12))
     _tac_zy = np.zeros(0)
     total_tac_zy = 0
-    zy_sum_force_th = 0.1
+    zy_sum_force_th = 0.01
     increment_z_force = 0.05
     while True:
         # det_comm.det_info() # the test mmdetection model
