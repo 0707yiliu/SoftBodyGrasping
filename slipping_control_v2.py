@@ -85,7 +85,6 @@ def _control_loop(_controller_delay,
                   filted_data, offset_sensor_Data,
                   _slipping_force, err_z_force_last, err_total,
                   _slipping_force_ratio, _p, _i, _d,):
-    time.sleep(_controller_delay)
     tac_z = np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5],
                     filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]])
     tac_big_z = tac_z.max()
@@ -199,11 +198,12 @@ if __name__ == "__main__":
     abort = False
     _lifting = False
     reset_lifting_step = False
+    simplegrasping = True
     _controller_delay = 0.5
     # --------------fuzzy pid -----------
     fuzzyPID = Fuzzy_PID()
-    pid_items = 10
-    pid_hoding_times = pid_items
+    pid_items = 5
+    pid_hoding_times = 10
     current_tac_data = np.zeros(12)
     #--------------lifting config----------
     lift_hz = 50
@@ -214,9 +214,9 @@ if __name__ == "__main__":
     tac_index = 0 # the index of mainly touching sensor
     control_once = True
     #------- re-grasping params ---------
-    det_hz = 150
-    lift_time = 5
-    lift_step = 0.01
+    det_hz = 50
+    lift_time = 0.02
+    lift_step = 0.0002 # unit: meter
     re_items = 0
     regrasping_tac_buffer = np.zeros((det_hz, 12))
     _tac_zy = np.zeros(0)
@@ -246,66 +246,87 @@ if __name__ == "__main__":
                 _lifting = False
                 control_once = True
                 first_change = False
-            if grasping is True:
+
+            if simplegrasping is True:
                 print('grasping step', 'slipping force:', _slipping_force)
-                # !move robot to the grasping pos
-                time.sleep(_controller_delay)
-                tac_data = np.vstack([tac_data, filted_data-offset_sensor_Data])
-                gripper.moveRelative(gripper_index, grapsing_pos_step, schunk_speed)
-                gripper_curr = gripper.getPosition()
-                # print('current gripper pos:', gripper_curr)
-                gripper_pos = np.append(gripper_pos, [gripper_curr])
+                gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
+                simplegrasping = False
+            if grasping is True: # grasping detection
                 if _slipping_force > 0.13:
-                    jug_force = _slipping_force - 0.08
+                    jug_force = _slipping_force - 0.05
                 else:
                     jug_force = _slipping_force
-                if np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max() > jug_force:
+                z_max_force = np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5],
+                                      filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]])
+                if z_max_force.max() > jug_force:
+                    z_max_force_index = z_max_force.argmax() # get the index of max z-force
+                    gripper.stop(gripper_index)
                     print('tactile force reached, go to control step')
                     grasping = False
                     control = True
-            if grasping is False and control is True:
+            # if grasping is True:
+            #     print('grasping step', 'slipping force:', _slipping_force)
+            #     # !move robot to the grasping pos
+            #     time.sleep(_controller_delay)
+            #     tac_data = np.vstack([tac_data, filted_data-offset_sensor_Data])
+            #     gripper.moveRelative(gripper_index, grapsing_pos_step, schunk_speed)
+            #     gripper_curr = gripper.getPosition()
+            #     # print('current gripper pos:', gripper_curr)
+            #     gripper_pos = np.append(gripper_pos, [gripper_curr])
+            #     if _slipping_force > 0.13:
+            #         jug_force = _slipping_force - 0.08
+            #     else:
+            #         jug_force = _slipping_force
+            #     if np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max() > jug_force:
+            #         print('tactile force reached, go to control step')
+            #         grasping = False
+            #         control = True
+            if grasping is False and control is True: # z-force holding
+                time.sleep(_controller_delay) # controlling frequency
                 # !PID controller
                 err_z_force_last, d_err, err_total, err_z_force, _u = _control_loop(_controller_delay,
                                                                                   filted_data, offset_sensor_Data,
                                                                                   _slipping_force, err_z_force_last, err_total,
                                                                                   _slipping_force_ratio, _p, _i, _d,)
                 _tac_data = np.vstack([_tac_data, filted_data - offset_sensor_Data])
-                pid_means_items = pid_items + 10
                 # !fuzzy control pid parameters
                 _p, _i, _d = fuzzyPID.compute(err_z_force, d_err)
+                pid_means_items = pid_items + 10
+
+                gripper_curr = gripper.getPosition()
+                # print('current gripper pos:', gripper_curr)
+                gripper_pos = np.append(gripper_pos, [gripper_curr])
                 # !moving gripper
                 gripper.stop(gripper_index)
                 gripper.moveRelative(gripper_index, grapsing_pos_step * _u, schunk_speed)
                 print(err_z_force, d_err, rtde_r.getActualTCPPose()[:3], _slipping_force, _p, _i, _d)
-                gripper_curr = gripper.getPosition()
-                # print('current gripper pos:', gripper_curr)
-                gripper_pos = np.append(gripper_pos, [gripper_curr])
+
                 # !if current force close to desired force calculated by means, then lifting
-                if _tac_data.shape[0] > pid_means_items:
-                    thr = 0.03
-                    if pid_hoding_times > 0:
-                        pid_hoding_times -= 1
-                    else:
-                        # !go to lifting part when stabling
-                        # if abs(np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max() - _slipping_force) < thr:
-                        if abs(np.array([abs(_tac_data[-pid_items:, 2].mean()),
-                                        abs(_tac_data[-pid_items:, 5].mean()),
-                                        abs(_tac_data[-pid_items:, 8].mean()),
-                                        abs(_tac_data[-pid_items:, 11].mean())]).max() - _slipping_force) < thr:
-                            tac_index = np.array([abs(_tac_data[-pid_items:, 2].mean()),
-                                                  abs(_tac_data[-pid_items:, 5].mean()),
-                                                  abs(_tac_data[-pid_items:, 8].mean()),
-                                                  abs(_tac_data[-pid_items:, 11].mean())]).argmax()
-                            pid_items = 10  # for quick check when lifting and slipping
-                            pid_hoding_times = pid_items
-                            _lifting = True
-                            control = False
-                            print('control over, go to lifting step')
-                        else:
-                            # !get the new number of pid_items for entering lifting part
-                            if reset_lifting_step is True:
-                                _slipping_force += force_step
-                                reset_lifting_step = False
+                thr = 0.03
+                if pid_hoding_times > 0:
+                    pid_hoding_times -= 1
+                else:
+                    # !go to lifting part when stabling
+                    # if abs(np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5], filted_data[8] - offset_sensor_Data[8], filted_data[11] - offset_sensor_Data[11]]).max() - _slipping_force) < thr:
+                    if abs(np.array([abs(_tac_data[-pid_items:, 2].mean()),
+                                     abs(_tac_data[-pid_items:, 5].mean()),
+                                     abs(_tac_data[-pid_items:, 8].mean()),
+                                     abs(_tac_data[-pid_items:, 11].mean())]).max() - _slipping_force) < thr:
+                        tac_index = np.array([abs(_tac_data[-pid_items:, 2].mean()),
+                                              abs(_tac_data[-pid_items:, 5].mean()),
+                                              abs(_tac_data[-pid_items:, 8].mean()),
+                                              abs(_tac_data[-pid_items:, 11].mean())]).argmax()
+                        # pid_items = 10  # for quick check when lifting and slipping
+                        # pid_hoding_times = pid_items
+                        pid_hoding_times = 10
+                        _lifting = True
+                        control = False
+                        print('control over, go to lifting step')
+                    # else:
+                    #     # !get the new number of pid_items for entering lifting part
+                    #     if reset_lifting_step is True:
+                    #         _slipping_force += force_step
+                    #         reset_lifting_step = False
             if _lifting is True:
                 # # print('lifting')
                 # ------------------------check and goback to fuzzy control loop---------------------------
@@ -386,103 +407,102 @@ if __name__ == "__main__":
                 # ----- detection frequency: det_hz = 50
                 # ----- lifting step: lift_step = 0.001 # 1mm
                 # ----- lifting step time: lift_time = 1 # 1s
-                time.sleep(3/det_hz) # 3s
-                if control_once is True:
-                    print('lifting')
-                    joint_angles_curr = rtde_r.getActualQ()
-                    target_pos = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]))
-                    target_pos[2] += lift_step # lift z-axis, lift a minor step once time
-                    target_ideal_rot = [-89.5, 0.1, 0.1]
-                    r_target_rot = R.from_euler('xyz', target_ideal_rot, degrees=True)
-                    r_target_qua = r_target_rot.as_quat()
-                    target_eepos = np.concatenate((target_pos[:3], np.roll(r_target_qua, 1)))
-                    target_q = ur_arm.inverse(ee_pose=target_eepos, ee_vec=np.array([0, 0, 0.1507]),
-                                              all_solutions=False, q_guess=joint_angles_curr).tolist()
-                    if target_q is not None:
-                        gripper.servoJ(target_q, 0.1, 0.1, lift_time, lookahead_time, gain)
-                        control_once = False
+                time.sleep(1/det_hz)
+
+                print('lifting') # lift 0.3 mm once time, 1second lift 3mm
+                joint_angles_curr = rtde_r.getActualQ()
+                target_pos = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]))
+                target_pos[2] += lift_step # lift z-axis, lift a minor step once time
+                target_ideal_rot = [-89.5, 0.1, 0.1]
+                r_target_rot = R.from_euler('xyz', target_ideal_rot, degrees=True)
+                r_target_qua = r_target_rot.as_quat()
+                target_eepos = np.concatenate((target_pos[:3], np.roll(r_target_qua, 1)))
+                target_q = ur_arm.inverse(ee_pose=target_eepos, ee_vec=np.array([0, 0, 0.1507]),
+                                          all_solutions=False, q_guess=joint_angles_curr).tolist()
+                if target_q is not None:
+                    gripper.servoJ(target_q, 0.1, 0.1, lift_time, lookahead_time, gain)
+                    control_once = False
+                else:
+                    print('ik fast inv no response.')
+
+                regrasping_tac_buffer[re_items, :] = filted_data - offset_sensor_Data
+                re_items += 1
+                if re_items > det_hz - 1:
+                    re_items = 0
+                    # data pre-processing
+                    for i in range(regrasping_tac_buffer.shape[1]):
+                        regrasping_tac_buffer[:, i] = utils.moving_average(regrasping_tac_buffer[:, i], 5)
+                        regrasping_tac_buffer[:, i] = utils.FirstOrderLag(regrasping_tac_buffer[:, i], 0.5)
+                    regrasping_means = abs(regrasping_tac_buffer.mean(0)) # 1x12, vertical means
+                    # !get the max z index for final determination
+                    regrasping_z_max_index = np.array([regrasping_means[2],
+                                                       regrasping_means[5],
+                                                       regrasping_means[8],
+                                                       regrasping_means[11]]).argmax()
+                    _index = (regrasping_z_max_index + 1) * 3 - 1
+
+                    # calculating the related of max_zy
+                    regrasping_max_zy_related = (abs(regrasping_tac_buffer[-1, _index] -
+                                                  regrasping_tac_buffer[0, _index]) *
+                                                  abs(regrasping_tac_buffer[-1, _index - 1] -
+                                                  regrasping_tac_buffer[0, _index - 1]))
+                    _tac_zy = np.append(_tac_zy, regrasping_max_zy_related) # for recording
+                    # the total of zy can be used to judge slipping
+                    total_tac_zy = _tac_zy.sum()
+
+                    # !get change of y-axis each loop, the end minus the starting
+                    y_change_history = regrasping_tac_buffer[-1, _index - 1] - regrasping_tac_buffer[0, _index - 1]
+                    if first_change is False:
+                        if y_change_history < -0.002: # first time slipping
+                            # slipping first time but not fall down
+                            print('first change over')
+                            first_change = True
+                        else: # keep lifting
+                            print('regrasping by no first change')
+                            print(regrasping_tac_buffer[-1, _index - 1], regrasping_tac_buffer[0, _index - 1], y_change_history)
+                            _tac_zy = np.zeros(0)
+                            _slipping_force += increment_z_force
+                            re_greap = True
                     else:
-                        print('ik fast inv no response.')
-                if control_once is False:
-                    # record 1 second data (50hz)
-                    regrasping_tac_buffer[re_items, :] = filted_data - offset_sensor_Data
-                    re_items += 1
-                    if re_items > det_hz - 1:
-                        re_items = 0
-                        # data pre-processing
-                        for i in range(regrasping_tac_buffer.shape[1]):
-                            regrasping_tac_buffer[:, i] = utils.moving_average(regrasping_tac_buffer[:, i], 5)
-                            regrasping_tac_buffer[:, i] = utils.FirstOrderLag(regrasping_tac_buffer[:, i], 0.5)
-                        regrasping_means = abs(regrasping_tac_buffer.mean(0)) # 1x12, vertical means
-                        # !get the max z index for final determination
-                        regrasping_z_max_index = np.array([regrasping_means[2],
-                                                           regrasping_means[5],
-                                                           regrasping_means[8],
-                                                           regrasping_means[11]]).argmax()
-                        _index = (regrasping_z_max_index + 1) * 3 - 1
-
-                        # calculating the related of max_zy
-                        regrasping_max_zy_related = (abs(regrasping_tac_buffer[-1, _index] -
-                                                      regrasping_tac_buffer[0, _index]) *
-                                                      abs(regrasping_tac_buffer[-1, _index - 1] -
-                                                      regrasping_tac_buffer[0, _index - 1]))
-                        _tac_zy = np.append(_tac_zy, regrasping_max_zy_related) # for recording
-                        # the total of zy can be used to judge slipping
-                        total_tac_zy = _tac_zy.sum()
-
-                        # !get change of y-axis each loop, the end minus the starting
-                        y_change_history = regrasping_tac_buffer[-1, _index - 1] - regrasping_tac_buffer[0, _index - 1]
-                        if first_change is False:
-                            if y_change_history < -0.002: # first time slipping
-                                # slipping first time but not fall down
-                                print('first change over')
-                                first_change = True
-                            else: # keep lifting
-                                print('regrasping by no first change')
-                                print(regrasping_tac_buffer[-1, _index - 1], regrasping_tac_buffer[0, _index - 1], y_change_history)
+                        if y_change_history > 0.02: # back slipping, means slipping fall down (need break and regrasping)
+                            # pass # TODO: go to re-grasping part
+                            _tac_zy = np.zeros(0)
+                            _slipping_force += increment_z_force
+                            re_greap = True
+                            print('regrasping by falling down')
+                        elif y_change_history < -0.02: # forward slipping but not fall down
+                            # determine the slipping by z-y related change
+                            z_change_history = regrasping_tac_buffer[-1, _index] - regrasping_tac_buffer[0, _index]
+                            tac_zy = abs(z_change_history / y_change_history)
+                            if tac_zy > 0.5: # slipping when lifting (for cup)
                                 _tac_zy = np.zeros(0)
                                 _slipping_force += increment_z_force
                                 re_greap = True
-                        else:
-                            if y_change_history > 0.02: # back slipping, means slipping fall down (need break and regrasping)
-                                # pass # TODO: go to re-grasping part
-                                _tac_zy = np.zeros(0)
-                                _slipping_force += increment_z_force
-                                re_greap = True
-                                print('regrasping by falling down')
-                            elif y_change_history < -0.02: # forward slipping but not fall down
-                                # determine the slipping by z-y related change
-                                z_change_history = regrasping_tac_buffer[-1, _index] - regrasping_tac_buffer[0, _index]
-                                tac_zy = abs(z_change_history / y_change_history)
-                                if tac_zy > 0.5: # slipping when lifting (for cup)
-                                    _tac_zy = np.zeros(0)
-                                    _slipping_force += increment_z_force
-                                    re_greap = True
-                                    print('regrasping by slipping when lifting')
-                                else:
-                                    print('continue lifting')
-                                    control_once = True
+                                print('regrasping by slipping when lifting')
                             else:
-                                # holding without slipping
                                 print('continue lifting')
                                 control_once = True
+                        else:
+                            # holding without slipping
+                            print('continue lifting')
+                            control_once = True
 
-                        # !Determine whether to continue lifting or re-grasping
-                        # if total_tac_zy < zy_sum_force_th:
-                        #     # !by force threshold of z-y related
-                        #     # !the threshold is useless for the objects have different weight
-                        #     control_once = True
-                        # if total_tac_zy < zy_sum_force_th:
-                        #     pass
-                        # else:
-                        #     _tac_zy = np.zeros(0)
-                        #     _slipping_force += increment_z_force
-                        #     # !regrasping from control step
-                        #     _lifting = False
-                        #     control_once = True
-                        #     control = True
-                        #     # !regrasping from grasping step
-                        #     # re_greap = True
+                    # !Determine whether to continue lifting or re-grasping
+                    # if total_tac_zy < zy_sum_force_th:
+                    #     # !by force threshold of z-y related
+                    #     # !the threshold is useless for the objects have different weight
+                    #     control_once = True
+                    # if total_tac_zy < zy_sum_force_th:
+                    #     pass
+                    # else:
+                    #     _tac_zy = np.zeros(0)
+                    #     _slipping_force += increment_z_force
+                    #     # !regrasping from control step
+                    #     _lifting = False
+                    #     control_once = True
+                    #     control = True
+                    #     # !regrasping from grasping step
+                    #     # re_greap = True
 # --------------------------Recording Part----------------------------------------------
                 _tac_data = np.vstack([_tac_data, filted_data - offset_sensor_Data])
 

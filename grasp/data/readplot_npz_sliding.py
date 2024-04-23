@@ -30,7 +30,7 @@ def FirstOrderLag(inputs, a):
 
 # collect data as list
 datasets = [
-    '20240419142155_0.13force_clay_lift1-0.005-0.005.npz',
+    '20240412115404_1.5force_cup_lift1-0.005-0.005.npz',
     # '20240411141416_0.08force_cup_lift1-0.005-0.005.npz',
     # '20240412112624_1.3force_cup_lift1-0.005-0.005.npz',
     # '20240412115404_1.5force_cup_lift1-0.005-0.005.npz',
@@ -309,10 +309,10 @@ print(all_tac_data[:, 0])
 for i in range(step_num-1):
     for j in range(len(z_index)):
         if i > 0:
-            d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) / (abs(
+            d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) * (abs(
                 all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1])) + d_all_tac_data_zy[i - 1, j]
         else:
-            d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) / (abs(
+            d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) * (abs(
                 all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1]))
         print((abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])),
               (abs(all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1])),
@@ -335,6 +335,46 @@ for i in range(row):
         axs2[i][j].set_xlim(xmin, xmax)
         axs2[i][j].set_ylim(ymin, ymax)
         axs2[i][j].set_ylabel(d_zy[index - 1])
+        axs2[i][j].set_xlabel('time')
+
+row = 2
+col = 2
+xmin = -0.3
+xmax = 0.1
+ymin = -0.3
+ymax = 0
+y_force = ['sensro1_Y/Z', 'sensro2_Y/Z','sensro3_Y/Z','sensro4_Y/Z',]
+fig2, axs2 = plt.subplots(row, col, figsize=(480/my_dpi,480/my_dpi),dpi=my_dpi, sharex=False, sharey=False)
+fig2.suptitle('force y/z', fontsize=20)
+_legend = False
+# for i in range(row):
+#     for j in range(col):
+#         index = (i * 2 + j) + 1
+#         yl = index * 3 - 1
+#         y_z_tac_data = all_tac_data[:, yl-1] / all_tac_data[:, yl]
+for i in range(row):
+    for j in range(col):
+        index = (i * 2 + j) + 1
+        yl = index * 3 - 1
+        # print(index, yl)
+        # print(all_tac_data.shape, np.arange(0, 1, 0.1), np.linspace(0,1,11))
+        # ax = axs2[i][j].scatter(all_tac_data[:, yl-1],
+        #                         all_tac_data[:, yl-0],
+        #                         c=np.linspace(0, 1, num=all_tac_data.shape[0]),
+        #                         cmap='spring', vmin=0, vmax=0.35)
+        # fig2.colorbar(ax, orientation='horizontal')
+        # # for num in range(all_tac_data.shape[0]):
+        # #     axs2[i][j].plot(all_tac_data[num, yl],
+        # #                     all_tac_data[num, yl-1], 'o', c=cm.OrRd(num/all_tac_data.shape[0]))
+        axs2[i][j].plot(all_tac_data[:, yl-1] / all_tac_data[:, yl])
+        if _legend is False:
+            axs2[i][j].legend()
+
+            _legend = True
+        # axs1[i][j].plot(pos_data, tac_data[:, i+j])
+        # axs2[i][j].set_xlim(xmin, xmax)
+        # axs2[i][j].set_ylim(ymin, ymax)
+        axs2[i][j].set_ylabel(y_force[index-1])
         axs2[i][j].set_xlabel('time')
 
 plt.show()
