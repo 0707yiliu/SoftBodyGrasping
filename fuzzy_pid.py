@@ -5,9 +5,9 @@ import skfuzzy.control as ctrl
 class Fuzzy_PID:
     def __init__(self,
               err_min=-2.5, err_max=2.5, E_err_min=-1.5, E_err_max=1.5,
-              kp_min=1, kp_max=3,
-              ki_min=0.0001, ki_max=0.03,
-              kd_min=0.0001, kd_max=0.01):
+              kp_min=1, kp_max=2.5,
+              ki_min=0.0001, ki_max=0.025,
+              kd_min=0.0001, kd_max=0.015):
 
         fuzzy_num = 50
         # input

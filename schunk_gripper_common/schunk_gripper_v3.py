@@ -248,6 +248,18 @@ class SchunkGripper:
         command = "servoj({}, {}, {}, {}, {}, {})".format(q, qd, qdd, _time, lookahead_time, gain)
         self.execute_command(command)
 
+    def stopJ(self, a):
+        command = "stopj({})".format(a)
+        self.execute_command(command)
+
+    def stopScript(self):
+        command = "stopscript()"
+        self.execute_command(command)
+
+    def servoStop(self, a):
+        command = "servostop({})".format(a)
+        self.execute_command(command)
+
     def servoJ_inter(self, q, qd, qdd, _time, lookahead_time, gain):
         if self.remote_func is True:
             self.execute_command(f'ServoJ({q}, {qd}, {qdd}, {_time}, {lookahead_time}, {gain})')
