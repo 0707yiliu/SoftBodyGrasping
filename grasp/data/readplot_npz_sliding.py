@@ -30,7 +30,7 @@ def FirstOrderLag(inputs, a):
 
 # collect data as list
 datasets = [
-    '20240424185725_0.08force_cup_lift1-0.0045-0.003.npz',
+    '20240425171952_0.05force_cup_lift1-0.0045-0.003.npz',
     # '20240411141416_0.08force_cup_lift1-0.005-0.005.npz',
     # '20240412112624_1.3force_cup_lift1-0.005-0.005.npz',
     # '20240412115404_1.5force_cup_lift1-0.005-0.005.npz',
