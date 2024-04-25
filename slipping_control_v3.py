@@ -235,6 +235,7 @@ if __name__ == "__main__":
     minus_delta_ydz_buffer = 0
     regrasping_times = 0
     minus_delta_ydz_buffer_item = 0
+    hard_force = False
     while True:
         # det_comm.det_info() # the test mmdetection model
         # !gripper grasping with tactile sensing
@@ -246,9 +247,13 @@ if __name__ == "__main__":
         try:
             start_time = time.time()
             if re_grasp is True:
-                regrasping_times += 1
-                _slipping_force = 0.05
-                _slipping_force += increment_z_force * regrasping_times
+                if hard_force is False:
+                    regrasping_times += 1
+                    _slipping_force = 0.05
+                    _slipping_force += increment_z_force * regrasping_times
+                else:
+                    _slipping_force += increment_z_force
+                    hard_force = False
                 gripper.moveAbsolute(gripper_index, 0.1, init_speed)
                 time.sleep(2)
                 gripper.servoJ(grasp_q, 0.1, 0.1, 3.0, lookahead_time, gain)
@@ -514,7 +519,7 @@ if __name__ == "__main__":
                     # calculating the related of y/z and delta-y/z in the max z-index
                     regrasping_ydz_related = all_tac_data[:, tac_index-1] / all_tac_data[:, tac_index]
                     # get real max coupled z-force
-                    new_z_force_mean = all_tac_data[-10:, tac_index].mean()
+                    new_z_force_mean = all_tac_data[-_det_hz*3:, tac_index].mean()
                     if _slipping_force < new_z_force_mean:
                         _slipping_force = new_z_force_mean
                     # calculate the derivative of y/z 1second once time
@@ -584,6 +589,11 @@ if __name__ == "__main__":
                             gripper.stop(gripper_index)
                             gripper.moveRelative(gripper_index, grapsing_pos_step * _u / 4, schunk_speed)
                             # print('move???????????')
+                        # the gripper position is too hard for all of objects, regrasp
+                        if gripper_des - holdingpos > 10: # squeeze 10mm when lifting (too much)
+                            re_grasp = True
+                            hard_force = True
+
 
 
                     else:
