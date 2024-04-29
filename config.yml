@@ -1,0 +1,67 @@
+mmdet:
+  config_dir: '/home/yi/mmdet_models/configs/defobjs/mask-rcnn_r101_fpn_ms-poly-3x_defobjs_20.py'
+  checkpoint_dir: '/home/yi/mmdet_models/checkpoints/mask-rcnn_r101_fpn_ms-poly-3x_defobjs_20/epoch_10.pth'
+  out_dir: '/home/yi/mmdet_models/out.video'
+
+magneticSensor:
+  num_sensor_axis: 12 # 3x4, each point has 3 direction (xyz)
+  local_root_ip: '127.0.0.1' # do not use socket-udp in v3
+  server_port: 8110 # do not use socket-udp in v3
+  lowposs_ratio: 0.3
+  sample_items: 30000
+
+Schunk_UR:
+  robot_ip: '10.42.0.162'
+  ur_version: 'ur3e'
+  local_ip: '10.42.0.111'
+  schunk_port: 44607
+  init_speed: 100
+  schunk_speed: 10
+  grip_force_percentage: 0.51
+  grip_speed: 6
+  grasp_pos_step: 0.1
+  desir_grasp_force: 0.05
+  grip_thr: 0.03
+  ur_look_ahead_time: 0.03
+  ur_gain: 500
+  pid_items: 10
+  pid_hoding_times: 20
+  lift_hz: 50
+  det_hz: 50
+  lift_time: 0.1
+  lift_step: 0.0002 # unit: meter
+  zy_sum_force_th: 0.01
+  increment_z_force: 0.01
+  min_force: 0.06
+
+fuzzy_pid:
+  fp_u: 0
+  fp_p: 1
+  fp_i: 0.0045
+  fp_d: 0.003
+  controller_delay: 0.5
+
+common:
+  obj_name: 'cup'
+  record_data: True
+  record_video: True
+  record_video_fps: 30
+  record_video_w: 1280
+  record_video_h: 720
+  record_video_dir: '/home/yi/robotic_manipulation/_graspdata/sliding/'
+  # grasping policy initialization params
+  grasping: True
+  re_grasp: False
+  gripin: True
+  control: False
+  stay_item: 300
+  abort: False
+  _lifting: False
+  reset_lifting_step: False
+  simplegrasping: True
+  _lift_arm: True
+  lifting_force_control: True
+
+
+
+

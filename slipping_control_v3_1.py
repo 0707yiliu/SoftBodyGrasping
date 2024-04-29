@@ -12,7 +12,7 @@ from schunk_gripper_common.schunk_gripper_v3 import SchunkGripper
 from ur_ikfast import ur_kinematics
 import utils
 import numpy as np
-import rtde_control
+# import rtde_control
 import rtde_receive
 
 # !tactile sensor
@@ -30,10 +30,18 @@ from scipy.spatial.transform import Rotation as R
 
 from fuzzy_pid import Fuzzy_PID
 
+import yaml
+
+with open('config.yml', 'r', encoding="utf-8") as f:
+    config = yaml.safe_load(f) # import config from yaml
+
+
+
 # UR IK solver
-config_dir = '/home/yi/mmdet_models/configs/defobjs/mask-rcnn_r101_fpn_ms-poly-3x_defobjs_20.py'
-checkpoint_dir = '/home/yi/mmdet_models/checkpoints/mask-rcnn_r101_fpn_ms-poly-3x_defobjs_20/epoch_10.pth'
-out_dir = '/home/yi/mmdet_models/out.video'
+config_dir = config['mmdet']['config_dir']
+checkpoint_dir = config['mmdet']['checkpoint_dir']
+out_dir = config['mmdet']['out_dir']
+
 current_time = time.strftime('%Y%m%d%H%M%S', time.localtime())  # for npy data recording
 saved_data = np.zeros(12)
 
@@ -50,11 +58,11 @@ def FirstOrderLag(inputs, a): # offline
 
 def _get_sensor_data():
     sensor_vis = Visualiser(topic_data_type=MagTouch4, description="Visualise data from a MagTouch sensor.")
-    server_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    server_ip = '127.0.0.1'
-    server_port = 8110
-    addr = (server_ip, server_port)
-    lp_ratio = 0.3
+    # server_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    # server_ip = config['magneticSensor']['local_root_ip']
+    # server_port = config['magneticSensor']['server_port']
+    # addr = (server_ip, server_port)
+    lp_ratio = config['magneticSensor']['lowposs_ratio']
     global saved_data, filted_data
     last_data = np.zeros((2,2,3)).reshape(-1)
     for sample in sensor_vis.reader.take_iter(timeout=duration(seconds=10)):
@@ -109,63 +117,66 @@ if __name__ == "__main__":
     sensor_thread.setDaemon(True)
     sensor_thread.start()
     # !RTDE for reading ur, interpreter mode can not use rtde_control
-    RTDE = True
-    if RTDE is True:
-        robot_ip = "10.42.0.162"
-        rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
+    robot_ip = config['Schunk_UR']['robot_ip']
+    rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
     # !robotic kinamatics model
-    ur_arm = ur_kinematics.URKinematics('ur3e')
+    ur_arm = ur_kinematics.URKinematics(config['Schunk_UR']['ur_version'])
     # !create mmdetection model with realsense
     # # det_comm = Det_Common(config=config_dir, checkpoint=checkpoint_dir, out_pth=out_dir) # TODO:give config file path
     # # !create schunk gripper
-    local_ip = '10.42.0.111'
-    gripper = SchunkGripper(local_ip=local_ip, local_port=44607)
+    local_ip = config['Schunk_UR']['local_ip']
+    schunk_port = config['Schunk_UR']['schunk_port']
+    gripper = SchunkGripper(local_ip=local_ip, local_port=schunk_port)
     gripper.connect(remote_function=True)
     gripper_index = 0
     braking = 'true'
     gripper.acknowledge(gripper_index)
     gripper.connect_server_socket()
     gripper_current_pos = gripper.getPosition()
-    init_speed = 100
-    schunk_speed = 10
-    dir_pos = 0.3
+    init_speed = config['Schunk_UR']['init_speed']
+    schunk_speed = config['Schunk_UR']['schunk_speed']
     print('open finger for initialization.')
     gripper.moveAbsolute(gripper_index, 0.1, init_speed)  # init the position
     time.sleep(4)
     print("gripper initailization complete")
+    num_tac_axis = config['magneticSensor']['num_sensor_axis']
 
-    tac_data = np.zeros(12)
-    all_tac_data = np.zeros((0, 12))
-    _tac_data = np.zeros(12)
+    tac_data = np.zeros(num_tac_axis)
+    all_tac_data = np.zeros((0, num_tac_axis))
+    _tac_data = np.zeros(num_tac_axis)
     global filted_data
     iter = 0
     gripperDirOut = 'true'
     gripperDirIn = 'false'
-    graspforce = 0.51
-    graspspeed = 6
+    graspforce = config['Schunk_UR']['grip_force_percentage']
+    graspspeed = config['Schunk_UR']['grip_speed']
 
     gripper_pos = np.zeros(1)
     close = True
 
-    grapsing_pos_step = 0.1 # grasping step (unit: mm)
+    grapsing_pos_step = config['Schunk_UR']['grasp_pos_step'] # grasping step (unit: mm)
     # grapsing_pos_step = 2
-    _slipping_force = 0.05 # desired grasping force
+    _slipping_force = config['Schunk_UR']['desir_grasp_force'] # desired grasping force
     _slipping_force_ratio = 0.5 / _slipping_force * 10
-    force_step = 0.04
-    thr = 0.03
+    min_force = config['Schunk_UR']['min_force']
+    # force_step = 0.04
+    thr = config['Schunk_UR']['grip_thr']
     err_z_force_last = 0.0 # for pid
     err_total = 0.0
-    _u = 0 # pid
-    _p = 1
-    _i = 0.0045
-    _d = 0.003
+    _u = config['fuzzy_pid']['fp_u']
+    _p = config['fuzzy_pid']['fp_p']
+    _i = config['fuzzy_pid']['fp_i']
+    _d = config['fuzzy_pid']['fp_d']
+    obj_name = config['common']['obj_name']
     obj = str(_slipping_force) + 'force_cup_lift' + str(_p) + '-' + str(_i) + '-' + str(_d)  # recorded object
     obj = '_' + obj
     if record_video is True:
-        fps, w, h = 30, 1280, 720
+        fps, w, h = (config['common']['record_video_fps'],
+                     config['common']['record_video_w'],
+                     config['common']['record_video_h'])
         import cv2
         mp4 = cv2.VideoWriter_fourcc(*'mp4v')
-        video_path = '/home/yi/robotic_manipulation/_graspdata/sliding/' + current_time + obj + '.mp4'
+        video_path = config['common']['record_video_dir'] + current_time + obj + '.mp4'
         wr = cv2.VideoWriter(video_path, mp4, fps, (w, h), isColor=True)  #
         cam = Camera(w, h, fps)
 
@@ -176,19 +187,19 @@ if __name__ == "__main__":
     lifting_q1 = list(np.array([0.04331178590655327, -1.1777315002730866, 1.5720866362201136, -2.0071126423277796, -1.5606516043292444, -0.2388375441180628]))
     # lifting_q = [0.04155898839235306, -1.1985772413066407, 1.4263899962054651, -1.814186235467428, -1.557387653981344, -0.25038367906679326]
     lifting_q = [0.050802893936634064, -1.1801475447467347, 1.3791807333575647, -1.7680627308287562, -1.5725005308734339, 0.04205520078539848]
-    control_time = 1.0
-    lookahead_time = 0.03
-    gain = 500
+    # control_time = 1.0
+    lookahead_time = config['Schunk_UR']['ur_look_ahead_time']
+    gain = config['Schunk_UR']['ur_gain']
 
     gripper.servoJ(grasp_q, 0.1, 0.1, 3.0, lookahead_time, gain)
     time.sleep(5)
     print('going to the grasping pos')
     joint_angles_curr = rtde_r.getActualQ()
     target_pos = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]))
-    lifting_step = 0.0008 # 0.8mm
+    # lifting_step = 0.0008 # 0.8mm
     # -------------------calibrate sensor----------------
     print('going to the zero tac-sensor')
-    sample_items = 30000
+    sample_items = config['magneticSensor']['sample_items']
     offset_sensor_Data = recalibrate_tac_sensor(sample_items)
     print('calibrate sensor complete')
     # ---------------------------------------------------
@@ -205,32 +216,32 @@ if __name__ == "__main__":
     lifting_force_control = True
     force_control_items = 0
     holdingpos = 0
-    _controller_delay = 0.5
+    _controller_delay = config['fuzzy_pid']['controller_delay']
     # --------------fuzzy pid -----------
     fuzzyPID = Fuzzy_PID()
-    pid_items = 10
-    pid_hoding_times = 20
-    current_tac_data = np.zeros(12)
+    pid_items = config['Schunk_UR']['pid_items']
+    pid_hoding_times = config['Schunk_UR']['pid_hoding_times']
+    current_tac_data = np.zeros(num_tac_axis)
     #--------------lifting config----------
-    lift_hz = 50
+    lift_hz = config['Schunk_UR']['lift_hz']
     lift_wait_times = 0
-    lift_history = np.zeros((lift_hz, 12))
-    d_lift_history = np.zeros((int(lift_hz//2), 12))
+    lift_history = np.zeros((lift_hz, num_tac_axis))
+    d_lift_history = np.zeros((int(lift_hz//2), num_tac_axis))
     o_dy = 0.03
     tac_index = 0 # the index of mainly touching sensor
     control_once = True
     #------- re-grasping params ---------
-    det_hz = 50
-    lift_time = 1/10
+    det_hz = config['Schunk_UR']['det_hz']
+    lift_time = config['Schunk_UR']['lift_time']
     lift_num = 0
-    lift_step = 0.0002 # unit: meter
+    lift_step = config['Schunk_UR']['lift_step'] # unit: meter
     lift_dis = np.copy(target_pos[:3])
     re_items = 0
-    regrasping_tac_buffer = np.ones((det_hz, 12)) * 0.00001 # 3 second recording buffer
+    regrasping_tac_buffer = np.ones((det_hz, num_tac_axis)) * 0.00001 # 3 second recording buffer
     _tac_zy = np.zeros(0)
     total_tac_zy = 0
-    zy_sum_force_th = 0.01
-    increment_z_force = 0.01
+    zy_sum_force_th = config['Schunk_UR']['zy_sum_force_th']
+    increment_z_force = config['Schunk_UR']['increment_z_force']
     first_change = False
     minus_delta_ydz_buffer = 0
     regrasping_times = 0
@@ -249,7 +260,7 @@ if __name__ == "__main__":
             if re_grasp is True:
                 if hard_force is False:
                     regrasping_times += 1
-                    _slipping_force = 0.05
+                    _slipping_force = config['Schunk_UR']['desir_grasp_force']
                     _slipping_force += increment_z_force * regrasping_times
                 else:
                     _slipping_force += increment_z_force
@@ -276,14 +287,14 @@ if __name__ == "__main__":
             if simplegrasping is True:
                 print('grasping step', 'slipping force:', _slipping_force)
                 gripper.simpleGrip(gripper_index, gripperDirIn, graspforce, graspspeed)
-                simplegrasping = False
+                simplegrasping = not simplegrasping
             if grasping is True: # grasping detection
-                time.sleep(0.002)
+                time.sleep(0.002) # detection hz, fast detection
                 all_tac_data = np.vstack([all_tac_data, filted_data - offset_sensor_Data])
                 tac_data = np.vstack([tac_data, filted_data - offset_sensor_Data])
-                if _slipping_force > 0.07:
+                if _slipping_force > min_force:
                     # jug_force = _slipping_force - 0.05
-                    jug_force = 0.07
+                    jug_force = min_force
                 else:
                     jug_force = _slipping_force
                 z_max_force = np.abs([filted_data[2] - offset_sensor_Data[2], filted_data[5] - offset_sensor_Data[5],
@@ -292,8 +303,8 @@ if __name__ == "__main__":
                     z_max_force_index = z_max_force.argmax() # get the index of max z-force
                     gripper.stop(gripper_index)
                     print('tactile force reached, go to control step')
-                    grasping = False
-                    control = True
+                    grasping = not grasping
+                    control = not control
             # if grasping is True:
             #     print('grasping step', 'slipping force:', _slipping_force)
             #     # !move robot to the grasping pos
@@ -322,8 +333,6 @@ if __name__ == "__main__":
                 all_tac_data = np.vstack([all_tac_data, filted_data - offset_sensor_Data])
                 # !fuzzy control pid parameters
                 _p, _i, _d = fuzzyPID.compute(err_z_force, d_err)
-                pid_means_items = pid_items + 10
-
                 gripper_curr = gripper.getPosition()
                 # print('current gripper pos:', gripper_curr)
                 gripper_pos = np.append(gripper_pos, [gripper_curr])
