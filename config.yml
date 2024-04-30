@@ -7,7 +7,7 @@ magneticSensor:
   num_sensor_axis: 12 # 3x4, each point has 3 direction (xyz)
   local_root_ip: '127.0.0.1' # do not use socket-udp in v3
   server_port: 8110 # do not use socket-udp in v3
-  lowposs_ratio: 0.3
+  lowposs_ratio: 0.8
   sample_items: 30000
 
 Schunk_UR:
@@ -23,16 +23,17 @@ Schunk_UR:
   desir_grasp_force: 0.05
   grip_thr: 0.03
   ur_look_ahead_time: 0.03
-  ur_gain: 500
+  ur_gain: 300
   pid_items: 10
   pid_hoding_times: 20
   lift_hz: 50
   det_hz: 50
-  lift_time: 0.1
-  lift_step: 0.0002 # unit: meter
+  lift_time: 0.15
+  lift_step: 0.0004 # unit: meter
   zy_sum_force_th: 0.01
   increment_z_force: 0.01
   min_force: 0.06
+  squeeze_pos_diff: 8
 
 fuzzy_pid:
   fp_u: 0
@@ -42,7 +43,7 @@ fuzzy_pid:
   controller_delay: 0.5
 
 common:
-  obj_name: 'cup'
+  obj_name: 'cup' # change the name for different objects
   record_data: True
   record_video: True
   record_video_fps: 30
@@ -61,6 +62,7 @@ common:
   simplegrasping: True
   _lift_arm: True
   lifting_force_control: True
+  moving_average_window: 10
 
 
 
