@@ -19,28 +19,29 @@ Schunk_UR:
   schunk_speed: 10
   grip_force_percentage: 0.51
   grip_speed: 6
-  grasp_pos_step: 0.1
-  desir_grasp_force: 0.05
+  grasp_pos_step: 0.06
+  desir_grasp_force: 0.1
   grip_thr: 0.03
   ur_look_ahead_time: 0.03
   ur_gain: 300
-  pid_items: 10
-  pid_hoding_times: 20
+  pid_items: 50
+  pid_hoding_times: 80
   lift_hz: 50
-  det_hz: 50
+  det_hz: 30
   lift_time: 0.15
   lift_step: 0.0004 # unit: meter
   zy_sum_force_th: 0.01
-  increment_z_force: 0.01
-  min_force: 0.06
+  increment_z_force: 0.02
+  min_force: 0.12
   squeeze_pos_diff: 8
+  lift_time_once: 60
 
 fuzzy_pid:
   fp_u: 0
   fp_p: 1
   fp_i: 0.0045
   fp_d: 0.003
-  controller_delay: 0.5
+  controller_delay: 0.01
 
 common:
   obj_name: 'cup' # change the name for different objects

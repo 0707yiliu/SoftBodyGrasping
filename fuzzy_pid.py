@@ -4,10 +4,10 @@ import skfuzzy.control as ctrl
 
 class Fuzzy_PID:
     def __init__(self,
-              err_min=-2.5, err_max=2.5, E_err_min=-1.5, E_err_max=1.5,
-              kp_min=1, kp_max=2.5,
-              ki_min=0.0001, ki_max=0.025,
-              kd_min=0.0001, kd_max=0.015):
+              err_min=-1.5, err_max=1.5, E_err_min=-0.5, E_err_max=0.5,
+              kp_min=1, kp_max=4,
+              ki_min=0.01, ki_max=0.5,
+              kd_min=0.01, kd_max=0.1):
 
         fuzzy_num = 50
         # input
@@ -144,11 +144,21 @@ class Fuzzy_PID:
         return kp_out, ki_out / self.k_i_d_ratio, kd_out / self.k_i_d_ratio
 
 myfuzz_pid = Fuzzy_PID()
+e = -0.5063523042409486
+ee = -0.4935227632522583
+
+p,i,d = myfuzz_pid.compute(e, ee)
 print(
-    myfuzz_pid.compute(-0.7063523042409486, -0.4935227632522583)
+(p*e + i*e + d * ee) * 0.01, p,i,d
+
 )
+e = -0.01063523042409486
+ee = -0.004935227632522583
+p,i,d = myfuzz_pid.compute(e, ee)
+print(
+(p*e + i*e + d * ee) * 0.01, p,i,d
 
-
+)
 # -0.21282954098869034 -0.21282954098869034
 # -0.7063523042409486 -0.4935227632522583
 # -0.9354917514531679 -0.22913944721221924

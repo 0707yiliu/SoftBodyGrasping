@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/schunk_gripper_common/demo_simple.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/slipping_control_v3_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/slipping_control_v3_1.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +50,7 @@
     "Python.lstm_autoencoder_demo.executor": "Run",
     "Python.lstm_autoencoder_v1.executor": "Run",
     "Python.lstm_autoencoder_v1_1.executor": "Run",
+    "Python.modbusRTU_test.executor": "Run",
     "Python.plot_model_data.executor": "Run",
     "Python.plotcolortest.executor": "Run",
     "Python.pro_lstmae_labeled.executor": "Run",
@@ -80,17 +79,17 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping",
+    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping/schunk_gripper_common",
     "two.files.diff.last.used.file": "/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/schunk_gripper_common" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/grasp/data" />
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping" />
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\grasp\data" />
-      <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\grasp\data\model_data" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\0707y\PycharmProjects\SoftBodyGrasping\grasp\data\model_data" />
@@ -98,7 +97,29 @@
       <recent name="$PROJECT_DIR$/sensor_comm_dds" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.slipping_control_v3_1">
+  <component name="RunManager" selected="Python.modbusRTU_test">
+    <configuration name="modbusRTU_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SoftBodyGrasping" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/modbusRTU_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="readplot_npz_sliding" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -113,28 +134,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="slipping_control_v1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SoftBodyGrasping" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/slipping_control_v1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -211,11 +210,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.modbusRTU_test" />
         <item itemvalue="Python.slipping_control_v3_1" />
         <item itemvalue="Python.readplot_npz_sliding" />
         <item itemvalue="Python.slipping_control_v3" />
         <item itemvalue="Python.slipping_control_v2" />
-        <item itemvalue="Python.slipping_control_v1" />
       </list>
     </recent_temporary>
   </component>
