@@ -4,6 +4,7 @@ from scipy.interpolate import CubicHermiteSpline
 import math
 from math import sin, cos, tanh
 
+
 def interpolate_position(start_pos, end_pos, num_points):
     # linear interpolation for position
     # output the operation space path points (position 3-D)

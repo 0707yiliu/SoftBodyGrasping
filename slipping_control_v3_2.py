@@ -72,6 +72,28 @@ bks = BKSModule(config['common']['host'],
                 repeater_nb_tries=5
                 )
 
+obj_name = config['common']['obj_name']
+obj = str(config['Schunk_UR']['desir_grasp_force']) + obj_name # recorded object
+obj = '_' + obj
+
+# # !Camera recording part
+record_data = True
+record_video = True
+stop_record_video = False
+
+# mapping the desired force and step-pos
+spmin, spmax = config['Schunk_UR']['pmin'], config['Schunk_UR']['pmax']
+Fdmin, Fdmax = config['Schunk_UR']['Fdmin'], config['Schunk_UR']['Fdmax']
+mapfunspmin = np.log(1/Fdmax)
+mapfunspmax = np.log(1/Fdmin)
+def mapping_func(f):
+    # for nonlinear mapping
+    sp = np.log(1 / f)
+    sp_mapped = (sp - mapfunspmin) * (spmax - spmin) / (mapfunspmax - mapfunspmin) + spmin # linear mapping
+    return sp_mapped
+
+# -------------------------
+
 def lowpass_filter(ratio, data, last_data): # online
     data = (1-ratio) * data + ratio * last_data
     return data
@@ -91,6 +113,25 @@ def _get_sensor_data():
         # print(data, '\n', '---------')
         last_data = data.reshape(-1)
         filted_data = lowpass_filter(lp_ratio, data.reshape(-1), last_data)
+
+def _record_video():
+    fps, w, h = (config['common']['record_video_fps'],
+                 config['common']['record_video_w'],
+                 config['common']['record_video_h'])
+    import cv2
+    mp4 = cv2.VideoWriter_fourcc(*'mp4v')
+    video_path = config['common']['record_video_dir'] + current_time + obj + '.mp4'
+    wr = cv2.VideoWriter(video_path, mp4, fps, (w, h), isColor=True)  #
+    cam = Camera(w, h, fps)
+    global stop_record_video
+    while True:
+        if record_video is True:
+            color_image, depth_image, colorizer_depth = cam.get_frame()
+            wr.write(color_image)
+            if stop_record_video is True:
+                wr.release()
+                cam.release()
+                break
 
 
 def recalibrate_tac_sensor(sample_items):
@@ -127,14 +168,14 @@ def _control_loop(
 
 # --------------------------------------------------------
 if __name__ == "__main__":
-
-    # # !Camera recording part
-    record_data = True
-    record_video = True
     # # !tactile sensor thread
     sensor_thread = threading.Thread(target=_get_sensor_data)
     sensor_thread.setDaemon(True)
     sensor_thread.start()
+    # # !camera recording thread
+    cam_thread = threading.Thread(target=_record_video)
+    cam_thread.setDaemon(True)
+    cam_thread.start()
     # # !RTDE for reading ur, interpreter mode can not use rtde_control
     robot_ip = config['Schunk_UR']['robot_ip']
     rtde_r = rtde_receive.RTDEReceiveInterface(robot_ip)
@@ -186,18 +227,17 @@ if __name__ == "__main__":
     _p = config['fuzzy_pid']['fp_p']
     _i = config['fuzzy_pid']['fp_i']
     _d = config['fuzzy_pid']['fp_d']
-    obj_name = config['common']['obj_name']
-    obj = str(_slipping_force) + obj_name # recorded object
-    obj = '_' + obj
-    if record_video is True:
-        fps, w, h = (config['common']['record_video_fps'],
-                     config['common']['record_video_w'],
-                     config['common']['record_video_h'])
-        import cv2
-        mp4 = cv2.VideoWriter_fourcc(*'mp4v')
-        video_path = config['common']['record_video_dir'] + current_time + obj + '.mp4'
-        wr = cv2.VideoWriter(video_path, mp4, fps, (w, h), isColor=True)  #
-        cam = Camera(w, h, fps)
+
+
+    # if record_video is True:
+    #     fps, w, h = (config['common']['record_video_fps'],
+    #                  config['common']['record_video_w'],
+    #                  config['common']['record_video_h'])
+    #     import cv2
+    #     mp4 = cv2.VideoWriter_fourcc(*'mp4v')
+    #     video_path = config['common']['record_video_dir'] + current_time + obj + '.mp4'
+    #     wr = cv2.VideoWriter(video_path, mp4, fps, (w, h), isColor=True)  #
+    #     cam = Camera(w, h, fps)
 
     grasp_q = [0.05079088360071182, -1.1178493958762665, 1.5329473654376429, -1.984063287774557, -1.5724676291095179, 0.04206418991088867]
     # grasp_q = [0.041693784296512604, -1.1353824895671387, 1.5678980986224573, -2.0189134083189906, -1.5581014792071741, -0.2504060904132288]
@@ -226,7 +266,6 @@ if __name__ == "__main__":
     re_grasp = False
     gripin = True
     control = False
-    stay_item = 300
     abort = False
     _lifting = False
     reset_lifting_step = False
@@ -261,6 +300,8 @@ if __name__ == "__main__":
     zy_sum_force_th = config['Schunk_UR']['zy_sum_force_th']
     increment_z_force = config['Schunk_UR']['increment_z_force']
     squeeze_pos_diff = config['Schunk_UR']['squeeze_pos_diff']
+    regraspingThr = config['Schunk_UR']['regraspingThr']
+    slipdetnum = config['Schunk_UR']['slipdetnum']
     first_change = False
     minus_delta_ydz_buffer = 0
     regrasping_times = 0
@@ -358,6 +399,7 @@ if __name__ == "__main__":
                 gripper_pos = np.append(gripper_pos, [gripper_curr])
                 # !moving gripper
                 # gripper.stop(gripper_index)
+                grapsing_pos_step = mapping_func(_slipping_force)
                 bks.move_to_relative_position(int(grapsing_pos_step * _u * 1000.0), move_rel_velocity_ums)
                 # gripper.moveRelative(gripper_index, grapsing_pos_step * _u, schunk_speed)
                 print(err_z_force, d_err, rtde_r.getActualTCPPose()[:3], _slipping_force, _p, _i, _d)
@@ -431,7 +473,7 @@ if __name__ == "__main__":
                 # ------------------------------------
                 re_items += 1
                 # the detect hz you need
-                _det_hz = int(0.2 * det_hz)
+                _det_hz = int(0.1 * det_hz)
                 if re_items > _det_hz: # (_det_hz once time)
                     re_items = 0
                     # data pre-processing
@@ -448,30 +490,50 @@ if __name__ == "__main__":
                     # calculate the derivative of y/z 1second once time
                     # print(tac_index, regrasping_ydz_related[-50:-1], all_tac_data[-50:-1, tac_index], all_tac_data[-50:-1, tac_index-1])
                     regrasping_ydz_related = utils.FirstOrderLag(regrasping_ydz_related, lp_ratio)
-                    delta_ydz = regrasping_ydz_related[-20:].mean() - regrasping_ydz_related[-_det_hz-20:-_det_hz].mean()
-                    print(delta_ydz, delta_ydz/0.2)
-                    joint_angles_curr = rtde_r.getActualQ()
-                    target_pos = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]))
+                    # one second data for detection
+                    delta_ydz = (regrasping_ydz_related[-int(1/_controller_delay/slipdetnum):].mean() -
+                                 regrasping_ydz_related[-int(1/_controller_delay/slipdetnum)*2:-int(1/_controller_delay/slipdetnum)].mean())
+
+                    y_mean = all_tac_data[-int(1/_controller_delay):, tac_index-1].mean()
+                    print('ydz:', delta_ydz, 'y_mean:', y_mean)
+                    # joint_angles_curr = rtde_r.getActualQ()
+                    # target_pos = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]))
                     # print(target_pos[:3])
-                    if delta_ydz < 0: # minus means slipping or falling down
-                        minus_delta_ydz_buffer += delta_ydz
-                    else:
-                        minus_delta_ydz_buffer_item += 1
-                        if minus_delta_ydz_buffer_item > 1: # the number of continue holding
+                    if y_mean <= 0:
+                        if delta_ydz < 0: # minus means slipping or falling down
+                            minus_delta_ydz_buffer += delta_ydz
+                        else:
+                            minus_delta_ydz_buffer_item += 1
+                            if minus_delta_ydz_buffer_item > 1: # the number of continue holding
+                                minus_delta_ydz_buffer_item = 0
+                                minus_delta_ydz_buffer = 0
+                        if minus_delta_ydz_buffer < -regraspingThr: # slip detection by derivative of y/z
                             minus_delta_ydz_buffer_item = 0
+                            # regrasping or increased force from max z-force
+                            print('slipping ---------------------')
                             minus_delta_ydz_buffer = 0
-                    if minus_delta_ydz_buffer < -0.1: # slip detection by derivative of y/z
-                        minus_delta_ydz_buffer_item = 0
-                        # regrasping or increased force from max z-force
-                        print('slipping ---------------------')
-                        minus_delta_ydz_buffer = 0
-                        _slipping_force += 0.01
-                        slip_times += 1
-                    elif abs(all_tac_data[-1, tac_index]) < (_slipping_force * (1/3)):
+                            _slipping_force += increment_z_force
+                            slip_times += 1
+                    else:
+                        if delta_ydz > 0:  # minus means slipping or falling down
+                            minus_delta_ydz_buffer += delta_ydz
+                        else:
+                            minus_delta_ydz_buffer_item += 1
+                            if minus_delta_ydz_buffer_item > 1: # the number of continue holding
+                                minus_delta_ydz_buffer_item = 0
+                                minus_delta_ydz_buffer = 0
+                        if minus_delta_ydz_buffer > regraspingThr:
+                            minus_delta_ydz_buffer_item = 0
+                            # regrasping or increased force from max z-force
+                            print('slipping ---------------------')
+                            minus_delta_ydz_buffer = 0
+                            _slipping_force += increment_z_force / 3
+                            slip_times += 1
+                    if abs(all_tac_data[-int(1/_controller_delay/2):, tac_index].mean()) < (_slipping_force * (1 / 3)):
                         # max z force has going to zero, which means falling down
-                        print('falling force:', all_tac_data[-1, tac_index], _slipping_force * (1/3), tac_index)
+                        print('falling force:', all_tac_data[-int(1/_controller_delay/2):, tac_index].mean(), _slipping_force * (1 / 3), tac_index)
                         print('falling !!!!!!!!!!!!!!!!!!!!!!')
-                        _slipping_force += 0.01
+                        _slipping_force += increment_z_force
                         re_grasp = True
 
                 # control force when slipping -------------------------------
@@ -485,6 +547,7 @@ if __name__ == "__main__":
                                                                                         _p, _i, _d, )
                     _p, _i, _d = fuzzyPID.compute(err_z_force, d_err)
                     gripper_curr = bks.actual_pos
+                    grapsing_pos_step = mapping_func(_slipping_force)
                     gripper_des = grapsing_pos_step * _u + gripper_curr
                     print('holding pos:', holdingpos,
                           'gripper des pos:', gripper_des,
@@ -494,6 +557,7 @@ if __name__ == "__main__":
                         print('do not open the finger when lifting.')  # do not open the gripper
                     else:
                         # gripper.stop(gripper_index)
+                        grapsing_pos_step = mapping_func(_slipping_force)
                         bks.move_to_relative_position(int(grapsing_pos_step * _u * 1000.0), move_rel_velocity_ums)
                         # gripper.moveRelative(gripper_index, grapsing_pos_step * _u / 4, schunk_speed)
                         # print('move???????????')
@@ -506,14 +570,15 @@ if __name__ == "__main__":
                 all_tac_data = np.vstack([all_tac_data, filted_data - offset_sensor_Data])
 
             end_time = time.time()
-            if record_video is True:
-                color_image, depth_image, colorizer_depth = cam.get_frame()
-                wr.write(color_image)
+            # if record_video is True:
+            #     color_image, depth_image, colorizer_depth = cam.get_frame()
+            #     wr.write(color_image)
         except KeyboardInterrupt:
+            stop_record_video = True
             time.sleep(1)
-            if record_video is True:
-                wr.release()
-                cam.release()
+            # if record_video is True:
+            #     wr.release()
+            #     cam.release()
             if record_data is True:
                 tac_data = np.delete(tac_data, 0, 0)
                 _tac_data = np.delete(_tac_data, 0, 0)
