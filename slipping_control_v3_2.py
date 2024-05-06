@@ -59,7 +59,7 @@ checkpoint_dir = config['mmdet']['checkpoint_dir']
 out_dir = config['mmdet']['out_dir']
 
 current_time = time.strftime('%Y%m%d%H%M%S', time.localtime())  # for npy data recording
-saved_data = np.zeros(12)
+saved_data = np.zeros((0, 12))
 lp_ratio = config['magneticSensor']['lowposs_ratio']
 moving_average_window = config['common']['moving_average_window']
 
@@ -104,8 +104,9 @@ def _get_sensor_data():
     # server_ip = config['magneticSensor']['local_root_ip']
     # server_port = config['magneticSensor']['server_port']
     # addr = (server_ip, server_port)
-    global saved_data, filted_data
+    global saved_data, filted_data, offset_sensor_Data
     last_data = np.zeros((2,2,3)).reshape(-1)
+    item = 0
     for sample in sensor_vis.reader.take_iter(timeout=duration(seconds=10)):
         data = np.zeros((2, 2, 3))
         for i, taxel in enumerate(sample.taxels):
@@ -113,6 +114,12 @@ def _get_sensor_data():
         # print(data, '\n', '---------')
         last_data = data.reshape(-1)
         filted_data = lowpass_filter(lp_ratio, data.reshape(-1), last_data)
+        if item > 50:
+            saved_data = np.vstack([saved_data, filted_data - offset_sensor_Data])
+            item = 0
+        else:
+            item += 1
+
 
 def _record_video():
     fps, w, h = (config['common']['record_video_fps'],
@@ -201,8 +208,6 @@ if __name__ == "__main__":
     # gripper.moveAbsolute(gripper_index, 0.1, init_speed)  # init the position
     num_tac_axis = config['magneticSensor']['num_sensor_axis']
 
-    tac_data = np.zeros(num_tac_axis)
-    all_tac_data = np.zeros((0, num_tac_axis))
     _tac_data = np.zeros(num_tac_axis)
     global filted_data
     iter = 0
@@ -364,8 +369,7 @@ if __name__ == "__main__":
 
             if grasping is True: # grasping detection
                 time.sleep(_controller_delay) # detection hz, fast detection
-                all_tac_data = np.vstack([all_tac_data, filted_data - offset_sensor_Data])
-                tac_data = np.vstack([tac_data, filted_data - offset_sensor_Data])
+                _tac_data = np.vstack([_tac_data, filted_data - offset_sensor_Data])
                 bks.move_to_relative_position(int(0.15*1000.0), move_rel_velocity_ums)
                 if _slipping_force > min_force:
                     jug_force = _slipping_force - 0.05
@@ -391,7 +395,6 @@ if __name__ == "__main__":
                                                                                   _slipping_force, err_z_force_last, err_total,
                                                                                   _slipping_force_ratio, _p, _i, _d,)
                 _tac_data = np.vstack([_tac_data, filted_data - offset_sensor_Data])
-                all_tac_data = np.vstack([all_tac_data, filted_data - offset_sensor_Data])
                 # !fuzzy control pid parameters
                 _p, _i, _d = fuzzyPID.compute(err_z_force, d_err)
                 gripper_curr = bks.actual_pos
@@ -479,12 +482,12 @@ if __name__ == "__main__":
                     # data pre-processing
                     #---------------11111111--------------
                     for i in range(num_tac_axis): # smooth each tac point
-                        all_tac_data[:, i] = utils.moving_average(all_tac_data[:, i], moving_average_window)
-                        all_tac_data[:, i] = utils.FirstOrderLag(all_tac_data[:, i], lp_ratio) # for all of the tac data
+                        _tac_data[:, i] = utils.moving_average(_tac_data[:, i], moving_average_window)
+                        _tac_data[:, i] = utils.FirstOrderLag(_tac_data[:, i], lp_ratio) # for all of the tac data
                     # calculating the related of y/z and delta-y/z in the max z-index
-                    regrasping_ydz_related = all_tac_data[:, tac_index-1] / all_tac_data[:, tac_index]
+                    regrasping_ydz_related = _tac_data[:, tac_index-1] / _tac_data[:, tac_index]
                     # get real max coupled z-force
-                    new_z_force_mean = all_tac_data[-_det_hz*3:, tac_index].mean()
+                    new_z_force_mean = _tac_data[-_det_hz*3:, tac_index].mean()
                     if _slipping_force < new_z_force_mean:
                         _slipping_force = new_z_force_mean
                     # calculate the derivative of y/z 1second once time
@@ -494,7 +497,7 @@ if __name__ == "__main__":
                     delta_ydz = (regrasping_ydz_related[-int(1/_controller_delay/slipdetnum):].mean() -
                                  regrasping_ydz_related[-int(1/_controller_delay/slipdetnum)*2:-int(1/_controller_delay/slipdetnum)].mean())
 
-                    y_mean = all_tac_data[-int(1/_controller_delay):, tac_index-1].mean()
+                    y_mean = _tac_data[-int(1/_controller_delay):, tac_index-1].mean()
                     print('ydz:', delta_ydz, 'y_mean:', y_mean)
                     # joint_angles_curr = rtde_r.getActualQ()
                     # target_pos = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]))
@@ -529,9 +532,9 @@ if __name__ == "__main__":
                             minus_delta_ydz_buffer = 0
                             _slipping_force += increment_z_force / 3
                             slip_times += 1
-                    if abs(all_tac_data[-int(1/_controller_delay/2):, tac_index].mean()) < (_slipping_force * (1 / 3)):
+                    if abs(_tac_data[-int(1/_controller_delay/2):, tac_index].mean()) < (_slipping_force * (1 / 3)):
                         # max z force has going to zero, which means falling down
-                        print('falling force:', all_tac_data[-int(1/_controller_delay/2):, tac_index].mean(), _slipping_force * (1 / 3), tac_index)
+                        print('falling force:', _tac_data[-int(1/_controller_delay/2):, tac_index].mean(), _slipping_force * (1 / 3), tac_index)
                         print('falling !!!!!!!!!!!!!!!!!!!!!!')
                         _slipping_force += increment_z_force
                         re_grasp = True
@@ -567,7 +570,6 @@ if __name__ == "__main__":
                         hard_force = True
 # --------------------------Recording Part----------------------------------------------
                 _tac_data = np.vstack([_tac_data, filted_data - offset_sensor_Data])
-                all_tac_data = np.vstack([all_tac_data, filted_data - offset_sensor_Data])
 
             end_time = time.time()
             # if record_video is True:
@@ -580,11 +582,9 @@ if __name__ == "__main__":
             #     wr.release()
             #     cam.release()
             if record_data is True:
-                tac_data = np.delete(tac_data, 0, 0)
                 _tac_data = np.delete(_tac_data, 0, 0)
-                saved_data = np.delete(saved_data, 0, 0)
                 np.savez('./grasp/data/' + current_time + obj + '.npz',
-                         loop_tac_data=tac_data,
+                         loop_tac_data=_tac_data,
                          all_tac_data=saved_data,
                          gripper_pos=gripper_pos,
                          _tac_data=_tac_data,

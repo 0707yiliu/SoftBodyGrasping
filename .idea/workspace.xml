@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/schunk_gripper_common/demo_simple.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/SoftBodyGrasping.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SoftBodyGrasping.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slipping_control_v3_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/slipping_control_v3_2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,55 +37,55 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.autoencoder_demo.executor": "Run",
-    "Python.autoencoder_demo_classifier.executor": "Run",
-    "Python.define_function_test.executor": "Run",
-    "Python.depth_info.executor": "Run",
-    "Python.fuzzy_pid.executor": "Run",
-    "Python.lstm_ae_mnist (1).executor": "Run",
-    "Python.lstm_ae_mnist.executor": "Run",
-    "Python.lstm_ae_reproduce.executor": "Run",
-    "Python.lstm_ae_snp500.executor": "Run",
-    "Python.lstm_ae_toy.executor": "Run",
-    "Python.lstm_autoencoder.executor": "Run",
-    "Python.lstm_autoencoder_demo.executor": "Run",
-    "Python.lstm_autoencoder_v1.executor": "Run",
-    "Python.lstm_autoencoder_v1_1.executor": "Run",
-    "Python.modbusRTU_test.executor": "Run",
-    "Python.plot_model_data.executor": "Run",
-    "Python.plotcolortest.executor": "Run",
-    "Python.pro_lstmae_labeled.executor": "Run",
-    "Python.pro_model_data (1).executor": "Run",
-    "Python.read_npy.executor": "Run",
-    "Python.readplot_npy.executor": "Run",
-    "Python.readplot_npz_multiobjs.executor": "Run",
-    "Python.readplot_npz_sliding.executor": "Run",
-    "Python.run_v0.executor": "Run",
-    "Python.run_v2.executor": "Run",
-    "Python.run_v3.executor": "Run",
-    "Python.schunk_gripper.executor": "Run",
-    "Python.schunkgripper_example.executor": "Run",
-    "Python.schunkgripper_example_v2.executor": "Run",
-    "Python.schunkgripper_example_v3.executor": "Run",
-    "Python.slipping_control.executor": "Run",
-    "Python.slipping_control_v1.executor": "Run",
-    "Python.slipping_control_v2.executor": "Run",
-    "Python.slipping_control_v3.executor": "Run",
-    "Python.slipping_control_v3_1.executor": "Run",
-    "Python.slipping_test.executor": "Run",
-    "Python.train_utils.executor": "Run",
-    "Python.udp_recv.executor": "Run",
-    "Python.ur_kinematics.executor": "Run",
-    "Python.utils.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/yi/robotic_manipulation/SoftBodyGrasping/schunk_gripper_common",
-    "two.files.diff.last.used.file": "/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.autoencoder_demo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.autoencoder_demo_classifier.executor&quot;: &quot;Run&quot;,
+    &quot;Python.define_function_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.depth_info.executor&quot;: &quot;Run&quot;,
+    &quot;Python.fuzzy_pid.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_ae_mnist (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_ae_mnist.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_ae_reproduce.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_ae_snp500.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_ae_toy.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_autoencoder.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_autoencoder_demo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_autoencoder_v1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lstm_autoencoder_v1_1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.modbusRTU_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.plot_model_data.executor&quot;: &quot;Run&quot;,
+    &quot;Python.plotcolortest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pro_lstmae_labeled.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pro_model_data (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.read_npy.executor&quot;: &quot;Run&quot;,
+    &quot;Python.readplot_npy.executor&quot;: &quot;Run&quot;,
+    &quot;Python.readplot_npz_multiobjs.executor&quot;: &quot;Run&quot;,
+    &quot;Python.readplot_npz_sliding.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_v0.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_v2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_v3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunk_gripper.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunkgripper_example.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunkgripper_example_v2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.schunkgripper_example_v3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.slipping_control.executor&quot;: &quot;Run&quot;,
+    &quot;Python.slipping_control_v1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.slipping_control_v2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.slipping_control_v3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.slipping_control_v3_1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.slipping_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.train_utils.executor&quot;: &quot;Run&quot;,
+    &quot;Python.udp_recv.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ur_kinematics.executor&quot;: &quot;Run&quot;,
+    &quot;Python.utils.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/yi/robotic_manipulation/SoftBodyGrasping/schunk_gripper_common&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;/home/yi/robotic_manipulation/SoftBodyGrasping/grasp/mmdet_video_det_v1.py&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/schunk_gripper_common" />
@@ -97,7 +100,7 @@
       <recent name="$PROJECT_DIR$/sensor_comm_dds" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.modbusRTU_test">
+  <component name="RunManager" selected="Python.readplot_npz_sliding">
     <configuration name="modbusRTU_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -210,9 +213,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.readplot_npz_sliding" />
         <item itemvalue="Python.modbusRTU_test" />
         <item itemvalue="Python.slipping_control_v3_1" />
-        <item itemvalue="Python.readplot_npz_sliding" />
         <item itemvalue="Python.slipping_control_v3" />
         <item itemvalue="Python.slipping_control_v2" />
       </list>
@@ -221,7 +224,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-50da183f06c8-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13135.95" />
+        <option value="bundled-python-sdk-67fca87a943a-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.11799.259" />
       </set>
     </attachedChunks>
   </component>

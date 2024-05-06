@@ -30,7 +30,7 @@ def FirstOrderLag(inputs, a):
 
 # collect data as list
 datasets = [
-    '20240506155614_0.05minitomato_cut.npz',
+    '20240506154323_0.05eggshell.npz',
     # '20240411141416_0.08force_cup_lift1-0.005-0.005.npz',
     # '20240412112624_1.3force_cup_lift1-0.005-0.005.npz',
     # '20240412115404_1.5force_cup_lift1-0.005-0.005.npz',
@@ -40,10 +40,15 @@ datasets = [
 tac_datalists = [np.load(datasets[i])['loop_tac_data'] for i in range(len(datasets))]
 pos_datalists = [np.load(datasets[i])['gripper_pos'] for i in range(len(datasets))]
 _tac_datalists = [np.load(datasets[i])['_tac_data'] for i in range(len(datasets))]
+#- -------------------11111111-----------------------------
 print(tac_datalists[0].shape, _tac_datalists[0].shape)
 all_tac_data = np.vstack((tac_datalists[0], _tac_datalists[0]))
 print(all_tac_data.shape)
 all_tac_data = _tac_datalists[0]
+#- -------------------222222222-----new------------------------
+# all_tac_data = [np.load(datasets[i])['all_tac_data'] for i in range(len(datasets))]
+# print(all_tac_data)
+#- ------------------------------------------------
 for i in range(all_tac_data.shape[1]):
     all_tac_data[:, i] = moving_average(all_tac_data[:, i], 10)
 print('----------', all_tac_data.shape)
