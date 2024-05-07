@@ -30,7 +30,7 @@ def FirstOrderLag(inputs, a):
 
 # collect data as list
 datasets = [
-    '20240506154323_0.05eggshell.npz',
+    '20240507133353_0.05kiwis_cut.npz',
     # '20240411141416_0.08force_cup_lift1-0.005-0.005.npz',
     # '20240412112624_1.3force_cup_lift1-0.005-0.005.npz',
     # '20240412115404_1.5force_cup_lift1-0.005-0.005.npz',
@@ -46,17 +46,22 @@ all_tac_data = np.vstack((tac_datalists[0], _tac_datalists[0]))
 print(all_tac_data.shape)
 all_tac_data = _tac_datalists[0]
 #- -------------------222222222-----new------------------------
-# all_tac_data = [np.load(datasets[i])['all_tac_data'] for i in range(len(datasets))]
+all_tac_dataALL = [np.load(datasets[i])['all_tac_data'] for i in range(len(datasets))][0]
 # print(all_tac_data)
+print(all_tac_data.shape, all_tac_dataALL.shape)
 #- ------------------------------------------------
+for i in range(all_tac_dataALL.shape[1]):
+    all_tac_dataALL[:, i] = moving_average(all_tac_dataALL[:, i], 10)
 for i in range(all_tac_data.shape[1]):
     all_tac_data[:, i] = moving_average(all_tac_data[:, i], 10)
-print('----------', all_tac_data.shape)
-d_all_tac_data = FirstOrderLag(all_tac_data, 0.8)
+# print('----------', all_tac_data.shape)
+d_all_tac_data = FirstOrderLag(all_tac_dataALL, 0.8)
+all_tac_dataALL = FirstOrderLag(all_tac_dataALL, 0.8)
 all_tac_data = FirstOrderLag(all_tac_data, 0.8)
+
 hz_time = 0.02
 hz = 1 / hz_time
-print('---', all_tac_data.shape)
+# print('---', all_tac_data.shape)
 d_all_tac_data = np.vstack((np.zeros(all_tac_data.shape[1]), d_all_tac_data))
 for i in range(d_all_tac_data.shape[0]-1):
     d_all_tac_data[i, :] = (d_all_tac_data[i+1, :] - d_all_tac_data[i,:]) / hz_time
@@ -117,16 +122,16 @@ for i in range(row):
                            tac_datalists[k][:, yl],
                            color=colors[k], label=legends[k])
 
-            axs[i][j].plot(np.linspace(len(tac_datalists[k]),
-                                       len(tac_datalists[k]) + stay_item - 1,
-                                       stay_item),
-                           _tac_datalists[k][:stay_item, yl],
-                           color=colors[k + 1], label=legends[k + 1])
-            axs[i][j].plot(np.linspace(len(tac_datalists[k]) + stay_item,
-                                       len(tac_datalists[k]) + len(_tac_datalists[k]) - 1,
-                                       len(_tac_datalists[k]) - stay_item),
-                           _tac_datalists[k][stay_item:, yl],
-                           color=colors[k + 2], label=legends[k + 2])
+            # axs[i][j].plot(np.linspace(len(tac_datalists[k]),
+            #                            len(tac_datalists[k]) + stay_item - 1,
+            #                            stay_item),
+            #                _tac_datalists[k][:stay_item, yl],
+            #                color=colors[k + 1], label=legends[k + 1])
+            # axs[i][j].plot(np.linspace(len(tac_datalists[k]) + stay_item,
+            #                            len(tac_datalists[k]) + len(_tac_datalists[k]) - 1,
+            #                            len(_tac_datalists[k]) - stay_item),
+            #                _tac_datalists[k][stay_item:, yl],
+            #                color=colors[k + 2], label=legends[k + 2])
 
             # print(len(tac_datalists[k]), len(_tac_datalists[k]))
             # axs[i][j].plot(np.linspace(len(tac_datalists[k]),
@@ -158,9 +163,9 @@ for i in range(row):
                         d_all_tac_data[:, yl],
                         color=colors[0], label=legends[k])
         axs1[i][j].plot(np.linspace(0,
-                                    all_tac_data.shape[0] - 1,
-                                    all_tac_data.shape[0]),
-                        all_tac_data[:, yl],
+                                    all_tac_dataALL.shape[0] - 1,
+                                    all_tac_dataALL.shape[0]),
+                        all_tac_dataALL[:, yl],
                         color=colors[1], label=legends[k + 1])
 
         if _legend is False:
@@ -311,7 +316,7 @@ if left_num != 0:
     step_num += 1
 d_all_tac_data_zy = np.zeros((step_num - 1, 4))
 z_index = [2, 5, 8, 11]
-print(all_tac_data[:, 0])
+# print(all_tac_data[:, 0])
 for i in range(step_num-1):
     for j in range(len(z_index)):
         if i > 0:
@@ -320,9 +325,9 @@ for i in range(step_num-1):
         else:
             d_all_tac_data_zy[i, j] = (abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])) * (abs(
                 all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1]))
-        print((abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])),
-              (abs(all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1])),
-              d_all_tac_data_zy[i], z_index[j])
+        # print((abs(all_tac_data[(i + 1) * _len, z_index[j]] - all_tac_data[i * _len, z_index[j]])),
+        #       (abs(all_tac_data[(i + 1) * _len, z_index[j] - 1] - all_tac_data[i * _len, z_index[j] - 1])),
+        #       d_all_tac_data_zy[i], z_index[j])
         # time.sleep(100)
 print(d_all_tac_data_zy.shape)
 _legend = False
@@ -359,7 +364,7 @@ for i in range(row):
     for j in range(col):
         index = (i * 2 + j) + 1
         yl = index * 3 - 1
-        print(index, yl, y_z_tac_data.shape, all_tac_data.shape)
+        # print(index, yl, y_z_tac_data.shape, all_tac_data.shape)
         y_z_tac_data[:, index-1] = all_tac_data[:, yl-1] / all_tac_data[:, yl]
 # print(y_z_tac_data.shape[0])
 # derivation delta-yz

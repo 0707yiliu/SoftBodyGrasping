@@ -57,9 +57,10 @@ with open('config_bks.yml', 'r', encoding="utf-8") as f:
 config_dir = config['mmdet']['config_dir']
 checkpoint_dir = config['mmdet']['checkpoint_dir']
 out_dir = config['mmdet']['out_dir']
-
+num_tac_axis = config['magneticSensor']['num_sensor_axis']
 current_time = time.strftime('%Y%m%d%H%M%S', time.localtime())  # for npy data recording
-saved_data = np.zeros((0, 12))
+saved_data = np.zeros((0, num_tac_axis))
+offset_sensor_Data = np.zeros(num_tac_axis)
 lp_ratio = config['magneticSensor']['lowposs_ratio']
 moving_average_window = config['common']['moving_average_window']
 
@@ -86,10 +87,15 @@ spmin, spmax = config['Schunk_UR']['pmin'], config['Schunk_UR']['pmax']
 Fdmin, Fdmax = config['Schunk_UR']['Fdmin'], config['Schunk_UR']['Fdmax']
 mapfunspmin = np.log(1/Fdmax)
 mapfunspmax = np.log(1/Fdmin)
-def mapping_func(f):
+# mapping the pos diff and increment force
+incre_force_min, incre_force_max = config['Schunk_UR']['increment_force_min'], config['Schunk_UR']['increment_force_max']
+pos_diff_min, pos_diff_max = config['Schunk_UR']['pos_diff_min'], config['Schunk_UR']['squeeze_pos_diff']
+mapfunincreforcemin = np.log(1/pos_diff_min)
+mapfunincreforcemax = np.log(1/pos_diff_max)
+def mapping_func(f, xmin, xmax, ymin, ymax):
     # for nonlinear mapping
     sp = np.log(1 / f)
-    sp_mapped = (sp - mapfunspmin) * (spmax - spmin) / (mapfunspmax - mapfunspmin) + spmin # linear mapping
+    sp_mapped = (sp - xmin) * (ymax - ymin) / (xmax - xmin) + ymin # linear mapping
     return sp_mapped
 
 # -------------------------
@@ -108,15 +114,19 @@ def _get_sensor_data():
     last_data = np.zeros((2,2,3)).reshape(-1)
     item = 0
     for sample in sensor_vis.reader.take_iter(timeout=duration(seconds=10)):
+        start_time = time.time()
         data = np.zeros((2, 2, 3))
         for i, taxel in enumerate(sample.taxels):
             data[i // 2, i % 2] = np.array([taxel.x, taxel.y, taxel.z])
         # print(data, '\n', '---------')
         last_data = data.reshape(-1)
         filted_data = lowpass_filter(lp_ratio, data.reshape(-1), last_data)
-        if item > 50:
+        # saved_data = np.vstack([saved_data, filted_data - offset_sensor_Data])
+        # print(saved_data.shape, time.time() - start_time)
+        if item > 1:
             saved_data = np.vstack([saved_data, filted_data - offset_sensor_Data])
             item = 0
+            # print(saved_data.shape)
         else:
             item += 1
 
@@ -206,8 +216,6 @@ if __name__ == "__main__":
     time.sleep(3)
     print('gripper initailization complete')
     # gripper.moveAbsolute(gripper_index, 0.1, init_speed)  # init the position
-    num_tac_axis = config['magneticSensor']['num_sensor_axis']
-
     _tac_data = np.zeros(num_tac_axis)
     global filted_data
     iter = 0
@@ -254,6 +262,7 @@ if __name__ == "__main__":
     # control_time = 1.0
     lookahead_time = config['Schunk_UR']['ur_look_ahead_time']
     gain = config['Schunk_UR']['ur_gain']
+    desired_slip_force = np.array([_slipping_force])
 
     rtde_c.servoJ(grasp_q, 0.1, 0.1, 3.0, lookahead_time, gain)
     time.sleep(5)
@@ -307,6 +316,7 @@ if __name__ == "__main__":
     squeeze_pos_diff = config['Schunk_UR']['squeeze_pos_diff']
     regraspingThr = config['Schunk_UR']['regraspingThr']
     slipdetnum = config['Schunk_UR']['slipdetnum']
+    controlspring = config['Schunk_UR']['controlspring']
     first_change = False
     minus_delta_ydz_buffer = 0
     regrasping_times = 0
@@ -314,6 +324,7 @@ if __name__ == "__main__":
     hard_force = False
     slip_times = 0
     slip_diff_force = 0
+    falling_times = 0
     n = 0
     bks.MakeReady()
     while True:
@@ -359,7 +370,7 @@ if __name__ == "__main__":
                 minus_delta_ydz_buffer = 0
                 minus_delta_ydz_buffer_item = 0
                 bks.MakeReady()
-
+            desired_slip_force = np.append(desired_slip_force, _slipping_force)
             # if simplegrasping is True:
             #     print('grasping step', 'slipping force:', _slipping_force)
             #     bks.set_force = 50  # target force to 50 %
@@ -369,7 +380,7 @@ if __name__ == "__main__":
 
             if grasping is True: # grasping detection
                 time.sleep(_controller_delay) # detection hz, fast detection
-                _tac_data = np.vstack([_tac_data, filted_data - offset_sensor_Data])
+                # tac_data = np.vstack([tac_data, filted_data - offset_sensor_Data])
                 bks.move_to_relative_position(int(0.15*1000.0), move_rel_velocity_ums)
                 if _slipping_force > min_force:
                     jug_force = _slipping_force - 0.05
@@ -394,6 +405,8 @@ if __name__ == "__main__":
                                                                                   filted_data, offset_sensor_Data,
                                                                                   _slipping_force, err_z_force_last, err_total,
                                                                                   _slipping_force_ratio, _p, _i, _d,)
+                if _u < 0:
+                    _u = controlspring * _u
                 _tac_data = np.vstack([_tac_data, filted_data - offset_sensor_Data])
                 # !fuzzy control pid parameters
                 _p, _i, _d = fuzzyPID.compute(err_z_force, d_err)
@@ -402,7 +415,8 @@ if __name__ == "__main__":
                 gripper_pos = np.append(gripper_pos, [gripper_curr])
                 # !moving gripper
                 # gripper.stop(gripper_index)
-                grapsing_pos_step = mapping_func(_slipping_force)
+                grapsing_pos_step = mapping_func(_slipping_force, xmin=mapfunspmin, xmax=mapfunspmax,
+                                                     ymin=spmin, ymax=spmax)
                 bks.move_to_relative_position(int(grapsing_pos_step * _u * 1000.0), move_rel_velocity_ums)
                 # gripper.moveRelative(gripper_index, grapsing_pos_step * _u, schunk_speed)
                 print(err_z_force, d_err, rtde_r.getActualTCPPose()[:3], _slipping_force, _p, _i, _d)
@@ -439,6 +453,7 @@ if __name__ == "__main__":
                     lift_time_once = config['Schunk_UR']['lift_time_once'] # 50s for once lifting
                     joint_angles_curr = rtde_r.getActualQ()
                     target_pos = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]))
+                    ori_zpos = np.copy(target_pos[2])
                     target_pos[2] += 0.04  # lift z-axis, lift a minor step once time, hard code
                     target_ideal_rot = [-89.5, 0.1, 0.1]
                     r_target_rot = R.from_euler('xyz', target_ideal_rot, degrees=True)
@@ -452,6 +467,12 @@ if __name__ == "__main__":
                     else:
                         print('ik fast inv no response.')
                         control_once = True
+                joint_angles_curr = rtde_r.getActualQ()
+                curr_zpos = ur_arm.forward(joint_angles_curr, ee_vec=np.array([0, 0, 0.1507]))[2]
+                if curr_zpos - ori_zpos > 0.011:
+                    force_damp = 0.7
+                else:
+                    force_damp = 1
                 # ------------------------------------
                 # if lift_num < (det_hz/2):
                 #     lift_num += 1
@@ -505,6 +526,7 @@ if __name__ == "__main__":
                     if y_mean <= 0:
                         if delta_ydz < 0: # minus means slipping or falling down
                             minus_delta_ydz_buffer += delta_ydz
+                            minus_delta_ydz_buffer_item = 0
                         else:
                             minus_delta_ydz_buffer_item += 1
                             if minus_delta_ydz_buffer_item > 1: # the number of continue holding
@@ -515,11 +537,12 @@ if __name__ == "__main__":
                             # regrasping or increased force from max z-force
                             print('slipping ---------------------')
                             minus_delta_ydz_buffer = 0
-                            _slipping_force += increment_z_force
+                            _slipping_force += increment_z_force * force_damp
                             slip_times += 1
                     else:
                         if delta_ydz > 0:  # minus means slipping or falling down
                             minus_delta_ydz_buffer += delta_ydz
+                            minus_delta_ydz_buffer_item = 0
                         else:
                             minus_delta_ydz_buffer_item += 1
                             if minus_delta_ydz_buffer_item > 1: # the number of continue holding
@@ -530,14 +553,11 @@ if __name__ == "__main__":
                             # regrasping or increased force from max z-force
                             print('slipping ---------------------')
                             minus_delta_ydz_buffer = 0
-                            _slipping_force += increment_z_force / 3
+                            _slipping_force += increment_z_force * force_damp
                             slip_times += 1
-                    if abs(_tac_data[-int(1/_controller_delay/2):, tac_index].mean()) < (_slipping_force * (1 / 3)):
-                        # max z force has going to zero, which means falling down
-                        print('falling force:', _tac_data[-int(1/_controller_delay/2):, tac_index].mean(), _slipping_force * (1 / 3), tac_index)
-                        print('falling !!!!!!!!!!!!!!!!!!!!!!')
-                        _slipping_force += increment_z_force
-                        re_grasp = True
+                    if abs(_tac_data[-int(1/_controller_delay/10):, tac_index].mean()) - (_slipping_force * (1 / 2)) < 0:
+                        falling_times += 0.8
+                        _slipping_force += (increment_z_force * force_damp / 2) / falling_times
 
                 # control force when slipping -------------------------------
                 if lifting_force_control is True:
@@ -550,24 +570,51 @@ if __name__ == "__main__":
                                                                                         _p, _i, _d, )
                     _p, _i, _d = fuzzyPID.compute(err_z_force, d_err)
                     gripper_curr = bks.actual_pos
-                    grapsing_pos_step = mapping_func(_slipping_force)
+                    grapsing_pos_step = mapping_func(_slipping_force, xmin=mapfunspmin, xmax=mapfunspmax,
+                                                     ymin=spmin, ymax=spmax)
+                    # create a spring for opening
+                    if _u < 0:
+                        _u = controlspring * _u * 0.5
                     gripper_des = grapsing_pos_step * _u + gripper_curr
                     print('holding pos:', holdingpos,
                           'gripper des pos:', gripper_des,
                           'des force:', _slipping_force,
-                          'curr force err:', err_z_force)
+                          'curr force err:', err_z_force,
+                          'incre force damp:', force_damp)
                     if gripper_des < (holdingpos - 0.5):
                         print('do not open the finger when lifting.')  # do not open the gripper
                     else:
                         # gripper.stop(gripper_index)
-                        grapsing_pos_step = mapping_func(_slipping_force)
+                        grapsing_pos_step = mapping_func(_slipping_force, xmin=mapfunspmin, xmax=mapfunspmax,
+                                                     ymin=spmin, ymax=spmax)
                         bks.move_to_relative_position(int(grapsing_pos_step * _u * 1000.0), move_rel_velocity_ums)
                         # gripper.moveRelative(gripper_index, grapsing_pos_step * _u / 4, schunk_speed)
                         # print('move???????????')
                     # the gripper position is too hard for all of objects, regrasp
                     if gripper_des - holdingpos > squeeze_pos_diff:  # squeeze 10mm when lifting (too much)
                         re_grasp = True
+                        _slipping_force += increment_z_force * force_damp / 3
+                        print('regrasping as pos over')
                         hard_force = True
+                    else:
+                        if 0.001 > gripper_des - holdingpos > -0.001:
+                            pdiff = 0.001
+                        elif gripper_des - holdingpos < 0:
+                            pdiff = 0.005
+                        else:
+                            pdiff = gripper_des - holdingpos
+                        increment_z_force = mapping_func(pdiff,
+                                                         xmin=mapfunincreforcemin,
+                                                         xmax=mapfunincreforcemax,
+                                                         ymin=incre_force_min,
+                                                         ymax=incre_force_max)
+                    if abs(_tac_data[-int(1/_controller_delay/10):, tac_index].mean()) < (_slipping_force * (1 / 5)):
+                        # max z force has going to zero, which means falling down
+                        print('falling force:', _tac_data[-int(1/_controller_delay/10):, tac_index].mean(), _slipping_force * (1 / 5), tac_index)
+                        print('falling !!!!!!!!!!!!!!!!!!!!!!')
+                        _slipping_force += increment_z_force * force_damp / 3
+                        re_grasp = True
+                        falling_times = 0
 # --------------------------Recording Part----------------------------------------------
                 _tac_data = np.vstack([_tac_data, filted_data - offset_sensor_Data])
 
@@ -588,6 +635,7 @@ if __name__ == "__main__":
                          all_tac_data=saved_data,
                          gripper_pos=gripper_pos,
                          _tac_data=_tac_data,
+                         des_slip_force=desired_slip_force,
                          )
             print('keyboard interrupt')
             sys.exit(0)

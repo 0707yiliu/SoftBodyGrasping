@@ -31,16 +31,20 @@ Schunk_UR:
   lift_time: 0.15
   lift_step: 0.0004 # unit: meter
   zy_sum_force_th: 0.01
-  increment_z_force: 0.015
+  increment_z_force: 0.02
   min_force: 0.12
-  squeeze_pos_diff: 8
   lift_time_once: 40
+  squeeze_pos_diff: 8
   pmin: 0.01
   pmax: 0.06
   Fdmin: 0.05
   Fdmax: 1
-  regraspingThr: 0.08
+  regraspingThr: 0.07
   slipdetnum: 10
+  pos_diff_min: 0.001
+  increment_force_max: 0.02
+  increment_force_min: 0.015
+  controlspring: 0.3
 
 fuzzy_pid:
   fp_u: 0
@@ -50,7 +54,7 @@ fuzzy_pid:
   controller_delay: 0.01
 
 common:
-  obj_name: 'kiwis' # change the name for different objects
+  obj_name: 'cup2heavy' # change the name for different objects
   host: '/dev/ttyUSB0'
   record_data: True
   record_video: True

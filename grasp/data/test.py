@@ -3,7 +3,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
-mapfunspmax = np.log(1/0.06)
+mapfunspmax = np.log(1/0.001)
 mapfunspmin = np.log(1/1)
 spmin = 0.02
 spmax = 0.07
