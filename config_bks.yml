@@ -21,7 +21,6 @@ Schunk_UR:
   grip_speed: 6
   grasp_pos_step: 0.05
   desir_grasp_force: 0.05
-  basic_model_des_force: 0.7
   grip_thr: 0.03
   ur_look_ahead_time: 0.03
   ur_gain: 300
@@ -32,20 +31,22 @@ Schunk_UR:
   lift_time: 0.15
   lift_step: 0.0004 # unit: meter
   zy_sum_force_th: 0.01
-  increment_z_force: 0.02
+  increment_z_force: 0.01
   min_force: 0.12
   lift_time_once: 40
-  squeeze_pos_diff: 6
-  pmin: 0.01
-  pmax: 0.06
+  squeeze_pos_diff: 23
+  pmin: 0.005
+  pmax: 0.045
   Fdmin: 0.05
-  Fdmax: 1
+  Fdmax: 1.5
   regraspingThr: 0.03
   slipdetnum: 10
   pos_diff_min: 0.001
   increment_force_max: 0.02
-  increment_force_min: 0.005
+  increment_force_min: 0.01
   controlspring: 0.3
+  basic_model_des_force: 1
+  exp_once: False
 
 fuzzy_pid:
   fp_u: 0
@@ -55,7 +56,7 @@ fuzzy_pid:
   controller_delay: 0.01
 
 common:
-  obj_name: 'papercup' # change the name for different objects
+  obj_name: 'fish' # change the name for different objects
   host: '/dev/ttyUSB0'
   record_data: True
   record_video: True

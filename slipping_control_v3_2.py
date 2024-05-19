@@ -119,16 +119,16 @@ def _get_sensor_data():
         for i, taxel in enumerate(sample.taxels):
             data[i // 2, i % 2] = np.array([taxel.x, taxel.y, taxel.z])
         # print(data, '\n', '---------')
-        last_data = data.reshape(-1)
         filted_data = lowpass_filter(lp_ratio, data.reshape(-1), last_data)
-        # saved_data = np.vstack([saved_data, filted_data - offset_sensor_Data])
+        last_data = data.reshape(-1)
+        saved_data = np.vstack([saved_data, filted_data - offset_sensor_Data])
         # print(saved_data.shape, time.time() - start_time)
-        if item > 1:
-            saved_data = np.vstack([saved_data, filted_data - offset_sensor_Data])
-            item = 0
-            # print(saved_data.shape)
-        else:
-            item += 1
+        # if item > 1:
+        #     saved_data = np.vstack([saved_data, filted_data - offset_sensor_Data])
+        #     item = 0
+        #     # print(saved_data.shape)
+        # else:
+        #     item += 1
 
 
 def _record_video():
@@ -337,7 +337,7 @@ if __name__ == "__main__":
         #                          --- done
         try:
             start_time = time.time()
-            if re_grasp is True:
+            if re_grasp is True and config['Schunk_UR']['exp_once'] is False:
                 # if hard_force is False:
                 #     regrasping_times += 1
                 #     _slipping_force = config['Schunk_UR']['desir_grasp_force']
@@ -555,7 +555,7 @@ if __name__ == "__main__":
                             minus_delta_ydz_buffer = 0
                             _slipping_force += increment_z_force * force_damp
                             slip_times += 1
-                    if abs(_tac_data[-int(1/_controller_delay/10):, tac_index].mean()) - (_slipping_force * (1 / 2)) < 0:
+                    if abs(_tac_data[-int(1/_controller_delay/10):, tac_index].mean()) - (_slipping_force * (1 / 3)) < 0:
                         falling_times += 0.8
                         _slipping_force += (increment_z_force * force_damp / 2) / falling_times
 
@@ -608,9 +608,9 @@ if __name__ == "__main__":
                                                          xmax=mapfunincreforcemax,
                                                          ymin=incre_force_min,
                                                          ymax=incre_force_max)
-                    if abs(_tac_data[-int(1/_controller_delay/10):, tac_index].mean()) < (_slipping_force * (1 / 5)):
+                    if abs(_tac_data[-int(1/_controller_delay/10):, tac_index].mean()) < (_slipping_force * (1 / 15)):
                         # max z force has going to zero, which means falling down
-                        print('falling force:', _tac_data[-int(1/_controller_delay/10):, tac_index].mean(), _slipping_force * (1 / 5), tac_index)
+                        print('falling force:', _tac_data[-int(1/_controller_delay/10):, tac_index].mean(), _slipping_force * (1 / 15), tac_index)
                         print('falling !!!!!!!!!!!!!!!!!!!!!!')
                         _slipping_force += increment_z_force * force_damp / 3
                         re_grasp = True

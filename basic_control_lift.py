@@ -392,6 +392,7 @@ if __name__ == "__main__":
                                       filted_data[5] - offset_sensor_Data[5],
                                       filted_data[8] - offset_sensor_Data[8],
                                       filted_data[11] - offset_sensor_Data[11]])
+                print('closing force:', z_max_force.max(), jug_force)
                 if z_max_force.max() > jug_force:
                     z_max_force_index = z_max_force.argmax() # get the index of max z-force
                     # gripper.stop(gripper_index)

@@ -18,7 +18,7 @@ def mapping_func(f):
 x = np.linspace(2, 7, 100)
 y = np.exp(x)
 plt.figure(1)
-plt.plot(x,1/y)
+plt.plot(x,y)
 
 x = np.linspace(0.06, 1, 100)
 y = np.log(1/x)
