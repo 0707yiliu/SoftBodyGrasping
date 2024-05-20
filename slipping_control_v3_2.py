@@ -610,7 +610,7 @@ if __name__ == "__main__":
                                                          ymax=incre_force_max)
                     if abs(_tac_data[-int(1/_controller_delay/10):, tac_index].mean()) < (_slipping_force * (1 / 15)):
                         # max z force has going to zero, which means falling down
-                        print('falling force:', _tac_data[-int(1/_controller_delay/10):, tac_index].mean(), _slipping_force * (1 / 15), tac_index)
+                        print('falling force:', _tac_data[-int(1/_controller_delay/10):, tac_index].mean(), _slipping_force * (1 / 50), tac_index)
                         print('falling !!!!!!!!!!!!!!!!!!!!!!')
                         _slipping_force += increment_z_force * force_damp / 3
                         re_grasp = True

@@ -532,7 +532,7 @@ if __name__ == "__main__":
                             if minus_delta_ydz_buffer_item > 1: # the number of continue holding
                                 minus_delta_ydz_buffer_item = 0
                                 minus_delta_ydz_buffer = 0
-                        if minus_delta_ydz_buffer < -regraspingThr: # slip detection by derivative of y/z
+                        if minus_delta_ydz_buffer < -regraspingThr*2: # slip detection by derivative of y/z
                             minus_delta_ydz_buffer_item = 0
                             # regrasping or increased force from max z-force
                             print('slipping ---------------------')
@@ -548,7 +548,7 @@ if __name__ == "__main__":
                             if minus_delta_ydz_buffer_item > 1: # the number of continue holding
                                 minus_delta_ydz_buffer_item = 0
                                 minus_delta_ydz_buffer = 0
-                        if minus_delta_ydz_buffer > regraspingThr:
+                        if minus_delta_ydz_buffer > regraspingThr*2:
                             minus_delta_ydz_buffer_item = 0
                             # regrasping or increased force from max z-force
                             print('slipping ---------------------')

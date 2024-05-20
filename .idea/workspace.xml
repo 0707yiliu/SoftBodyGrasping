@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/fixforcestep_control_lift.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/grasp/data/forcecurve.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basic_control_lift.py" beforeDir="false" afterPath="$PROJECT_DIR$/basic_control_lift.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config_bks.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config_bks.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuzzy_pid.py" beforeDir="false" afterPath="$PROJECT_DIR$/fuzzy_pid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixforcestep_control_lift.py" beforeDir="false" afterPath="$PROJECT_DIR$/fixforcestep_control_lift.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/slipping_control_v3_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/slipping_control_v3_2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -225,8 +220,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.slipping_control_v3_2" />
-        <item itemvalue="Python.basic_control_lift" />
         <item itemvalue="Python.fixforcestep_control_lift" />
+        <item itemvalue="Python.basic_control_lift" />
         <item itemvalue="Python.readplot_npz_sliding" />
         <item itemvalue="Python.fuzzy_pid" />
       </list>
