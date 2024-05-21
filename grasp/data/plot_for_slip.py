@@ -31,7 +31,8 @@ def FirstOrderLag(inputs, a):
 
 # collect data as list
 datasets = [
-    '20240516144816_0.05mug_basicfordet.npz',
+    # '20240516144816_0.05mug_basicfordet.npz',
+    '20240516145034_0.05kiwis_basicfordet.npz',
     # '20240411141416_0.08force_cup_lift1-0.005-0.005.npz',
     # '20240412112624_1.3force_cup_lift1-0.005-0.005.npz',
     # '20240412115404_1.5force_cup_lift1-0.005-0.005.npz',
@@ -40,14 +41,11 @@ datasets = [
 ]
 tac_datalists = [np.load(datasets[i])['loop_tac_data'] for i in range(len(datasets))]
 pos_datalists = [np.load(datasets[i])['gripper_pos'] for i in range(len(datasets))]
-_tac_datalists = [np.load(datasets[i])['_tac_data'] for i in range(len(datasets))]
 #- -------------------11111111-----------------------------
-print(tac_datalists[0].shape, _tac_datalists[0].shape)
-# all_tac_data = np.vstack((tac_datalists[0], _tac_datalists[0]))
-# print(all_tac_data.shape)
-all_tac_data = _tac_datalists[0]
+all_tac_data = tac_datalists[0]
 #- -------------------222222222-----new------------------------
 all_tac_dataALL = [np.load(datasets[i])['all_tac_data'] for i in range(len(datasets))][0]
+des_slip_force = [np.load(datasets[i])['des_slip_force'] for i in range(len(datasets))][0]
 # print(all_tac_data)
 print('loop shape and all shape:',all_tac_data.shape, all_tac_dataALL.shape)
 #- ------------------------------------------------
@@ -56,9 +54,9 @@ for i in range(all_tac_dataALL.shape[1]):
 for i in range(all_tac_data.shape[1]):
     all_tac_data[:, i] = moving_average(all_tac_data[:, i], 10)
 # print('----------', all_tac_data.shape)
-d_all_tac_data = FirstOrderLag(all_tac_dataALL, 0.5)
-all_tac_dataALL = FirstOrderLag(all_tac_dataALL, 0.5)
-# all_tac_data = FirstOrderLag(all_tac_data, 0.8)
+d_all_tac_data = FirstOrderLag(all_tac_dataALL, 0.8)
+all_tac_dataALL = FirstOrderLag(all_tac_dataALL, 0.8)
+all_tac_data = FirstOrderLag(all_tac_data, 0.7)
 
 hz_time = 0.02
 hz = 1 / hz_time
@@ -106,8 +104,6 @@ _legend = False
 # print(np.linspace(0, len(tac_datalists[0])-1, len(tac_datalists[0])))
 # print(tac_datalists)
 stay_item = 1
-# print(tac_datalists[0].shape)
-# print(_tac_datalists[0].shape)
 fig.suptitle(datasets[0], fontsize=20)
 legends = ['squeeze', 'hold', 'lift']
 # for cut
@@ -127,24 +123,6 @@ for i in range(row):
                                        len(fig1tac)),
                            fig1tac[:, yl],
                            color=colors[k], label=legends[k])
-
-            # axs[i][j].plot(np.linspace(len(tac_datalists[k]),
-            #                            len(tac_datalists[k]) + stay_item - 1,
-            #                            stay_item),
-            #                _tac_datalists[k][:stay_item, yl],
-            #                color=colors[k + 1], label=legends[k + 1])
-            # axs[i][j].plot(np.linspace(len(tac_datalists[k]) + stay_item,
-            #                            len(tac_datalists[k]) + len(_tac_datalists[k]) - 1,
-            #                            len(_tac_datalists[k]) - stay_item),
-            #                _tac_datalists[k][stay_item:, yl],
-            #                color=colors[k + 2], label=legends[k + 2])
-
-            # print(len(tac_datalists[k]), len(_tac_datalists[k]))
-            # axs[i][j].plot(np.linspace(len(tac_datalists[k]),
-            #                            len(tac_datalists[k]) + len(_tac_datalists[k]) - 1,
-            #                            len(_tac_datalists[k])),
-            #                _tac_datalists[k][:, yl],
-            #                color=colors[k + 3], label=legends[k + 2])
         if _legend is False:
             axs[i][j].legend()
             _legend = True

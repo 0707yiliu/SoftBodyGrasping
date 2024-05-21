@@ -15,7 +15,7 @@ plt.yticks(fontsize=fontsize)
 
 plt.text(x=1.1,  # 文本x轴坐标
          y=0.63,  # 文本y轴坐标
-         s='broken boundary',  # 文本内容
+         s=r'fracture boundary ($f_b$)',  # 文本内容
          ha='left',  # x=2.2是文字的左端位置，可选'center', 'right', 'left'
          va='baseline',  # y=8是文字的低端位置，可选'center', 'top', 'bottom', 'baseline', 'center_baseline'
          fontdict=dict(fontsize=14, color='black',
@@ -26,7 +26,7 @@ plt.text(x=1.1,  # 文本x轴坐标
 
 plt.text(x=1.1,  # 文本x轴坐标
          y=0.44,  # 文本y轴坐标
-         s='slip boundary',  # 文本内容
+         s=r'slip boundary ($f_s$)',  # 文本内容
          ha='left',  # x=2.2是文字的左端位置，可选'center', 'right', 'left'
          va='baseline',  # y=8是文字的低端位置，可选'center', 'top', 'bottom', 'baseline', 'center_baseline'
          fontdict=dict(fontsize=14, color='black',
