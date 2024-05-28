@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/grasp/data/datas.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/grasp/data/plot_for_3objsslip.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/grasp/data/plot_for_slip2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/grasp/data/twins.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config_bks.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config_bks.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grasp/data/forcecurve.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/forcecurve.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slipping_control_v3_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/slipping_control_v3_2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +47,7 @@
     "Python.autoencoder_demo.executor": "Run",
     "Python.autoencoder_demo_classifier.executor": "Run",
     "Python.basic_control_lift.executor": "Run",
+    "Python.datas.executor": "Run",
     "Python.define_function_test.executor": "Run",
     "Python.demo_grip_workpiece_with_expected_position.executor": "Run",
     "Python.depth_info.executor": "Run",
@@ -57,6 +64,7 @@
     "Python.lstm_autoencoder_v1.executor": "Run",
     "Python.lstm_autoencoder_v1_1.executor": "Run",
     "Python.modbusRTU_test.executor": "Run",
+    "Python.plot_for_3objsslip.executor": "Run",
     "Python.plot_for_slip.executor": "Run",
     "Python.plot_model_data.executor": "Run",
     "Python.plotcolortest.executor": "Run",
@@ -82,6 +90,7 @@
     "Python.slipping_test.executor": "Run",
     "Python.test.executor": "Run",
     "Python.train_utils.executor": "Run",
+    "Python.twins.executor": "Run",
     "Python.udp_recv.executor": "Run",
     "Python.ur_kinematics.executor": "Run",
     "Python.utils.executor": "Run",
@@ -108,6 +117,50 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.plot_for_slip">
+    <configuration name="basic_control_lift" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SoftBodyGrasping" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/basic_control_lift.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="datas" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SoftBodyGrasping" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/grasp/data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/datas.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="fixforcestep_control_lift" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -130,28 +183,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="forcecurve" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SoftBodyGrasping" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/grasp/data" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/forcecurve.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="plot_for_slip" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -166,28 +197,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/plot_for_slip.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="readplot_npz_sliding" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SoftBodyGrasping" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/grasp/data" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/readplot_npz_sliding.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -221,9 +230,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.plot_for_slip" />
-        <item itemvalue="Python.readplot_npz_sliding" />
+        <item itemvalue="Python.datas" />
+        <item itemvalue="Python.basic_control_lift" />
         <item itemvalue="Python.slipping_control_v3_2" />
-        <item itemvalue="Python.forcecurve" />
         <item itemvalue="Python.fixforcestep_control_lift" />
       </list>
     </recent_temporary>

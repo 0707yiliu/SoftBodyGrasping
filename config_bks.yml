@@ -56,7 +56,7 @@ fuzzy_pid:
   controller_delay: 0.01
 
 common:
-  obj_name: 'mug' # change the name for different objects
+  obj_name: 'cake_basic' # change the name for different objects
   host: '/dev/ttyUSB0'
   record_data: True
   record_video: True

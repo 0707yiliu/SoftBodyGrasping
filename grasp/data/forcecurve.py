@@ -13,27 +13,27 @@ font1 = {'family' : 'Arial',
 plt.xticks(fontsize=fontsize)
 plt.yticks(fontsize=fontsize)
 
-plt.text(x=1.1,  # 文本x轴坐标
-         y=0.63,  # 文本y轴坐标
-         s=r'fracture boundary ($f_b$)',  # 文本内容
-         ha='left',  # x=2.2是文字的左端位置，可选'center', 'right', 'left'
-         va='baseline',  # y=8是文字的低端位置，可选'center', 'top', 'bottom', 'baseline', 'center_baseline'
-         fontdict=dict(fontsize=14, color='black',
-                       family='Arial',  # 字体,可选'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'
-                       weight='medium',  # 磅值，可选'light', 'normal', 'medium', 'semibold', 'bold', 'heavy', 'black'
-                       )  # 字体属性设置
-         )
-
-plt.text(x=1.1,  # 文本x轴坐标
-         y=0.44,  # 文本y轴坐标
-         s=r'slip boundary ($f_s$)',  # 文本内容
-         ha='left',  # x=2.2是文字的左端位置，可选'center', 'right', 'left'
-         va='baseline',  # y=8是文字的低端位置，可选'center', 'top', 'bottom', 'baseline', 'center_baseline'
-         fontdict=dict(fontsize=14, color='black',
-                       family='Arial',  # 字体,可选'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'
-                       weight='medium',  # 磅值，可选'light', 'normal', 'medium', 'semibold', 'bold', 'heavy', 'black'
-                       )  # 字体属性设置
-         )
+# plt.text(x=1.1,  # 文本x轴坐标
+#          y=0.63,  # 文本y轴坐标
+#          s=r'fracture boundary ($f_b$)',  # 文本内容
+#          ha='left',  # x=2.2是文字的左端位置，可选'center', 'right', 'left'
+#          va='baseline',  # y=8是文字的低端位置，可选'center', 'top', 'bottom', 'baseline', 'center_baseline'
+#          fontdict=dict(fontsize=14, color='black',
+#                        family='Arial',  # 字体,可选'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'
+#                        weight='medium',  # 磅值，可选'light', 'normal', 'medium', 'semibold', 'bold', 'heavy', 'black'
+#                        )  # 字体属性设置
+#          )
+#
+# plt.text(x=1.1,  # 文本x轴坐标
+#          y=0.44,  # 文本y轴坐标
+#          s=r'slip boundary ($f_s$)',  # 文本内容
+#          ha='left',  # x=2.2是文字的左端位置，可选'center', 'right', 'left'
+#          va='baseline',  # y=8是文字的低端位置，可选'center', 'top', 'bottom', 'baseline', 'center_baseline'
+#          fontdict=dict(fontsize=14, color='black',
+#                        family='Arial',  # 字体,可选'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'
+#                        weight='medium',  # 磅值，可选'light', 'normal', 'medium', 'semibold', 'bold', 'heavy', 'black'
+#                        )  # 字体属性设置
+#          )
 
 len = 100
 kill = 5
@@ -59,14 +59,19 @@ fragile = np.hstack((fragile, extend_fragile))
 plt.plot(extend_xx, fragile, linewidth=linewidth,label=r"fragile objects")
 
 slip_line = np.ones(extend_xx.shape[0]) * 0.425
-plt.plot(extend_xx, slip_line, linestyle='--', color='chartreuse', linewidth=linewidth)
+plt.plot(extend_xx, slip_line, linestyle='--', color='chartreuse', label=r"$f_s$", linewidth=linewidth)
+slip_line_range = np.ones(extend_xx.shape[0]) * 0.47
+plt.plot(extend_xx, slip_line_range, alpha=0.2, linestyle='-', color='chartreuse', label=r"$f_s$ zone",linewidth=linewidth*11)
+
 break_line = np.ones(extend_xx.shape[0]) * 0.615
-plt.plot(extend_xx, break_line, linestyle='--', color='r', linewidth=linewidth)
+plt.plot(extend_xx, break_line, linestyle='--', color='r', label=r"$f_b$", linewidth=linewidth)
+break_line_range = np.ones(extend_xx.shape[0]) * 0.57
+plt.plot(extend_xx, break_line_range, alpha=0.2, linestyle='-', color='r', label=r"$f_b$ zone", linewidth=linewidth*11)
 
 plt.xlabel('time step', font1)
 plt.ylabel('Force', font1)
 plt.xlim(0,120)
-plt.legend(fontsize=fontsize-2)
+plt.legend(fontsize=fontsize-2, ncol=2)
 
 
 plt.show()
