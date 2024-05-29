@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/grasp/data/datas.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/grasp/data/plot_for_3objsslip.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/grasp/data/plot_for_slip2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/grasp/data/twins.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/grasp/data/plot_for_3objscom.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config_bks.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config_bks.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/forcecurve.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/forcecurve.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/data/20240517141834_0.05eggcooked.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240517141834_0.05eggcooked.npznew.npz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/readplot_npz_multiobjs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/slipping_control_v3_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/slipping_control_v3_2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +58,7 @@
     "Python.lstm_autoencoder_v1.executor": "Run",
     "Python.lstm_autoencoder_v1_1.executor": "Run",
     "Python.modbusRTU_test.executor": "Run",
+    "Python.plot_for_3objscom.executor": "Run",
     "Python.plot_for_3objsslip.executor": "Run",
     "Python.plot_for_slip.executor": "Run",
     "Python.plot_model_data.executor": "Run",
@@ -161,7 +156,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="fixforcestep_control_lift" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="plot_for_3objscom" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -170,11 +165,33 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/grasp/data" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fixforcestep_control_lift.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/plot_for_3objscom.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="plot_for_3objsslip" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SoftBodyGrasping" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/grasp/data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grasp/data/plot_for_3objsslip.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -205,35 +222,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="slipping_control_v3_2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SoftBodyGrasping" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/slipping_control_v3_2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.plot_for_slip" />
+        <item itemvalue="Python.plot_for_3objscom" />
+        <item itemvalue="Python.plot_for_3objsslip" />
         <item itemvalue="Python.datas" />
         <item itemvalue="Python.basic_control_lift" />
-        <item itemvalue="Python.slipping_control_v3_2" />
-        <item itemvalue="Python.fixforcestep_control_lift" />
       </list>
     </recent_temporary>
   </component>
