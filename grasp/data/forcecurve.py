@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy import signal
 
 linewidth = 2.0
-fontsize=16
+fontsize=12
 font1 = {'family' : 'Arial',
 'weight' : 'normal',
 'size'   : fontsize,
@@ -68,10 +68,20 @@ plt.plot(extend_xx, break_line, linestyle='--', color='r', label=r"$f_b$", linew
 break_line_range = np.ones(extend_xx.shape[0]) * 0.57
 plt.plot(extend_xx, break_line_range, alpha=0.2, linestyle='-', color='r', label=r"$f_b$ zone", linewidth=linewidth*11)
 
-plt.xlabel('time step', font1)
+plt.xlabel('time zone', font1)
 plt.ylabel('Force', font1)
 plt.xlim(0,120)
 plt.legend(fontsize=fontsize-2, ncol=2)
+plt.xticks([])
+plt.yticks([])
 
+plt.show()
 
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.array(["Runoob-1", "Runoob-2", "Runoob-3", "C-RUNOOB"])
+y = np.array([12, 22, 6, 18])
+
+plt.bar(x, y,  color = ["#4CAF50","red","hotpink","#556B2F"])
 plt.show()

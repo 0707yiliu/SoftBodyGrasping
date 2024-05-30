@@ -37,7 +37,7 @@ datasets = [
     # '20240516151039_0.05kiwis.npz',
     # '20240519164011_0.05fish.npz',
     # '20240520161221_0.05cans.npz',
-    '20240520174110_0.05mug_fixstep.npz',
+    '20240519142046_0.05orange.npz',
     # '20240527112055_0.05mug_basic.npz',
     # '20240411141416_0.08force_cup_lift1-0.005-0.005.npz',
     # '20240412112624_1.3force_cup_lift1-0.005-0.005.npz',
@@ -72,11 +72,16 @@ point = 4 # tac point need to show 1 or 2 or 3 or 4
 start, end = 1160,2960 # 20240520161221_0.05cans 2
 start, end = 1645,3545 # 20240517141834_0.05eggcooked 1
 start, end = 400,2400 # 20240517141834_0.05eggcooked 1
-force_rangestart, forcerangeend = 300, 500 # 20240517141834_0.05eggcooked 1 G3
-force_rangestart, forcerangeend = 200, 600 # 20240517141834_0.05eggcooked 1 G4
-                                           # 20240519140659_0.05eggcooked_fixstep G2
-                                           # 20240519145807_0.05fish G4
-                                           # 20240519164011_0.05fish G3
+start, end, force_rangestart, forcerangeend, point = 1500, 2700, 1400, 2600, 1
+# 20240517141834_0.05eggcooked 1 G3
+start, end, force_rangestart, forcerangeend, point = 400, 2800, 1400, 2600, 1
+# 20240507154233_0.05eggcooked 1 G4
+start, end, force_rangestart, forcerangeend, point = 1400, 2600, 1400, 2600, 1
+# 20240519140659_0.05eggcooked_fixstep G2 1
+start, end, force_rangestart, forcerangeend, point = 1000, 7300, 1400, 2600, 4
+# 20240519145807_0.05fish G4
+start, end, force_rangestart, forcerangeend, point = 800, 3600, 1400, 2600, 4
+# 20240519164011_0.05fish G3
                                            # 20240519150831_0.05fish_fixstep G2
                                            # 20240516165323_0.05mug G3
                                            # 20240516164233_0.05mug G4
