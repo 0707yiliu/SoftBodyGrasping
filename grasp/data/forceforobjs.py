@@ -83,7 +83,7 @@ SR1 = ax[0].bar(x=r3, height=G3_sr, width=bar_width, color='#FEB40B',
                )
 ax[0].set_xticks((r2+bar_x+r3)/3, labels=label, fontsize=fontsize)
 ax[0].set_ylabel(r'$s_r (\%)$', font1)
-ax[0].legend(('G1', 'G2', 'G3'), fontsize=fontsize, ncol=1)
+ax[0].legend(('G1', 'G2', 'G3'), fontsize=fontsize, ncol=1, bbox_to_anchor=(1.05, 1))
 ax[0].spines['top'].set_color('none')
 ax[0].spines['right'].set_color('none')
 bar_width = 0.4
@@ -103,7 +103,7 @@ ax[1].bar(x=r2, height=G3_fmeans, width=bar_width, color='#FEB40B',
              )
 ax[1].set_xticks((r2+bar_x)/2, labels=label, fontsize=fontsize)
 ax[1].set_ylabel(r'$f_g (N)$', font1)
-ax[1].legend(('G2', 'G3'), fontsize=fontsize, ncol=1)
+ax[1].legend(('G2', 'G3'), fontsize=fontsize, ncol=1, bbox_to_anchor=(1.05, 1))
 ax[1].spines['top'].set_color('none')
 ax[1].spines['right'].set_color('none')
 bar_width = 0.3
@@ -128,7 +128,8 @@ ax[2].bar(x=r3, height=G4_tmeans, width=bar_width, color='#BABABA',
              )
 ax[2].set_xticks((r2+bar_x+r3)/3, labels=label, fontsize=fontsize)
 ax[2].set_ylabel(r'$t_g (s)$', font1)
-ax[2].legend(('G2', 'G3', 'G4'), fontsize=fontsize, ncol=1)
+ax[2].set_xlabel(r'$t_g (s)$', font1)
+ax[2].legend(('G2', 'G3', 'G4'), fontsize=fontsize, ncol=1, bbox_to_anchor=(1.05, 1))
 ax[2].spines['top'].set_color('none')
 ax[2].spines['right'].set_color('none')
 plt.show()

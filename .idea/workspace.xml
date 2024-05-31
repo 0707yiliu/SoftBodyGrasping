@@ -5,15 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/grasp/data/forceforobjs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/SoftBodyGrasping.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SoftBodyGrasping.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240507154233_0.05eggcooked.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240507154233_0.05eggcooked.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240517141834_0.05eggcooked.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240517141834_0.05eggcooked.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240519140659_0.05eggcooked_fixstep.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240519140659_0.05eggcooked_fixstep.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240519145807_0.05fish.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240519145807_0.05fish.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240519164011_0.05fish.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240519164011_0.05fish.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/forcecurve.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/forcecurve.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/data/forceforobjs.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/forceforobjs.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,7 +236,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-50da183f06c8-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13135.95" />
+        <option value="bundled-python-sdk-67fca87a943a-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.11799.259" />
       </set>
     </attachedChunks>
   </component>
