@@ -37,7 +37,7 @@ datasets = [
     # '20240516151039_0.05kiwis.npz',
     # '20240519164011_0.05fish.npz',
     # '20240520161221_0.05cans.npz',
-    '20240519142046_0.05orange.npz',
+    '20240517142124_0.05eggcooked.npz',
     # '20240527112055_0.05mug_basic.npz',
     # '20240411141416_0.08force_cup_lift1-0.005-0.005.npz',
     # '20240412112624_1.3force_cup_lift1-0.005-0.005.npz',
@@ -45,6 +45,26 @@ datasets = [
     # '20240412120426_1.8force_cup_lift1-0.005-0.005.npz',
     # '20240412150851_3force_cup_lift1-0.005-0.005.npz',
 ]
+
+start, end, force_rangestart, forcerangeend, point = 1400, 2600, 0, 450, 1
+# # 20240517142124_0.05eggcooked 1 G3
+# start, end, force_rangestart, forcerangeend, point = 600, 2000, 50, 1000, 1
+# # 20240507154233_0.05eggcooked 1 G4
+# start, end, force_rangestart, forcerangeend, point = 1400, 2600, 0, 450, 1
+# # 20240519140659_0.05eggcooked_fixstep G2 1
+# start, end, force_rangestart, forcerangeend, point = 2000, 7300, 50, 1000, 4
+# # 20240519145807_0.05fish G4
+# start, end, force_rangestart, forcerangeend, point = 1800, 3000, 510-450, 510, 1
+# # 20240519164011_0.05fish/ 20240519161021_0.05chickenbreast G3
+# start, end, force_rangestart, forcerangeend, point = 1000, 2200, 50, 500, 3
+# # # 20240519150831_0.05fish_fixstep / 20240519161614_0.05chickenbreast_fixstep G2
+# start, end, force_rangestart, forcerangeend, point = 700, 1900, 0, 265, 1
+# # 20240516165323_0.05mug G3
+# start, end, force_rangestart, forcerangeend, point = 900, 6600, 90, 1000, 2
+# # 20240516164233_0.05mug G4
+# start, end, force_rangestart, forcerangeend, point = 1100, 2300, 100, 400, 2
+# # # 20240520174110_0.05mug_fixstep G2
+
 
 tac_datalists = [np.load(datasets[i])['loop_tac_data'] for i in range(len(datasets))]
 pos_datalists = [np.load(datasets[i])['gripper_pos'] for i in range(len(datasets))]
@@ -66,33 +86,18 @@ d_all_tac_data = FirstOrderLag(all_tac_dataALL, 0.8)
 all_tac_dataALL = FirstOrderLag(all_tac_dataALL, 0.8)
 all_tac_data = FirstOrderLag(all_tac_data, 0.7)
 
-point = 4 # tac point need to show 1 or 2 or 3 or 4
-# start, end = 1050,2850 # 20240516151039_0.05kiwis  3
-# start, end = 1700,3500 # 20240519164011_0.05fish   4
-start, end = 1160,2960 # 20240520161221_0.05cans 2
-start, end = 1645,3545 # 20240517141834_0.05eggcooked 1
-start, end = 400,2400 # 20240517141834_0.05eggcooked 1
-start, end, force_rangestart, forcerangeend, point = 1500, 2700, 1400, 2600, 1
-# 20240517141834_0.05eggcooked 1 G3
-start, end, force_rangestart, forcerangeend, point = 400, 2800, 1400, 2600, 1
-# 20240507154233_0.05eggcooked 1 G4
-start, end, force_rangestart, forcerangeend, point = 1400, 2600, 1400, 2600, 1
-# 20240519140659_0.05eggcooked_fixstep G2 1
-start, end, force_rangestart, forcerangeend, point = 1000, 7300, 1400, 2600, 4
-# 20240519145807_0.05fish G4
-start, end, force_rangestart, forcerangeend, point = 800, 3600, 1400, 2600, 4
-# 20240519164011_0.05fish G3
-                                           # 20240519150831_0.05fish_fixstep G2
-                                           # 20240516165323_0.05mug G3
-                                           # 20240516164233_0.05mug G4
-                                           # 20240520174110_0.05mug_fixstep G2
-
+# point = 4 # tac point need to show 1 or 2 or 3 or 4
+# # start, end = 1050,2850 # 20240516151039_0.05kiwis  3
+# # start, end = 1700,3500 # 20240519164011_0.05fish   4
+# start, end = 1160,2960 # 20240520161221_0.05cans 2
+# start, end = 1645,3545 # 20240517141834_0.05eggcooked 1
+# start, end = 400,2400 # 20240517141834_0.05eggcooked 1
 
 
 # all_tac_dataALL = all_tac_dataALL[290:790]
 # all_tac_dataALL = all_tac_dataALL[490:990]
-# all_tac_dataALL = all_tac_dataALL[start:end]
-# des_slip_force = des_slip_force[force_rangestart:forcerangeend]
+all_tac_dataALL = all_tac_dataALL[start:end]
+des_slip_force = des_slip_force[force_rangestart:forcerangeend]
 
 hz_time = 0.02
 hz = 1 / hz_time
@@ -503,7 +508,8 @@ ax2.tick_params(labelsize=fontsize-2)
 fig, axs = plt.subplots(1, 1, figsize=(480/my_dpi,480/my_dpi),dpi=my_dpi, sharex=False, sharey=False)
 
 axs.plot(des_slip_force)
-print(des_slip_force.shape)
+print(y_data.shape, z_data.shape, ydz_data.shape, dydz_data.shape, des_slip_force.shape)
+
 np.savez(datasets[0] + 'new.npz',
          y_data=y_data,
          z_data=z_data,

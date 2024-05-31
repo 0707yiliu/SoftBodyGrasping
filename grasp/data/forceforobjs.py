@@ -5,6 +5,8 @@ G2_fmeans = np.array([0.323, 0.184, 0.515, 0.524, 0.621, 0.315, 0.183, 0.486, 0.
 G2_fvar = np.array([0.00215, 0.00138, 0.075, 0.067, 0.084, 0.057, 0.00384, 0.012, 0.00751, 0.00103, 0.0064, 0.00019, 0, 0.00145, 0.0053, 0.0031, 0.00039, 0.0017, 0.0098, 0.00084, 0.057, 0.037, 0.0087, 0.049, 0.0078, 0.0031, 0.00107, 0])
 G3_fmeans = np.array([0.349, 0.215, 0.556, 0.569, 0.665, 0.352, 0.211, 0.523, 0.315, 0.086, 0.286, 0.108, 0.478, 0.423, 0.219, 0.354, 0.136, 0.254, 0.386, 0.131, 0.484, 0.467, 0.524, 0.617, 0.465, 0.319, 0.097, 0])
 G3_fvar = np.array([0.00477, 0.00205, 0.034, 0.031, 0.044, 0.009, 0.00751, 0.0092, 0.00415, 0.0034, 0.0099, 0.0012, 0.00511, 0.00238, 0.00974, 0.0102, 0.00111, 0.00123, 0.00541, 0.00203, 0.024, 0.010, 0.00941, 0.0208, 0.00818, 0.00214, 0.00541, 0])
+G4_fmeans = np.array([0.359, 0.235, 0.596, 0.559, 0.635, 0.372, 0.231, 0.533, 0.355, 0.089, 0.316, 0.128, 0.548, 0.483, 0.239, 0.364, 0.196, 0.234, 0.396, 0.161, 0.524, 0.487, 0.544, 0.667, 0.475, 0.349, 0.107, 1.593])
+G4_fvar = np.array([0.02477, 0.01305, 0.054, 0.071, 0.034, 0.029, 0.01751, 0.0192, 0.03415, 0.0154, 0.0199, 0.0112, 0.01511, 0.04238, 0.04974, 0.0112, 0.00111, 0.00123, 0.01541, 0.01203, 0.124, 0.050, 0.01941, 0.0208, 0.00818, 0.00214, 0.00541, 0.227])
 
 G2_tmeans = np.array([1.67, 1.54, 1.75, 1.24, 5.73,
                       2.07, 3.01, 5.66, 2.07, 3.98,
@@ -59,25 +61,25 @@ for i in range(G2_fvar.shape[0]):
     label = np.append(label, r'$id_{%d}$' % (i+1))
 # label = (r'$id_{1}$', r'$id_{2}$', r'$id_{3}$')
 
-fig_w, fig_h = 15.5, 3
+fig_w, fig_h = 15.5, 7
 
-
+colors = ['#D693BE', '#8EC8ED', '#F5B3A5', '#AED594']
 
 fig, ax = plt.subplots(3, 1, figsize=(fig_w,fig_h))
-bar_width = 0.3
+bar_width = 0.25
 var_width = 1.5
 bar_x = np.arange(len(label))
 r2 = [x + bar_width for x in bar_x]
 r3 = [x + bar_width for x in r2]
-ax[0].bar(x=bar_x, height=G1_sr, width=bar_width, color='#1587FD',
+ax[0].bar(x=bar_x, height=G1_sr, width=bar_width, color=colors[0],
                 ecolor='#994487',
                 capsize=var_width,
                )
-ax[0].bar(x=r2, height=G2_sr, width=bar_width, color='#4CAF50',
+ax[0].bar(x=r2, height=G2_sr, width=bar_width, color=colors[1],
                 ecolor='#994487',
                 capsize=var_width,
                )
-SR1 = ax[0].bar(x=r3, height=G3_sr, width=bar_width, color='#FEB40B',
+SR1 = ax[0].bar(x=r3, height=G3_sr, width=bar_width, color=colors[2],
                 ecolor='#994487',
                 capsize=var_width,
                )
@@ -86,49 +88,46 @@ ax[0].set_ylabel(r'$s_r (\%)$', font1)
 ax[0].legend(('G1', 'G2', 'G3'), fontsize=fontsize, ncol=1, bbox_to_anchor=(1.05, 1))
 ax[0].spines['top'].set_color('none')
 ax[0].spines['right'].set_color('none')
-bar_width = 0.4
-var_width = 2
-bar_x = np.arange(len(label))
-r2 = [x + bar_width for x in bar_x]
-r3 = [x + bar_width for x in r2]
-ax[1].bar(x=bar_x, height=G2_fmeans, width=bar_width, color='#4CAF50',
+
+ax[1].bar(x=bar_x, height=G2_fmeans, width=bar_width, color=colors[1],
                yerr=G2_fvar,
                ecolor='#994487',
                capsize=var_width,
              )
-ax[1].bar(x=r2, height=G3_fmeans, width=bar_width, color='#FEB40B',
+ax[1].bar(x=r2, height=G3_fmeans, width=bar_width, color=colors[2],
                yerr=G3_fvar,
                ecolor='#994487',
                capsize=var_width,
              )
-ax[1].set_xticks((r2+bar_x)/2, labels=label, fontsize=fontsize)
+ax[1].bar(x=r3, height=G4_fmeans, width=bar_width, color=colors[3],
+               yerr=G4_fvar,
+               ecolor='#994487',
+               capsize=var_width,
+             )
+ax[1].set_xticks((r2+bar_x+r3)/3, labels=label, fontsize=fontsize)
 ax[1].set_ylabel(r'$f_g (N)$', font1)
-ax[1].legend(('G2', 'G3'), fontsize=fontsize, ncol=1, bbox_to_anchor=(1.05, 1))
+ax[1].legend(('G2', 'G3', 'G4'), fontsize=fontsize, ncol=1, bbox_to_anchor=(1.05, 1))
 ax[1].spines['top'].set_color('none')
 ax[1].spines['right'].set_color('none')
-bar_width = 0.3
-var_width = 1.5
-bar_x = np.arange(len(label))
-r2 = [x + bar_width for x in bar_x]
-r3 = [x + bar_width for x in r2]
-ax[2].bar(x=bar_x, height=G2_tmeans, width=bar_width, color='#4CAF50',
+
+ax[2].bar(x=bar_x, height=G2_tmeans, width=bar_width, color=colors[1],
                yerr=G2_tvar,
                ecolor='#994487',
                capsize=var_width,
              )
-ax[2].bar(x=r2, height=G3_tmeans, width=bar_width, color='#FEB40B',
+ax[2].bar(x=r2, height=G3_tmeans, width=bar_width, color=colors[2],
                yerr=G3_tvar,
                ecolor='#994487',
                capsize=var_width,
              )
-ax[2].bar(x=r3, height=G4_tmeans, width=bar_width, color='#BABABA',
+ax[2].bar(x=r3, height=G4_tmeans, width=bar_width, color=colors[3],
                yerr=G4_tvar,
                ecolor='#994487',
                capsize=var_width,
              )
 ax[2].set_xticks((r2+bar_x+r3)/3, labels=label, fontsize=fontsize)
 ax[2].set_ylabel(r'$t_g (s)$', font1)
-ax[2].set_xlabel(r'$t_g (s)$', font1)
+# ax[2].set_xlabel(r'$t_g (s)$', font1)
 ax[2].legend(('G2', 'G3', 'G4'), fontsize=fontsize, ncol=1, bbox_to_anchor=(1.05, 1))
 ax[2].spines['top'].set_color('none')
 ax[2].spines['right'].set_color('none')
