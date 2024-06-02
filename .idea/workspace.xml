@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/SoftBodyGrasping.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SoftBodyGrasping.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240507154233_0.05eggcooked.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240507154233_0.05eggcooked.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240517142124_0.05eggcooked.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240517142124_0.05eggcooked.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240519140659_0.05eggcooked_fixstep.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240519140659_0.05eggcooked_fixstep.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/plot_for_3objscom.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/plot_for_3objscom.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/plot_for_3objsslip.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/plot_for_3objsslip.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" afterDir="false" />
-    </list>
+    <list default="true" id="88485f7b-29d8-490b-9a3e-0aabd19d7ac0" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,7 +107,7 @@
       <recent name="$PROJECT_DIR$/sensor_comm_dds" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.plot_for_3objscom">
+  <component name="RunManager" selected="Python.forceforobjs">
     <configuration name="forcecurve" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SoftBodyGrasping" />
       <option name="ENV_FILES" value="" />
@@ -230,11 +220,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.forceforobjs" />
+        <item itemvalue="Python.forcecurve" />
         <item itemvalue="Python.plot_for_3objscom" />
         <item itemvalue="Python.plot_for_slip" />
         <item itemvalue="Python.plot_for_3objsslip" />
-        <item itemvalue="Python.forceforobjs" />
-        <item itemvalue="Python.forcecurve" />
       </list>
     </recent_temporary>
   </component>
