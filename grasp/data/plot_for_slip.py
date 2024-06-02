@@ -46,11 +46,11 @@ datasets = [
     # '20240412150851_3force_cup_lift1-0.005-0.005.npz',
 ]
 
-start, end, force_rangestart, forcerangeend, point = 1400, 2600, 0, 450, 1
+start, end, force_rangestart, forcerangeend, point = 1400, 2600, 100, 450, 1
 # # 20240517142124_0.05eggcooked 1 G3
-# start, end, force_rangestart, forcerangeend, point = 600, 2000, 50, 1000, 1
+# start, end, force_rangestart, forcerangeend, point = 200, 2000, 150, 500, 1
 # # 20240507154233_0.05eggcooked 1 G4
-# start, end, force_rangestart, forcerangeend, point = 1400, 2600, 0, 450, 1
+# start, end, force_rangestart, forcerangeend, point = 1400, 2600, 150, 450, 1
 # # 20240519140659_0.05eggcooked_fixstep G2 1
 # start, end, force_rangestart, forcerangeend, point = 2000, 7300, 50, 1000, 4
 # # 20240519145807_0.05fish G4

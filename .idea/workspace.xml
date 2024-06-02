@@ -9,17 +9,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grasp/data/20240507154233_0.05eggcooked.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240507154233_0.05eggcooked.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240516164233_0.05mug.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240516164233_0.05mug.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240516165323_0.05mug.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240516165323_0.05mug.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240517141834_0.05eggcooked.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240517141834_0.05eggcooked.npznew.npz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grasp/data/20240517142124_0.05eggcooked.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240517142124_0.05eggcooked.npznew.npz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grasp/data/20240519140659_0.05eggcooked_fixstep.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240519140659_0.05eggcooked_fixstep.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240519145807_0.05fish.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240519145807_0.05fish.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240519161021_0.05chickenbreast.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240519161021_0.05chickenbreast.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240519164011_0.05fish.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240519164011_0.05fish.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/20240520174110_0.05mug_fixstep.npznew.npz" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/20240520174110_0.05mug_fixstep.npznew.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasp/data/forceforobjs.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/forceforobjs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grasp/data/plot_for_3objscom.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/plot_for_3objscom.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grasp/data/plot_for_3objsslip.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/plot_for_3objsslip.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" beforeDir="false" afterPath="$PROJECT_DIR$/grasp/data/plot_for_slip.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -239,9 +232,9 @@
       <list>
         <item itemvalue="Python.plot_for_3objscom" />
         <item itemvalue="Python.plot_for_slip" />
+        <item itemvalue="Python.plot_for_3objsslip" />
         <item itemvalue="Python.forceforobjs" />
         <item itemvalue="Python.forcecurve" />
-        <item itemvalue="Python.plot_for_3objsslip" />
       </list>
     </recent_temporary>
   </component>
